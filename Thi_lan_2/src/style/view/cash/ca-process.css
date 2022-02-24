@@ -1,0 +1,185 @@
+.process {
+    display: flex;
+    padding: 25px 0;
+    min-height: 460px;
+    max-height: 460px;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 1000px;
+}
+
+.process .title {
+    height: 40px;
+    font-size: 14px;
+    font-family: Notosans-Bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    background-color: #ffff;
+}
+
+
+/* css process-left */
+
+.process-left {
+    max-width: 690px;
+    min-width: 690px;
+    margin-right: 10px;
+}
+
+.process-left .process-background {
+    height: 340px;
+    background-image: url(../../../assets/img/qt_TienMat.1f64b87b.svg);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e5e5e5;
+    background-color: #ffff;
+}
+
+.process-left .process-background .collect-money {
+    margin-left: 93px;
+    margin-top: 38px;
+    padding-top: 60px;
+    height: 88px;
+    width: 90px;
+    box-sizing: border-box;
+}
+
+.process-left .process-background .inventory {
+    margin-left: 336px;
+    margin-top: -1px;
+    padding-top: 60px;
+    height: 88px;
+    width: 125px;
+    box-sizing: border-box;
+}
+
+.process-left .process-background .pay-money {
+    margin-left: 93px;
+    margin-top: 1px;
+    padding-top: 60px;
+    height: 88px;
+    width: 90px;
+    box-sizing: border-box;
+}
+
+.process-left .process-background a div {
+    height: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.process-left .process-background a:hover {
+    box-shadow: 0 0 5px 2px #dbdbdb;
+    cursor: pointer;
+}
+
+
+/* css process-footer */
+
+.process-left .process-footer {
+    margin-top: 10px;
+    display: flex;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+    height: 68px;
+    border-right: none;
+    background-color: #ffff;
+}
+
+.process-footer a.process-item {
+    width: 25%;
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.process-footer .process-item:hover {
+    cursor: pointer;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.process-footer .process-item .icon-process {
+    width: 24px;
+    height: 24px;
+    background: url(../../../assets/img/Sprites.64af8f61.svg) no-repeat;
+}
+
+.process-footer .process-item .icon-process.customer {
+    background-position: -872px -200px;
+}
+
+.process-footer .process-item .icon-process.provider {
+    background-position: -928px -200px;
+}
+
+.process-footer .process-item .icon-process.employee {
+    background-position: -984px -200px;
+}
+
+.process-footer .process-item .icon-process.calculate {
+    background-position: -1376px -256px;
+}
+
+
+/*  css process-right */
+
+.process-right {
+    max-width: 298px;
+    min-width: 298px;
+}
+
+.process-right .group-report {
+    border: 1px solid #e5e5e5;
+    border-radius: 0 0 2px 2px;
+    max-height: calc(100% - 40px);
+    min-height: calc(100% - 40px);
+    background-color: #ffff;
+}
+
+.process-right .group-report ul {
+    padding: 0 16px;
+    margin: 0;
+    list-style: none
+}
+
+.process-right .group-report ul li::before {
+    content: "\2022";
+    color: #646464;
+    font-size: 24px;
+    margin-right: 12px;
+}
+
+.process-right .group-report ul li {
+    padding: 16px 0;
+    height: 74px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.process-right .group-report ul li:hover {
+    cursor: pointer;
+    color: #0075c0;
+}
+
+.process-right .group-report .right-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #e5e5e5;
+    height: 44px;
+    margin-top: 5px;
+    color: #0075c0;
+}
+
+.process-right .group-report .right-footer:hover {
+    cursor: pointer;
+}

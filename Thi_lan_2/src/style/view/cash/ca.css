@@ -1,0 +1,26 @@
+.ca-ground {}
+
+.ca-menu {
+    display: flex;
+    padding: 14px 0 0 0;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #bbb;
+}
+
+.ca-menu a.ca-menu-item {
+    text-decoration: none;
+    font-size: 13px;
+    color: #111111;
+    padding: 15px 20px;
+}
+
+.ca-menu a.ca-menu-item:hover {
+    cursor: pointer;
+    color: rgb(8, 184, 8);
+}
+
+.ca-menu a.ca-menu-item.router-link-exact-active.router-link-active {
+    border-bottom: 4px solid rgb(3, 172, 3);
+    font-family: Notosans-Bold;
+    font-weight: 600;
+}

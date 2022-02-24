@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "21jvOU1N6B2f/kAANDiylpCfu6fV6nj0YHZ9JXIeuKaq4P24lPWRKILBUtxFmVcnieJW7auCHBjJfA4md14GLQ==",
+  "success": true,
+  "projectFilePath": "D:\\THUC_TAP_MISA\\z_kiem_tra_2\\MISA.Fresher.Web12.ThiLan2\\MISA.Fresher.Web12.Core\\MISA.Fresher.Web12.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512"
+  ],
+  "logs": []
+}
