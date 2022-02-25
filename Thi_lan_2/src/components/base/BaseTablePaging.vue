@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="m-right">
-            <paginate v-model="pageAction" :page-count="totalPage" :page-range="3" :margin-pages="1" :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'m-page-number'" :page-class="'m-page-item'">
+            <paginate :value="pageAction" :page-count="totalPage" :page-range="3" :margin-pages="1" :click-handler="clickCallback" :prev-text="'Trước'" :next-text="'Sau'" :container-class="'m-page-number'" :page-class="'m-page-item'">
             </paginate>
         </div>
     </div>
@@ -30,13 +30,29 @@ import * as mylib from '../../js/resourcs.js'
 export default {
     data() {
         return {
-            totalRecord: 10,
-            isShowPage: true,
-            pageAction: 2,
-            totalPage: 10,
-            listPageText: mylib.data.listPageSize,
-            selectTextPage:50,
+
         }
+    },
+    props: {
+        totalRecord: { //Tổng số bản ghi ban đầu
+            default: 0,
+            type: Number
+        },
+        isShowPage: { //Trạng thái đóng mở của listPage nếu không truyền vào thì mặc định là false
+            default: false,
+            type: Boolean
+        },
+        pageAction: { //Trang đang thực hiện hiển thị nếu không truyền vào thì mặc định là 1
+            default: 1,
+            type: Number
+        },
+        totalPage: { //Tổng số trang mặc định nếu không truyền vào là 1
+            default: 1
+        },
+        listPageText: Array, //Mảng kích thước trang mong truyền vào
+        selectTextPage: { //Nếu không truyền dữ liệu vào thì mặc định là 20 trang
+            default: 20
+        },
     },
     computed: {
         pageTextInInput: function () {
@@ -45,11 +61,18 @@ export default {
     },
     methods: {
         clickCallback(number) {
-            console.log(number);
+            var me = this;
+            me.$emit('clickCallback', { number: number} );
         },
-        selectedPageText(number) {
-            console.log(number);
+        selectedPageText(index) {
+            var me = this;
+            me.$emit('selectedPageText', { index: index} );
+        },
+        btnSelectPage() {
+            var me = this;
+            me.$emit('btnSelectPage');
         }
+
     }
 }
 </script>
