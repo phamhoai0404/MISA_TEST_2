@@ -1,0 +1,76 @@
+/* css chung */
+
+.m-group-view {
+    min-height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: #ffff;
+    min-width: 780px;
+}
+
+.m-group-view .m-item {
+    max-width: 33%;
+    min-width: 33%;
+    height: 64px;
+    padding: 4px 10px;
+    box-sizing: border-box;
+}
+
+.m-group-view .m-item:hover {
+    position: relative;
+    top: -8px;
+    height: 72px;
+}
+
+.m-item .m-item-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.m-item .m-item-top .m-total-money {
+    font-size: 24px;
+}
+
+.m-label-total {
+    font-size: 14px;
+}
+
+.m-item .m-item-top .m-icon {
+    height: 22px;
+    width: 18px;
+}
+
+.filter {
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -1814px -202px;
+}
+
+
+/* css riêng cho từng cái */
+
+.debt-overdue {
+    background-color: #FF8000;
+}
+
+.debt-overdue:hover {
+    border-bottom: 8px solid #B45F04;
+}
+
+.total-liabilities {
+    background-color: #BDBDBD;
+    color-interpolation-filters: linearRGB;
+}
+
+.total-liabilities:hover {
+    border-bottom: 8px solid #A4A4A4;
+}
+
+.paid {
+    background-color: #3ADF00;
+}
+
+.paid:hover {
+    height: 64px !important;
+    position: relative;
+    top: 0px !important;
+}

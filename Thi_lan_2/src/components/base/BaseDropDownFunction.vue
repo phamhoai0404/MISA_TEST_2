@@ -58,7 +58,6 @@ export default {
         },
         hideFunction(){
             var me = this;
-            console.log("xinh gái");
             me.$emit('btnClose');
         }
     }

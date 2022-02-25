@@ -19,7 +19,7 @@
             :selectTextPage="selectTextPage"
         />
         <BaseTableList
-            :height="'200px'"
+            :height="'100px'"
             :listFields = "listFieldAccount"
             :listData ="listAccount"
             @btnView = 'viewInfo'
@@ -37,6 +37,7 @@
             @btnRemove="btnRemove"
             @btnEdit ="btnEdit"
         />
+        <BaseOverview />
     </div>
    
 </template>
@@ -47,6 +48,7 @@ import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
 import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 import BaseTableList from '@/components/base/BaseTableList.vue'
 import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
+import BaseOverview from '@/components/base/BaseOverview.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -56,7 +58,8 @@ export default {
         BaseButtonFunction,
         BaseTablePaging,
         BaseTableList,
-        BaseDropDownFunction
+        BaseDropDownFunction,
+        BaseOverview
     },
     data() {
         return {
