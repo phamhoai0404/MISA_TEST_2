@@ -68,6 +68,7 @@
 .m-combobox-data .m-combobox-item-page:hover {
     background-color: #E9EBEE;
     color: #2ca01c;
+    cursor: pointer;
 }
 
 .m-combobox-item-page.selected {

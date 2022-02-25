@@ -18,6 +18,7 @@
             :totalPage="totalPage"
             :selectTextPage="selectTextPage"
         />
+        <BaseTableList/>
     </div>
    
 </template>
@@ -26,6 +27,7 @@ import BaseInputIcon from '@/components/base/BaseInputIcon.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
 import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
+import BaseTableList from '@/components/base/BaseTableList.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -33,7 +35,8 @@ export default {
         BaseInputIcon,
         BaseButtonIcon,
         BaseButtonFunction,
-        BaseTablePaging
+        BaseTablePaging,
+        BaseTableList
     },
     data() {
         return {

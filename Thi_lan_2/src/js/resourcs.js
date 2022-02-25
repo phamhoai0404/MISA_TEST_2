@@ -45,6 +45,42 @@ var misaEnum = {
 var data = {
     listPageSize: [
         "10", "20", "30", "50", "100"
+    ],
+    listFieldAccountObject: [{
+            name: "AccountObjectCode",
+            text: "MÃ NHÀ CUNG CẤP",
+            width: "200",
+            type: "date"
+        },
+        {
+            name: "AccountObjectName",
+            text: "TÊN NHÀ CUNG CẤP",
+            width: "200",
+        },
+        {
+            name: "Address",
+            text: "ĐỊA CHỈ",
+            width: "500",
+            type: "number"
+        },
+        {
+            name: "TaxCode",
+            text: "MÃ SỐ THUẾ",
+            width: "200",
+            type: "number"
+        },
+        {
+            name: "Phone",
+            text: "SỐ ĐIỆN THOẠI",
+            width: "200",
+        },
+        {
+            name: "Website",
+            text: "WEBSITE",
+            width: "200",
+            title: "Tên trang web công ty"
+        },
+
     ]
 }
 

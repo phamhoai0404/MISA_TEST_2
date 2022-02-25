@@ -1,0 +1,44 @@
+.m-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.m-checkbox label {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.m-checkbox label span {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    margin-left: 1px;
+    background: none;
+}
+
+.m-checkbox label::before {
+    content: "";
+    height: 18px;
+    width: 18px;
+    border: 0.5px solid #bbb;
+    border-radius: 2px;
+    /* margin-right: 7px; */
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.m-checkbox input[type="checkbox"]:checked+label:before {
+    transform: rotate(-90deg);
+    transition: all .2s ease;
+    height: 18px;
+    width: 18px;
+    box-sizing: border-box;
+    border: 1px solid #2ca01c;
+}
+
+.m-checkbox input[type="checkbox"]:checked+label span {
+    background: url(../../../assets/img/Sprites.64af8f61.svg) no-repeat;
+    background-position: -1224px -360px;
+}
