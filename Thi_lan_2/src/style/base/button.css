@@ -1,4 +1,4 @@
-.m-button {
+/* .m-button {
     background-color: #31B404;
     border-radius: 3px;
     height: 36px;
@@ -8,8 +8,7 @@
     outline: none;
     border: none;
     cursor: pointer;
-    font-family: Notosans-Semi-bold;
-    ;
+    font-family: Notosans-Semi-bold;;
     font-size: 13px;
     font-weight: 600 !important;
 }
@@ -32,4 +31,4 @@
 .m-button.m-button-not-color:hover {
     background-color: #d2d3d6;
     ;
-}
+} */

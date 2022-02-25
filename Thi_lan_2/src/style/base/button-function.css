@@ -1,0 +1,29 @@
+/* css m-button-ground*/
+
+@import url('./general/button.css');
+
+/* css riêng đây */
+
+.m-btn-function {
+    background-color: #31B404;
+    border: none;
+    color: #ffff;
+}
+
+.m-btn-function .m-button-icon {
+    background-position: -848px -359px;
+}
+
+.m-btn-function:hover {
+    background-color: #40FF00;
+}
+
+.m-btn-function .m-button-title {
+    border-right: 1px solid #fff;
+    padding: 0 16px 0 0;
+    margin-right: 10px;
+}
+
+.m-btn-function .m-button-icon-dropdown {
+    background-position: -848px -359px;
+}

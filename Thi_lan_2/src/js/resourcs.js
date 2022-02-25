@@ -8,7 +8,8 @@ var resourcs = {
         errorEmployeeCode: "Mã nhân viên không đúng định dạng!",
         notNullFullName: "Tên không được phép để trống!",
         notNullEmployeeCode: "Mã không được phép để trống!",
-        notNullDepartmentName: "Đơn vị không được phép để trống!"
+        notNullDepartmentName: "Đơn vị không được phép để trống!",
+        inputSearch: "Nhập từ khóa tìm kiếm",
     }
 }
 var misaEnum = {

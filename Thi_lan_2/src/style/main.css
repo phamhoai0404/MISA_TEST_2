@@ -1,17 +1,4 @@
-/* Đây là import thêm fontawesome để sử dụng  */
-
-@import url('../assets/fonts/fontawesome-5.15.1/css/all.min.css');
-
 /* import cái dùng chung nó còn sử dụng cho các .vue khác  */
-
-@import url('./base/combobox.css');
-@import url('./base/button.css');
-@import url('./base/input.css');
-
-/* Cái file css này dùng nhiều cho component ở trong view/empolyee nên mình import ở đây luôn */
-
-
-/* @import url('./view/employee/employee-message.css'); */
 
 body {
     font-family: Notosans;
