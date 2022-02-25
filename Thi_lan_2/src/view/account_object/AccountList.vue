@@ -18,7 +18,25 @@
             :totalPage="totalPage"
             :selectTextPage="selectTextPage"
         />
-        <BaseTableList/>
+        <BaseTableList
+            :height="'200px'"
+            :listFields = "listFieldAccount"
+            :listData ="listAccount"
+            @btnView = 'viewInfo'
+            @btnDropDown = 'btnDropDown'
+        />
+        <BaseDropDownFunction v-if="isShowFunction"
+            :duplicate="true"
+            :remove="true"
+            :edit ="true"
+            :positionRight="40"
+            :positionTop ="positionTopFunction"
+            
+            @btnClose = "btnClose"
+            @btnDuplicate="btnDuplicate"
+            @btnRemove="btnRemove"
+            @btnEdit ="btnEdit"
+        />
     </div>
    
 </template>
@@ -28,6 +46,7 @@ import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
 import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 import BaseTableList from '@/components/base/BaseTableList.vue'
+import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -36,7 +55,8 @@ export default {
         BaseButtonIcon,
         BaseButtonFunction,
         BaseTablePaging,
-        BaseTableList
+        BaseTableList,
+        BaseDropDownFunction
     },
     data() {
         return {
@@ -48,7 +68,14 @@ export default {
             totalRecord:0,
             pageAction:1,
             totalPage:10,
-            selectTextPage: 10
+            selectTextPage: 10,
+
+
+            listFieldAccount: mylib.data.listFieldAccountObject,
+            listAccount:mylib.dataTest.listAccount,
+            isShowFunction:false,
+            positionTopFunction:0
+
         }
     },
     watch:{
@@ -79,6 +106,30 @@ export default {
             var me = this;
             console.log("number: " + number);
             me.pageAction = number;
+        },
+        viewInfo({object}){
+            console.log("đối tượng là ", object);
+        },
+        btnDropDown({eve, object, index }){
+            var me = this;
+            console.log("Những giá trị là: ", eve, object, index);
+            me.isShowFunction = true;
+            me.positionTopFunction = index != (me.listAccount.length - 1) ? (eve.clientY + 14) : (eve.clientY - 105);
+        },
+        btnDuplicate(){
+            alert("Duplicate");
+        },
+        btnRemove(){
+            alert("Remove");
+        },
+        btnEdit(){
+            alert("Edit");
+        },
+        btnClose(){
+            var me = this;
+            if(me.isShowFunction == true){
+                me.isShowFunction = false;
+            }
         }
     },
 }
