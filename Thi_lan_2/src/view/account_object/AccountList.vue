@@ -50,6 +50,7 @@
         <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
         <BaseButton label="Cất" :hasBackground="true" title="Cất nhá" @btnClick="clickTest" shortKey="['esc']"/>
         <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s']"/>
+        <BaseMessage/>
     </div>
    
 </template>
@@ -64,6 +65,7 @@ import BaseOverview from '@/components/base/BaseOverview.vue'
 import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
+import BaseMessage from '@/components/base/BaseMessage.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -77,7 +79,8 @@ export default {
         BaseOverview,
         BaseRadio,
         BaseCheckbox,
-        BaseButton
+        BaseButton,
+        BaseMessage
     },
     
     data() {
