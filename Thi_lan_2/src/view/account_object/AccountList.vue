@@ -24,6 +24,9 @@
             :listData ="listAccount"
             @btnView = 'viewInfo'
             @btnDropDown = 'btnDropDown'
+            @btnAllCheckbox ='btnTestAllCheckBox'
+            @btnCheckbox='btnTestCheckbox'
+
             :nameTable="'AccountObject'"
         />
         <BaseDropDownFunction v-if="isShowFunction"
@@ -44,7 +47,8 @@
         <BaseRadio id="xaugai" name="congai"  valueReal ="2" label="Xấu gái " @change="changeValue"  :value="testRadio"/>
         <BaseRadio id="binthuong" name="congai" valueReal ="3"  label="Bình thường" @change="changeValue"  :value="testRadio"/>
         <br/>
-        <BaseCheckbox id="thuong" label="Là khách hàng"/>
+        <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
+        
     </div>
    
 </template>
@@ -91,7 +95,8 @@ export default {
             isShowFunction:false,
             positionTopFunction:0,
 
-            testRadio:"1"
+            testRadio:"1",
+            listChecked :Array (),
 
         }
     },
@@ -154,6 +159,20 @@ export default {
         changeValue(newValue){
             var me = this;
             me.testRadio = newValue;
+        },
+        btnCheckboxTest({id}){
+            console.log("is", id);
+        },
+        btnTestAllCheckBox({id}){
+            console.log("all", id);
+        },
+        btnTestCheckbox({id}){
+            console.log("cuộc đời cong");
+            console.log("item", id);
+            const item = document.getElementById(id);
+            console.log(item.checked);
+            this.listChecked.push(id);
+            console.log(this.listChecked);
         }
     },
 }

@@ -4,7 +4,7 @@
         <thead>
             <tr>
                 <th class=" m-checkbox-table sticky-checkbox" >
-                    <BaseCheckbox :id="nameTable"/>
+                    <BaseCheckbox :id="nameTable" @clickCheckbox="btnAllCheckbox"/>
                 </th>
                 <th v-for="(field,index) in listFields" :key="index" 
                     :style="{ 
@@ -22,7 +22,7 @@
         <tbody>
             <tr v-for="(data,index) in listData" :key="index">
                 <td class="m-checkbox-table sticky-checkbox">
-                    <BaseCheckbox :id="data[nameTable+'Id']"/>
+                    <BaseCheckbox :id="data[nameTable+'Id']" @clickCheckbox="btnCheckbox"/>
                 </td>
                 <td v-for="(field,i) in listFields" :key="i" 
                     :class="[i == 0 ? 'remove-border-left' : '']" 
@@ -90,6 +90,14 @@ export default {
         btnDropDown(event, data, index){
             var me = this;
             me.$emit('btnDropDown', {eve: event, object:data, index: index});
+        },
+        btnAllCheckbox({id}){
+            var me = this;
+            me.$emit('btnAllCheckbox', {id: id});
+        },
+        btnCheckbox({id}){
+            var me = this;
+            me.$emit('btnCheckbox', {id: id});
         }
     },
     filters: {
