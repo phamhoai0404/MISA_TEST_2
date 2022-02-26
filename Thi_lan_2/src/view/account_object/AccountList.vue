@@ -50,7 +50,7 @@
         <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
         <BaseButton label="Cất" :hasBackground="true" title="Cất nhá" @btnClick="clickTest" shortKey="['esc']"/>
         <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s']"/>
-        <BaseMessage/>
+        <BaseMessage typeMessage="info" titleForm="Thông tin" @btnClose="hoa" />
     </div>
    
 </template>
@@ -115,7 +115,9 @@ export default {
         }
     },
     methods: {
-
+        hoa(){
+            alert("hoa");
+        },
         action(){
             alert("xinh gái");
         },

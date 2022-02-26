@@ -1,18 +1,10 @@
-/* css chung */
-
-
-/* css riêng */
-
 .m-message {
-    /* display: none; */
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, .4);
-    /* Dòng này là đi copy ở trong trang chủ cũng không hiểu lắm */
-    transition: all .25s ease;
     z-index: 10;
 }
 
@@ -56,7 +48,8 @@
 /* Footer mess */
 
 .m-message .m-messages-footer-info {
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .m-message .m-messages-footer-question {
@@ -67,10 +60,6 @@
 .m-message .m-messages-footer-question .m-footer-right {
     display: flex;
     /* background-color: red; */
-}
-
-.m-message .m-messages-footer-question .m-footer-right button~button {
-    margin-left: 8px;
 }
 
 
