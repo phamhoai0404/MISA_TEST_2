@@ -24,6 +24,7 @@
             :listData ="listAccount"
             @btnView = 'viewInfo'
             @btnDropDown = 'btnDropDown'
+            :nameTable="'AccountObject'"
         />
         <BaseDropDownFunction v-if="isShowFunction"
             :duplicate="true"
@@ -38,6 +39,12 @@
             @btnEdit ="btnEdit"
         />
         <BaseOverview />
+        <br/>/
+        <BaseRadio id="xinhgai" name="congai"  valueReal="1" label="Xinh gái " @change="changeValue" :value="testRadio" />
+        <BaseRadio id="xaugai" name="congai"  valueReal ="2" label="Xấu gái " @change="changeValue"  :value="testRadio"/>
+        <BaseRadio id="binthuong" name="congai" valueReal ="3"  label="Bình thường" @change="changeValue"  :value="testRadio"/>
+        <br/>
+        <BaseCheckbox id="thuong" label="Là khách hàng"/>
     </div>
    
 </template>
@@ -49,6 +56,8 @@ import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 import BaseTableList from '@/components/base/BaseTableList.vue'
 import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 import BaseOverview from '@/components/base/BaseOverview.vue'
+import BaseRadio from '@/components/base/BaseRadio.vue'
+import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -59,8 +68,11 @@ export default {
         BaseTablePaging,
         BaseTableList,
         BaseDropDownFunction,
-        BaseOverview
+        BaseOverview,
+        BaseRadio,
+        BaseCheckbox
     },
+    
     data() {
         return {
             xinhgai:"đó nha",
@@ -77,14 +89,19 @@ export default {
             listFieldAccount: mylib.data.listFieldAccountObject,
             listAccount:mylib.dataTest.listAccount,
             isShowFunction:false,
-            positionTopFunction:0
+            positionTopFunction:0,
+
+            testRadio:"1"
 
         }
     },
     watch:{
         // xinhgai:function(valueNew, valueOld ){
         //     console.log(valueNew, valueOld);
-        // }
+        // },
+        testRadio:function(valueNew, valueOld ){
+            console.log("Mới: "+ valueNew, "Cũ: "+valueOld);
+        }
     },
     methods: {
         action(){
@@ -133,6 +150,10 @@ export default {
             if(me.isShowFunction == true){
                 me.isShowFunction = false;
             }
+        },
+        changeValue(newValue){
+            var me = this;
+            me.testRadio = newValue;
         }
     },
 }

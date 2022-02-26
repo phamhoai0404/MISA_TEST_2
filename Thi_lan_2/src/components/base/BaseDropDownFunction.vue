@@ -21,13 +21,13 @@ export default {
             default: false,
             type: Boolean,
         },
-        positionRight:{
+        positionRight: {
             default: 0,
-            type:Number
+            type: Number
         },
-        positionTop:{
+        positionTop: {
             default: 0,
-            type:Number
+            type: Number
         }
 
     },
@@ -36,7 +36,7 @@ export default {
          * Thực hiện khi click vào nút Xóa
          * CreatedBy: HoaiPT(25/02/2022)
          */
-        btnRemove(){
+        btnRemove() {
             var me = this;
             me.$emit('btnRemove');
         },
@@ -44,7 +44,7 @@ export default {
          * Thực hiện khi click vào nút Sửa
          * CreatedBy: HoaiPT(25/02/2022)
          */
-        btnEdit(){
+        btnEdit() {
             var me = this;
             me.$emit('btnEdit');
         },
@@ -52,11 +52,15 @@ export default {
          * Thực hiện khi click vào nút Nhân bản
          * CreatedBy: HoaiPT(25/02/2022)
          */
-        btnDuplicate(){
+        btnDuplicate() {
             var me = this;
             me.$emit('btnDuplicate');
         },
-        hideFunction(){
+        /**
+         * Thực hiện khi click vào cái bất kì ngoài function này kể cả con thì cũng thực hiện
+         * CreatedBy: HoaiPT(25/02/2022)
+         */
+        hideFunction() {
             var me = this;
             me.$emit('btnClose');
         }

@@ -3,9 +3,8 @@
     <table border="1" class="m-table">
         <thead>
             <tr>
-                <th class="m-checkbox sticky-checkbox">
-                    <input type="checkbox" :id="nameTable" />
-                    <label :for="nameTable"><span></span></label>
+                <th class=" m-checkbox-table sticky-checkbox" >
+                    <BaseCheckbox :id="nameTable"/>
                 </th>
                 <th v-for="(field,index) in listFields" :key="index" 
                     :style="{ 
@@ -22,9 +21,8 @@
 
         <tbody>
             <tr v-for="(data,index) in listData" :key="index">
-                <td class="m-checkbox sticky-checkbox">
-                    <input type="checkbox" :id="index" />
-                    <label :for="index"><span></span></label>
+                <td class="m-checkbox-table sticky-checkbox">
+                    <BaseCheckbox :id="data[nameTable+'Id']"/>
                 </td>
                 <td v-for="(field,i) in listFields" :key="i" 
                     :class="[i == 0 ? 'remove-border-left' : '']" 
@@ -54,12 +52,13 @@
 </template>
 
 <script>
+import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 export default {
+    components:{
+        BaseCheckbox,
+    },
     props:{
-        nameTable: {
-            default:'null',//Tên mặc định cho id hàng loạt mình chưa làm tới cái này 
-            type:String
-        },
+        nameTable:String,//Tên bảng muốn hiển thị
         height: {
             default: "300px",//Nếu không truyền vào mặc định là vậy,
             type:String

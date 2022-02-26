@@ -38,6 +38,8 @@ table.m-table {
 
 .sticky-checkbox {
     /* position: -webkit-sticky; */
+    /* display: flex;
+    align-items: center; */
     position: sticky;
     z-index: 5;
     left: 0;
@@ -114,18 +116,6 @@ table thead th {
 
 /*Các thành phần trong table */
 
-table thead th.m-checkbox {
-    width: 16px;
-}
-
-table tr input {
-    width: 18px;
-    height: 16px;
-    padding: unset !important;
-    margin: unset !important;
-    box-sizing: border-box;
-}
-
 table.m-table tbody tr {
     background-color: #fff;
 }
@@ -185,4 +175,11 @@ table.m-table tbody tr td .m-function button.m-button-function .m-button-icon {
     height: 16px;
     padding: 0 5px;
     box-sizing: border-box;
+}
+
+
+/* Để xóa bỏ đi phần thừa không cần thiết của checkbox */
+
+.m-checkbox-table {
+    padding-right: 2px !important;
 }

@@ -55,19 +55,31 @@ export default {
         },
     },
     computed: {
-        pageTextInInput: function () {
+        pageTextInInput: function () {//Hiện ra chữ trong input để theo dõi
             return this.selectTextPage + mylib.resourcs["VI"].titlePage;
         }
     },
     methods: {
+        /**
+         * Thực hiện click vào trang muốn theo dõi
+         * CreatedBy: HoaiPT(26/02/2022)
+         */
         clickCallback(number) {
             var me = this;
             me.$emit('clickCallback', { number: number} );
         },
+        /**
+         * Thực hiện click vào kích thước trang mong muốn
+         * CreatedBy: HoaiPT(26/02/2022)
+         */
         selectedPageText(index) {
             var me = this;
             me.$emit('selectedPageText', { index: index} );
         },
+        /**
+         * Thực hiện click vào nút SelectPage
+         * CreatedBy: HoaiPT(26/02/2022)
+         */
         btnSelectPage() {
             var me = this;
             me.$emit('btnSelectPage');

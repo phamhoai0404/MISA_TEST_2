@@ -9,6 +9,10 @@ export default {
         value:String
     },
     methods: {
+        /**
+         * Thực hiện khi thay đổi giá trị trong ô Input
+         * CreatedBy: HoaiPT(25/02/2022)
+         */
         onInput(event) {
         this.$emit('input', event.target.value)
       }

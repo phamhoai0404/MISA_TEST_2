@@ -8,12 +8,14 @@
 <script>
 export default {
     props: {
-        placeholder: String,
-        value: String,
         iconClass:String,
         title:String
     },
     methods: {
+         /**
+         * Thực hiện khi click vào nút button  icon này
+         * CreatedBy: HoaiPT(25/02/2022)
+         */
         btnClickButtonIcon(){
             this.$emit('btnClick', null);
         }
