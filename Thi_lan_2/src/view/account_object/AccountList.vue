@@ -2,9 +2,9 @@
     <div>Nhà cung cấp table
          <BaseInputIcon :placeholder="'Tìm kiếm theo tên'" v-model="xinhgai"/>
          <BaseButtonIcon :iconClass="'btn-refresh'" @btnClick="action()" :title="'Load lại dữ liệu'"/>
-         <BaseButtonIcon :iconClass="'btn-excel'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
+         <!-- <BaseButtonIcon :iconClass="'btn-excel'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
          <BaseButtonIcon :iconClass="'btn-arrow-check-all'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
-         <BaseButtonFunction @btnClick="actionFunction()" :width="'150px'" :label="'Tìm kiếm'"/>
+         <BaseButtonFunction @btnClick="actionFunction()" :width="'150px'" :label="'Tìm kiếm'"/> -->
          <BaseButtonFunction @btnClick="actionFunction()" :width="'200px'" :label="'Cứ thế thôi'" :hasBackground="true"/>
          <BaseTablePaging 
             @btnClick="actionFunction()" 
@@ -48,7 +48,8 @@
         <BaseRadio id="binthuong" name="congai" valueReal ="3"  label="Bình thường" @change="changeValue"  :value="testRadio"/>
         <br/>
         <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
-        
+        <BaseButton label="Cất" :hasBackground="true" title="Cất nhá" @btnClick="clickTest" shortKey="['esc']"/>
+        <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s']"/>
     </div>
    
 </template>
@@ -62,6 +63,7 @@ import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 import BaseOverview from '@/components/base/BaseOverview.vue'
 import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
+import BaseButton from '@/components/base/BaseButton.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
@@ -74,7 +76,8 @@ export default {
         BaseDropDownFunction,
         BaseOverview,
         BaseRadio,
-        BaseCheckbox
+        BaseCheckbox,
+        BaseButton
     },
     
     data() {
@@ -109,6 +112,7 @@ export default {
         }
     },
     methods: {
+
         action(){
             alert("xinh gái");
         },
@@ -173,7 +177,13 @@ export default {
             console.log(item.checked);
             this.listChecked.push(id);
             console.log(this.listChecked);
+        },
+        clickTest(){
+            alert("hoa");
         }
+    
+    
+    
     },
 }
 </script>

@@ -1,6 +1,12 @@
 <template>
 <div>
-    <div class="m-button-group" :class="{'m-btn-function': hasBackground}" :style="{ width: width, backgroundColor: backgroundColor }" @click="btnClickButtonFunction" :title="[title]">
+    <div class="m-button-group" 
+        :class="{'m-btn-function': hasBackground}" 
+        :style="{ width: width, backgroundColor: backgroundColor }" 
+        @click="btnClickButtonFunction" 
+        :title="[title]"
+        v-shortkey="shortKey" @shortkey="btnClickButtonFunction"
+    >
         <div class="m-button-title">{{label}}</div>
         <div class="m-button-icon-dropdown"></div>
     </div>
@@ -10,7 +16,6 @@
 <script>
 export default {
     props: {
-        placeholder: String,//Nơi để mặc định
         title: String,//Title truyền vào
         width: String,//Độ rộng mong muốn của button
         label: String,//Nhãn của button
@@ -18,7 +23,8 @@ export default {
         hasBackground: {//Button này có màu mặc định là màu xanh không
             default: false,
             type: Boolean
-        }
+        },
+        shortKey:String,//Phím tắt
     },
     methods: {
         /**

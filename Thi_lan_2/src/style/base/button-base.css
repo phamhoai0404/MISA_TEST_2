@@ -1,0 +1,26 @@
+.m-button-base {
+    height: 34px;
+    padding: 6px 16px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    border: 1px solid #8d9096;
+    color: #111;
+    background-color: transparent;
+    border-radius: 3px;
+    font-family: Notosans-Semi-bold;
+}
+
+.m-button-base:hover {
+    cursor: pointer;
+}
+
+.m-button-base.m-button-background {
+    color: #ffff;
+    border: none;
+    background-color: #31B404;
+}
+
+.m-button-base.m-button-background:hover {
+    background-color: #40FF00;
+}

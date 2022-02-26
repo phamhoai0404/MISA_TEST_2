@@ -1,6 +1,11 @@
 <template>
 <div>
-    <div class="m-button-icon" :class="[iconClass]" @click="btnClickButtonIcon" :title="[title]">
+    <div class="m-button-icon" 
+        :class="[iconClass]" 
+        @click="btnClickButtonIcon" 
+        :title="[title]"
+        v-shortkey="shortKey" @shortkey="btnClickButtonIcon"
+    >
     </div>
 </div>
 </template>
@@ -8,8 +13,9 @@
 <script>
 export default {
     props: {
-        iconClass:String,
-        title:String
+        iconClass:String,//Icon mà mong muốn có được
+        title:String,//Chữ hiện lên khi hover
+        shortKey:String//Phím tắt
     },
     methods: {
          /**
