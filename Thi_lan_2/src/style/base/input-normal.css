@@ -1,0 +1,44 @@
+/* css m-input */
+
+@import url('./general/input.css');
+
+/* css m-input-icon */
+
+.m-input-icon {
+    background-image: url(../../assets/icon/search.png);
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: calc(100% - 12px) center;
+    padding: 0 28px 0 10px;
+}
+
+.m-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 4px;
+    font-family: Notosans-Semi-Bold;
+    display: flex;
+}
+
+.m-input-readOnly {
+    background-color: #bbb;
+}
+
+.m-border-red {
+    border: 1px solid red !important;
+}
+
+.m-input-textarea {
+    height: 56px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+.m-input-number {
+    text-align: end;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

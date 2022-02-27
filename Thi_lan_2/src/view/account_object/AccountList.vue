@@ -1,10 +1,19 @@
 <template>
     <div>Nhà cung cấp table
-         <BaseInputIcon :placeholder="'Tìm kiếm theo tên'" v-model="xinhgai"/>
+        <!-- Update BaseInput -->
+         <BaseInput 
+         typeInput="input"
+         :placeholder="'Tìm kiếm theo tên'" v-model="xinhgai" 
+         :isRequire="true" label="Xinh gái quá cơ"
+         :errorInput="checkInput"
+         :isNumber="true"
+
+        />
+
          <BaseButtonIcon :iconClass="'btn-refresh'" @btnClick="action()" :title="'Load lại dữ liệu'"/>
-         <!-- <BaseButtonIcon :iconClass="'btn-excel'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
+         <BaseButtonIcon :iconClass="'btn-excel'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
          <BaseButtonIcon :iconClass="'btn-arrow-check-all'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
-         <BaseButtonFunction @btnClick="actionFunction()" :width="'150px'" :label="'Tìm kiếm'"/> -->
+         <BaseButtonFunction @btnClick="actionFunction()" :width="'150px'" :label="'Tìm kiếm'"/>
          <BaseButtonFunction @btnClick="actionFunction()" :width="'200px'" :label="'Cứ thế thôi'" :hasBackground="true"/>
          <BaseTablePaging 
             @btnClick="actionFunction()" 
@@ -49,13 +58,13 @@
         <br/>
         <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
         <BaseButton label="Cất" :hasBackground="true" title="Cất nhá" @btnClick="clickTest" shortKey="['esc']"/>
-        <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s']"/>
+        <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s','i']"/>
         <BaseMessage typeMessage="info" titleForm="Thông tin" @btnClose="hoa" />
     </div>
    
 </template>
 <script>
-import BaseInputIcon from '@/components/base/BaseInputIcon.vue'
+import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
 import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
@@ -70,7 +79,7 @@ import BaseMessage from '@/components/base/BaseMessage.vue'
 import * as mylib from '../../js/resourcs.js'
 export default {
     components: {
-        BaseInputIcon,
+        BaseInput,
         BaseButtonIcon,
         BaseButtonFunction,
         BaseTablePaging,
@@ -82,10 +91,11 @@ export default {
         BaseButton,
         BaseMessage
     },
-    
+     mounted() {
+    },
     data() {
         return {
-            xinhgai:"đó nha",
+            xinhgai:null,
 
 
             isShowPage: false,
@@ -103,13 +113,18 @@ export default {
 
             testRadio:"1",
             listChecked :Array (),
+            checkInput:false
 
         }
     },
     watch:{
-        // xinhgai:function(valueNew, valueOld ){
-        //     console.log(valueNew, valueOld);
-        // },
+        xinhgai:function(valueNew ){
+            if(valueNew==""){
+                this.checkInput = true;
+            }else{
+                this.checkInput = false;
+            }
+        },
         testRadio:function(valueNew, valueOld ){
             console.log("Mới: "+ valueNew, "Cũ: "+valueOld);
         }
