@@ -8,6 +8,11 @@
     cursor: pointer;
 }
 
+.m-icon-size-16 {
+    width: 16px !important;
+    height: 16px !important;
+}
+
 
 /* icon */
 
@@ -29,4 +34,28 @@
 
 .btn-arrow-check-all {
     background-position: -256px -144px;
+}
+
+.btn-tour {
+    background-position: -984px -144px;
+}
+
+.btn-chevron-left {
+    background-position: -224px -360px;
+}
+
+.btn-setting-background {
+    background-position: -88px -200px;
+}
+
+.btn-setting-background:hover {
+    background-position: -675px -30px;
+}
+
+.btn-icon-help {
+    background-position: -89px -144px;
+}
+
+.btn-icon-close {
+    background-position: -144px -144px;
 }

@@ -1,7 +1,10 @@
 <template>
 <div>
     <div class="m-button-icon" 
-        :class="[iconClass]" 
+        :class="[
+        iconClass,
+        isSize16?'m-icon-size-16':''
+        ]" 
         @click="btnClickButtonIcon" 
         :title="[title]"
         v-shortkey="shortKey" @shortkey="btnClickButtonIcon"
@@ -13,9 +16,16 @@
 <script>
 export default {
     props: {
-        iconClass:String,//Icon mà mong muốn có được
+        iconClass:{
+            type:String,//Icon mà mong muốn có được
+            required: true//Bắt buộc phải có icon
+        },
         title:String,//Chữ hiện lên khi hover
-        shortKey:String//Phím tắt
+        shortKey:String,//Phím tắt,
+        isSize16:{//Mặc định không phải là kích thước là icon 16*16
+            default:false,
+            type:Boolean
+        }
     },
     methods: {
          /**

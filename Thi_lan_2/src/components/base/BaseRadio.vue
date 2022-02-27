@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="m-item-group">
+    <div class="m-item-group" :style="styleRadio">
         <input type="radio" class="m-item-radio" :id="id" :name="name" :value="valueReal" v-model="radioButtonValue">
         <label class="m-item-content" :for="id">
             <span></span>
@@ -40,11 +40,15 @@ export default {
             type: String,
         },
         label: { //Xác định nhãn cho từng cái
-            default: '',
-            type: String
+            type: String,
+            required:true//Bắt buộc phải có nhãn
         },
         value: String, //đây là v-model của nó 
-        valueReal: String, //Đây là giá trị thực của nó 
+        valueReal: String, //Đây là giá trị thực của nó
+        styleRadio:{
+            default:'',
+            type:String
+        } 
     }
 }
 </script>

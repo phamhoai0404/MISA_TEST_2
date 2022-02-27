@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="m-checkbox" >
+    <div class="m-checkbox" :style="styleCheckbox">
         <input type="checkbox" :id="id" @click="clickCheckbox(id)"/>
         <label :for="id" :style="{fontFamily: fontFamily}"><span></span>{{label}}</label>
     </div>
@@ -23,7 +23,11 @@ export default {
             default:"Notosans",
             type:String,
         },
-        valueReal:String
+        valueReal:String,
+        styleCheckbox:{//Trường hợp muốn thêm style cho checkbox
+            default:'',
+            type:String
+        }
     },
     methods: {
         /**

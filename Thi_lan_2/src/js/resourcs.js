@@ -59,7 +59,7 @@ var data = {
         {
             name: "Address",
             text: "ĐỊA CHỈ",
-            width: "320",
+            width: "120",
         },
         {
             name: "TaxCode",

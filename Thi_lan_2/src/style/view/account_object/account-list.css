@@ -1,0 +1,96 @@
+/* css top */
+
+.ac-list-top {
+    height: 89px;
+    box-sizing: border-box;
+    padding: 24px 30px 11px 0;
+    min-width: 900px;
+}
+
+.ac-list-top .top-header-di {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ac-list-top .top-header-di .top-title {
+    font-size: 20px;
+    font-family: Notosans-Bold;
+}
+
+.ac-list-top .top-header-di .top-right {
+    display: flex;
+    min-width: 330px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ac-list-top .top-header-di .top-right .group-tour {
+    display: flex;
+}
+
+.ac-list-top .top-header-di .top-right .group-tour .title-tour {
+    padding-left: 5px;
+    color: #0075c0;
+}
+
+.ac-list-top .top-header-di .top-right .group-tour .title-tour:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.ac-list-top .top-header-bottom {
+    display: flex;
+    color: #0075c0;
+}
+
+.ac-list-top .top-header-bottom:hover {
+    cursor: pointer;
+}
+
+
+/* css center */
+
+.ac-list-center {
+    height: 72px;
+    margin-top: 16px;
+    padding-right: 30px;
+}
+
+
+/* css bottom */
+
+.ac-list-bottom {
+    background-color: #ffff;
+    margin-top: 10px;
+    margin-right: 30px;
+}
+
+.ac-list-bottom .ac-list-function {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ac-list-bottom .ac-list-function .function-left {
+    display: flex;
+    justify-content: space-between;
+    min-width: 300px;
+    align-items: center;
+}
+
+.ac-list-bottom .ac-list-function .function-left .icon-check {
+    position: relative;
+    top: 8px;
+}
+
+.ac-list-bottom .ac-list-function .function-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 320px;
+}
+
+.ac-list-bottom .ac-list-table {
+    padding: 0 16px;
+}

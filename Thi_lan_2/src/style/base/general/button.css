@@ -13,7 +13,7 @@
 
 .m-button-group:hover {
     cursor: pointer;
-    background-color: red;
+    background-color: #D8D8D8;
 }
 
 .m-button-group .m-button-title {

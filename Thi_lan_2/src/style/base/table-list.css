@@ -180,6 +180,7 @@ table.m-table tbody tr td .m-function button.m-button-function .m-button-icon {
 
 /* Để xóa bỏ đi phần thừa không cần thiết của checkbox */
 
-.m-checkbox-table {
+
+/* .m-checkbox-table {
     padding-right: 2px !important;
-}
+} */

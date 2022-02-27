@@ -1,102 +1,115 @@
 <template>
-    <div>Nhà cung cấp table
-        <!-- Update BaseInput -->
-         <BaseInput 
-         typeInput="input"
-         :placeholder="'Tìm kiếm theo tên'" v-model="xinhgai" 
-         :isRequire="true" label="Xinh gái quá cơ"
-         :errorInput="checkInput"
-         :isNumber="true"
+<div>
+    <div class="ac-list-group">
+        <div class="ac-list-top">
+            <div class="top-header-di">
+                <div class="top-title">DANH SÁCH NHÀ CUNG CẤP</div>
+                <div class="top-right">
+                    <div class="group-tour">
+                        <BaseButtonIcon iconClass="btn-tour" />
+                        <div class="title-tour">Hướng dẫn</div>
+                    </div>
+                    <BaseButtonFunction label="Tiện ích" />
+                    <BaseButtonFunction label="Thêm" :hasBackground="true" />
+                </div>
+            </div>
+            <div class="top-header-bottom">
+                <BaseButtonIcon iconClass="btn-chevron-left" :isSize16="true" />
+                <a>Tất cả danh mục</a>
+            </div>
+        </div>
+        <div class="ac-list-center">
+            <BaseOverview />
+        </div>
+        <div class="ac-list-bottom">
+            <div class="ac-list-function">
+                <div class="function-left">
+                    <div class="icon-check">
+                        <BaseButtonIcon iconClass="btn-arrow-check-all" />
+                    </div>
+                    <BaseButtonFunction label="Thực hiện hàng loạt" />
+                    <BaseButtonFunction label="Lọc" />
+                </div>
+                <div class="function-right">
+                    <BaseInput typeInput="input" :hasIcon="true" placeholder="Nhập từ khóa tìm kiếm" />
+                    <BaseButtonIcon iconClass="btn-refresh" title="Lấy lại dữ liệu" />
+                    <BaseButtonIcon iconClass="btn-excel" title="Xuất ra excel"/>
+                    <BaseButtonIcon iconClass="btn-setting-background" title="Tùy chỉnh giao diện"/>
+                </div>
 
-        />
+            </div>
+            <div class="ac-list-table">
+                <BaseTableList
+                    height="250px"
+                    :listFields = "listFieldAccount"
+                    :listData ="listAccount"
+                    @btnView = 'btnSeeInfoAccount'
+                    @btnDropDown = 'btnDropDown'
+                    @btnAllCheckbox ='btnTestAllCheckBox'
+                    @btnCheckbox='btnTestCheckbox'
 
-         <BaseButtonIcon :iconClass="'btn-refresh'" @btnClick="action()" :title="'Load lại dữ liệu'"/>
-         <BaseButtonIcon :iconClass="'btn-excel'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
-         <BaseButtonIcon :iconClass="'btn-arrow-check-all'" @btnClick="actionExcel()"  :title="'Xuất ra excel'" />
-         <BaseButtonFunction @btnClick="actionFunction()" :width="'150px'" :label="'Tìm kiếm'"/>
-         <BaseButtonFunction @btnClick="actionFunction()" :width="'200px'" :label="'Cứ thế thôi'" :hasBackground="true"/>
-         <BaseTablePaging 
-            @btnClick="actionFunction()" 
-            :isShowPage="isShowPage"
-            @btnSelectPage="btnSelectPage()" 
-            @selectedPageText="selectedPageText"
-            @clickCallback="clickCallback"
-            :listPageText="listPageText"
-            :totalRecord="totalRecord"
-            :pageAction="pageAction"
-            :totalPage="totalPage"
-            :selectTextPage="selectTextPage"
-        />
-        <BaseTableList
-            :height="'100px'"
-            :listFields = "listFieldAccount"
-            :listData ="listAccount"
-            @btnView = 'viewInfo'
-            @btnDropDown = 'btnDropDown'
-            @btnAllCheckbox ='btnTestAllCheckBox'
-            @btnCheckbox='btnTestCheckbox'
-
-            :nameTable="'AccountObject'"
-        />
-        <BaseDropDownFunction v-if="isShowFunction"
-            :duplicate="true"
-            :remove="true"
-            :edit ="true"
-            :positionRight="40"
-            :positionTop ="positionTopFunction"
-            
-            @btnClose = "btnClose"
-            @btnDuplicate="btnDuplicate"
-            @btnRemove="btnRemove"
-            @btnEdit ="btnEdit"
-        />
-        <BaseOverview />
-        <br/>/
-        <BaseRadio id="xinhgai" name="congai"  valueReal="1" label="Xinh gái " @change="changeValue" :value="testRadio" />
-        <BaseRadio id="xaugai" name="congai"  valueReal ="2" label="Xấu gái " @change="changeValue"  :value="testRadio"/>
-        <BaseRadio id="binthuong" name="congai" valueReal ="3"  label="Bình thường" @change="changeValue"  :value="testRadio"/>
-        <br/>
-        <BaseCheckbox id="thuong" label="Là khách hàng"  @clickCheckbox="btnCheckboxTest"/>
-        <BaseButton label="Cất" :hasBackground="true" title="Cất nhá" @btnClick="clickTest" shortKey="['esc']"/>
-        <BaseButton label="Cất" title="Cất nhá" @btnClick="clickTest" shortKey="['ctrl','s','i']"/>
-        <BaseMessage typeMessage="info" titleForm="Thông tin" @btnClose="hoa" />
+                    :nameTable="'AccountObject'"
+                />
+                <BaseTablePaging  
+                    :isShowPage="isShowPage"
+                    @btnSelectPage="btnSelectPage()" 
+                    @selectedPageText="selectedPageText"
+                    @clickCallback="clickCallback"
+                    :listPageText="listPageText"
+                    :totalRecord="totalRecord"
+                    :pageAction="pageAction"
+                    :totalPage="totalPage"
+                    :selectTextPage="selectTextPage"
+                />
+            </div>
+        </div>
     </div>
-   
+     <BaseDropDownFunction v-if="isShowFunction"
+        :duplicate="true"
+        :remove="true"
+        :edit ="true"
+        :positionRight="67"
+        :positionTop ="positionTopFunction"
+        
+        @btnClose = "btnClose"
+        @btnDuplicate="btnDuplicateAccount"
+        @btnRemove="btnRemoveAccount"
+        @btnEdit ="btnEditAccount"
+    />
+</div>
 </template>
+
 <script>
-import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
-import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
-import BaseTableList from '@/components/base/BaseTableList.vue'
-import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 import BaseOverview from '@/components/base/BaseOverview.vue'
-import BaseRadio from '@/components/base/BaseRadio.vue'
-import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
-import BaseButton from '@/components/base/BaseButton.vue'
-import BaseMessage from '@/components/base/BaseMessage.vue'
+import BaseInput from '@/components/base/BaseInputNormal.vue'
+
+import BaseTableList from '@/components/base/BaseTableList.vue'
+import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
+
+import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 
 import * as mylib from '../../js/resourcs.js'
 export default {
     components: {
-        BaseInput,
         BaseButtonIcon,
         BaseButtonFunction,
-        BaseTablePaging,
-        BaseTableList,
-        BaseDropDownFunction,
         BaseOverview,
-        BaseRadio,
-        BaseCheckbox,
-        BaseButton,
-        BaseMessage
+        BaseInput,
+        BaseTableList,
+        BaseTablePaging,
+        BaseDropDownFunction
     },
-     mounted() {
+    mounted() {
+
     },
     data() {
         return {
-            xinhgai:null,
-
+            listFieldAccount: mylib.data.listFieldAccountObject,
+            listAccount:mylib.dataTest.listAccount,
+            isShowFunction:false,
+            positionTopFunction:0,
 
             isShowPage: false,
             listPageText:mylib.data.listPageSize,
@@ -105,40 +118,14 @@ export default {
             totalPage:10,
             selectTextPage: 10,
 
-
-            listFieldAccount: mylib.data.listFieldAccountObject,
-            listAccount:mylib.dataTest.listAccount,
-            isShowFunction:false,
-            positionTopFunction:0,
-
-            testRadio:"1",
             listChecked :Array (),
-            checkInput:false
 
         }
     },
-    watch:{
-        xinhgai:function(valueNew ){
-            if(valueNew==""){
-                this.checkInput = true;
-            }else{
-                this.checkInput = false;
-            }
-        },
-        testRadio:function(valueNew, valueOld ){
-            console.log("Mới: "+ valueNew, "Cũ: "+valueOld);
-        }
+    watch: {
+
     },
     methods: {
-        hoa(){
-            alert("hoa");
-        },
-        action(){
-            alert("xinh gái");
-        },
-         actionFunction(){
-            alert("xinh gái excel");
-        },
         btnSelectPage(){
             var me =this;
             me.isShowPage = !me.isShowPage;
@@ -156,22 +143,22 @@ export default {
             console.log("number: " + number);
             me.pageAction = number;
         },
-        viewInfo({object}){
+        btnSeeInfoAccount({object}){
             console.log("đối tượng là ", object);
         },
         btnDropDown({eve, object, index }){
             var me = this;
             console.log("Những giá trị là: ", eve, object, index);
             me.isShowFunction = true;
-            me.positionTopFunction = index != (me.listAccount.length - 1) ? (eve.clientY + 14) : (eve.clientY - 105);
+            me.positionTopFunction = eve.clientY < 500 ? (eve.clientY + 14) : (eve.clientY - 105);
         },
-        btnDuplicate(){
+        btnDuplicateAccount(){
             alert("Duplicate");
         },
-        btnRemove(){
+        btnRemoveAccount(){
             alert("Remove");
         },
-        btnEdit(){
+        btnEditAccount(){
             alert("Edit");
         },
         btnClose(){
@@ -201,13 +188,10 @@ export default {
         clickTest(){
             alert("hoa");
         }
-    
-    
-    
     },
 }
 </script>
 
 <style scoped>
-
+@import url(../../style/view/account_object/account-list.css);
 </style>
