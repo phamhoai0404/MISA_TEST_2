@@ -91,6 +91,9 @@ var data = {
             type: 'number'
         }
 
+    ],
+    listTabIndex: [
+        "Liên hệ", "Điều khoản thanh toán", "Tài khoản ngân hàng", "Địa chỉ khác", "Ghi chú"
     ]
 }
 var dataTest = {

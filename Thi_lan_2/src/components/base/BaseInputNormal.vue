@@ -1,5 +1,5 @@
 <template>
-<div>
+<div :style="styleInput" :title="[title]">
     <div  v-if="label" class="m-label">
         <div>{{label}}</div>&nbsp;
         <div v-if="isRequire" style="color:red;">*</div>
@@ -10,7 +10,7 @@
             hasIcon?'m-input-icon':'', readOnly?'m-input-readOnly':'', errorInput? 'm-border-red':'',
             isNumber?'m-input-number':''
             ] " 
-        :placeholder="[[placeholder]]" :title="[title]" 
+        :placeholder="[[placeholder]]"  
         :value="value" @input="onInput"
         :ref="refText"
         :readonly="readOnly"
@@ -18,10 +18,11 @@
     <textarea v-else-if="typeInput == 'textarea' "
         type="text" class="m-input m-input-textarea"
         :class=" [hasIcon?'m-input-icon':'', readOnly?'m-input-readOnly':'', errorInput? 'm-border-red':''] " 
-        :placeholder="[[placeholder]]" :title="[title]" 
+        :placeholder="[[placeholder]]" 
         :value="value" @input="onInput"
         :ref="refText"
         :readonly="readOnly"
+        :style="styleTextArea"
     />
 </div>
 </template>
@@ -60,6 +61,14 @@ export default {
         isNumber:{//Mặc định nó không phải là number
             default:false,
             type:Boolean
+        },
+        styleInput:
+        {   default:'',
+            type:String, // Thêm style nếu muốn
+        },
+        styleTextArea:{//Muốn thay đổi độ cao của textarea
+            default:'',
+            type:String
         }
     },
     methods: {
