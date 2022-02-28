@@ -57,7 +57,7 @@
 .m-combobox-group .m-combobox-data {
     position: absolute;
     background-color: white;
-    width: calc(100% + 2px);
+    width: 100%;
     top: 32px;
 }
 
@@ -79,6 +79,21 @@
     border: 1px solid #31B404;
 }
 
+.m-combobox-group .m-combobox-data .m-combobox-content-data {
+    max-height: 160px;
+    overflow: auto;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-content-data::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-content-data::-webkit-scrollbar-thumb {
+    background-color: #d5d6da;
+    width: 5px;
+}
+
 .m-combobox-group .m-combobox-data .m-combobox-item- {
     height: 32px;
     line-height: 32px;
@@ -95,4 +110,41 @@
     background-color: #31B404 !important;
     color: white;
     font-family: Notosans-Semi-bold;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-content-data .m-combobox-no-item {
+    text-align: center;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-content-data .m-combobox-item-.m-combobox-no-item:hover {
+    color: #111 !important;
+    background-color: #fff;
+    cursor: auto;
+}
+
+
+/* css cho quay phần icon */
+
+.m-icon-dropdown-rotation {
+    transform: rotate(180deg);
+}
+
+
+/* css cho phần placeholder */
+
+input.m-input-combobox::placeholder {
+    font-style: italic;
+    font-family: Notosans;
+    font-size: 12px;
+}
+
+
+/* css cho phần chỉ đọc */
+
+.m-combobox-readOnly {
+    background-color: #bbb;
+}
+
+.m-combobox-readOnly input {
+    background-color: #bbb;
 }

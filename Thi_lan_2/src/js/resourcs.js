@@ -97,8 +97,8 @@ var data = {
     listTabIndex: [
         "Liên hệ", "Điều khoản thanh toán", "Tài khoản ngân hàng", "Địa chỉ khác", "Ghi chú"
     ],
-    listVocative: [
-        "Ông", "Bà", "Anh", "Chị", "Chú", "Cô"
+    listPrefix: [
+        "Ông", "Bà", "Anh", "Chị", "Chú", "Cô", "Mrs", "Mr"
     ]
 }
 var dataTest = {

@@ -68,7 +68,15 @@
                             <div class="tab-left">
                                 <div class="tab-two-row">
                                     <div class="tab-two-left" style="width:30%">
-                                        <BaseInput typeInput="input" label="Người liên hệ" placeholder="Chưa làm được" />
+                                        <BaseComboboxNormal v-model="account.Prefix"
+                                            label="Người liên hệ" placeholder="Xưng hô"
+                                            :isShowDataDropdown="isShowComboboxPrefix"
+                                            :listData="listDataPrefixTemp"
+                                            @hideDataDropDown="isShowComboboxPrefix = false"
+                                            @btnClickDropdown="btnClickDropdownPrefix"
+                                            @btnClickItem="btnSelectItemPrefix" 
+                                            :readOnly="readOnly"
+                                        />
                                     </div>
                                     <div class="tab-two-right" style="width:68%">
                                         <BaseInput typeInput="input" placeholder="Họ và tên" v-model="account.EinvoiceContactName"/>
@@ -165,10 +173,11 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
-// import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
+import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import * as mylib from '@/js/resourcs.js'
+import MyFunction from '@/js/function.js'
 
 export default {
     components: {
@@ -177,7 +186,7 @@ export default {
         BaseRadio,
         BaseCheckbox,
         BaseInput,
-        // BaseComboboxNormal
+        BaseComboboxNormal
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail
@@ -185,13 +194,19 @@ export default {
     },
     data() {
         return {
-            typeDetail: '1',
+            typeDetail: '1',//Mặc định chọn là Nhà tổ chức chỉ vẽ cho đẹp thôi không cần làm chức năng
 
-            tabSelected: 0,
-            listTabIndex: mylib.data.listTabIndex,
+            tabSelected: 0,//Lựa chọn mặc định sẽ là cái đầu tiên và sẽ là cái liên hệ
+            listTabIndex: mylib.data.listTabIndex,//Danh sách list Tên của TabIndex được lưu trữ trong resource
             readOnly:false,//Thực hiện để mở khóa hay đóng lại các ô input
+
+            isShowComboboxPrefix:false,//Mặc định ban đầu là đóng
+            listDataPrefix:mylib.data.listPrefix,//Dữ liệu chính
+            listDataPrefixTemp:[],//Tạm thời là rỗng
             
-            account:{},
+            account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch
+                Prefix:null,
+            },
         }
     },
     async created(){
@@ -201,7 +216,25 @@ export default {
         if(me.editMode == mylib.misaEnum.editMode.View){//Nếu nó thuộc kiểu xem thì sẽ vô hiệu hóa các ô lại
             me.readOnly = true;
         }
+
         await me.getAccountTable();
+    },
+    watch:{
+        /**
+         * Thực hiện theo dõi Prefix
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
+        'account.Prefix'(valueNew){
+            var me = this;
+
+            //Kiểm tra nếu mà không tồn tại giá trị trong mảng thì bắt đầu tìm kiếm
+            if(! MyFunction.existValueInArray(me.listDataPrefix, valueNew)){
+                me.isShowComboboxPrefix = true;
+
+                //Thực hiện lọc theo từ khóa truyền vào mới
+                me.listDataPrefixTemp = MyFunction.selectFilter(me.listDataPrefix,valueNew);
+            } 
+        },
     },
     methods: {
         btnSave(value) {
@@ -220,6 +253,10 @@ export default {
         changeTypeDetail() {
             // alert("change type detail");
         },
+        /**
+         * Thực hiện khi select cái TabIndex để thay đổi view xem và thêm thông tin
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
         selectedTabIndex(index) {
             var me = this;
             me.tabSelected = index;
@@ -233,8 +270,23 @@ export default {
             for (var propName in me.accountTable) {
                 me.account[propName]= me.accountTable[propName];    
             }
-        }
-
+        },
+        /**
+         * Thực hiện khi click vào nút dropdown của Prefix
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
+        btnClickDropdownPrefix(){
+            this.listDataPrefixTemp = this.listDataPrefix;//Gán dữ liệu tất cả vào tạm --> Lấy ra toàn bộ ấy
+            this.isShowComboboxPrefix = !this.isShowComboboxPrefix;//Thực hiện chuyển đổi trạng thái
+        },
+        /**
+         * Thực hiện khi click vào một item trong listDataPrefixTemp
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
+        btnSelectItemPrefix({object}){
+            this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
+            this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
+        },
     }
 }
 </script>

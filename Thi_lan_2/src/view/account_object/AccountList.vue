@@ -206,7 +206,7 @@ export default {
         btnEditAccount(){
             var me  = this;
             me.editModeTable = mylib.misaEnum.editMode.Edit;//Thực hiện Sửa thông tin
-
+            me.isShowFunction = false;
             me.isShowAccountDetail = true;//Mở form detail
         },
         btnClose(){
