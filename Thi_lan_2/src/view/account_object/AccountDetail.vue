@@ -15,6 +15,7 @@
             </div>
 
             <div class="dialog-close">
+
                 <BaseButtonIcon iconClass="btn-icon-help" title="Giúp(F1)" />
                 <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseForm" title="Đóng(ESC)" />
             </div>
@@ -96,6 +97,7 @@
                                 <div class="tab-only-one">
                                     <BaseInput typeInput="input" label="Tài khoản công nợ phải trả" styleInput="margin-top:10px;"  placeholder="Chưa làm được"/>
                                 </div>
+                              
                             </div>
                         </span>
                         <span v-if="tabSelected == 2">
@@ -163,6 +165,7 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
+// import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import * as mylib from '@/js/resourcs.js'
@@ -173,7 +176,8 @@ export default {
         BaseButtonIcon,
         BaseRadio,
         BaseCheckbox,
-        BaseInput
+        BaseInput,
+        // BaseComboboxNormal
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail

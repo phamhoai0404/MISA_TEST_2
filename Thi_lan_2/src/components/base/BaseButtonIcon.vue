@@ -1,5 +1,5 @@
 <template>
-<div>
+<div :style="styleButtonIcon">
     <div class="m-button-icon" 
         :class="[
         iconClass,
@@ -25,7 +25,8 @@ export default {
         isSize16:{//Mặc định không phải là kích thước là icon 16*16
             default:false,
             type:Boolean
-        }
+        },
+        styleButtonIcon:String//Thực hiện truyền vào nếu muốn thêm css
     },
     methods: {
          /**

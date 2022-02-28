@@ -1,0 +1,98 @@
+.m-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #000000;
+    margin-bottom: 4px;
+    font-family: Notosans-Semi-Bold;
+    display: flex;
+}
+
+.m-combobox-group {
+    position: relative;
+}
+
+.m-combobox-group .m-combobox-top {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    align-items: center;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+}
+
+.m-combobox-group .m-combobox-top input.m-input-combobox {
+    width: 100%;
+    border: none;
+    padding: 0 0 0 10px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    height: 100%;
+}
+
+.m-combobox-group .m-combobox-top input.m-input-combobox:focus {
+    border: none;
+    outline: none;
+}
+
+.m-combobox-group .m-combobox-top .m-combobox-icon {
+    display: flex;
+}
+
+.m-combobox-group .m-combobox-top .m-combobox-icon .m-button-dropdown {
+    padding: 0 8px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.m-combobox-group .m-combobox-top .m-combobox-icon .m-button-dropdown:hover {
+    background-color: red;
+}
+
+.m-button-dropdown.m-button-final {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.m-combobox-group .m-combobox-data {
+    position: absolute;
+    background-color: white;
+    width: calc(100% + 2px);
+    top: 32px;
+}
+
+
+/* css border error or selected */
+
+.m-combobox-border-red {
+    border: 1px solid red !important;
+}
+
+.m-combobox-border-green {
+    border: 1px solid #31B404 !important;
+}
+
+
+/* chú ý cái này là khi focus thằng con thì thằng cha nhận cái css này  */
+
+.m-combobox-group .m-combobox-top:focus-within {
+    border: 1px solid #31B404;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-item- {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 14px 0 10px;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-item-:hover {
+    cursor: pointer;
+    background-color: #E9EBEE;
+    color: #31B404;
+}
+
+.m-combobox-group .m-combobox-data .m-combobox-item-.m-combobox-active {
+    background-color: #31B404 !important;
+    color: white;
+    font-family: Notosans-Semi-bold;
+}
