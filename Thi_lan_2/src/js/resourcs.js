@@ -33,8 +33,10 @@ var misaEnum = {
         }
     },
     editMode: {
+        NoAction: 0, //Không thực hiện gì cả
         Add: 1, //Thực hiện thêm mới
-        Edit: 2 //Thực hiện sửa
+        Edit: 2, //Thực hiện sửa
+        View: 3 //Thực hiện xem
     },
     actionDelete: {
         NoAction: 0, //Không xóa

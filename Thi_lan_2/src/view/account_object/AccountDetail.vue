@@ -15,8 +15,8 @@
             </div>
 
             <div class="dialog-close">
-                <BaseButtonIcon iconClass="btn-icon-help" @btnClick="action()" title="Giúp(F1)" />
-                <BaseButtonIcon iconClass="btn-icon-close" @btnClick="action()" title="Đóng(ESC)" />
+                <BaseButtonIcon iconClass="btn-icon-help" title="Giúp(F1)" />
+                <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseForm" title="Đóng(ESC)" />
             </div>
         </div>
 
@@ -30,24 +30,24 @@
                             </div>
 
                             <div class="right-row">
-                                <BaseInput typeInput="input" label="Mã nhà cung cấp" :isRequire="true" />
+                                <BaseInput typeInput="input" label="Mã nhà cung cấp" :isRequire="true" v-model="account.AccountObjectCode" :readOnly="readOnly" />
                             </div>
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="input" label="Tên nhà cung cấp" :isRequire="true" />
+                            <BaseInput typeInput="input" label="Tên nhà cung cấp" :isRequire="true" v-model="account.AccountObjectName" />
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="textarea" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" label="Địa chỉ" />
+                            <BaseInput typeInput="textarea" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" label="Địa chỉ" v-model="account.Address"/>
                         </div>
                     </div>
                     <div class="dialog-one-right">
                         <div class="dialog-two-row">
                             <div class="left-row">
-                                <BaseInput typeInput="input" label="Điện thoại" />
+                                <BaseInput typeInput="input" label="Điện thoại" v-model="account.Phone"/>
                             </div>
 
                             <div class="right-row">
-                                <BaseInput typeInput="input" label="Website" />
+                                <BaseInput typeInput="input" label="Website" v-model="account.Website"/>
                             </div>
                         </div>
                         <div class="dialog-one-row">
@@ -70,28 +70,28 @@
                                         <BaseInput typeInput="input" label="Người liên hệ" placeholder="Chưa làm được" />
                                     </div>
                                     <div class="tab-two-right" style="width:68%">
-                                        <BaseInput typeInput="input" placeholder="Họ và tên" />
+                                        <BaseInput typeInput="input" placeholder="Họ và tên" v-model="account.EinvoiceContactName"/>
                                     </div>
 
                                 </div>
                                 <div class="tab-one-row">
-                                    <BaseInput typeInput="input" placeholder="Email" />
+                                    <BaseInput typeInput="input" placeholder="Email" v-model="account.EinvoiceContactEmail"/>
                                 </div>
                                 <div class="tab-one-row">
-                                    <BaseInput typeInput="input" placeholder="Số điện thoại" styleInput="width:40%;" />
+                                    <BaseInput typeInput="input" placeholder="Số điện thoại" styleInput="width:40%;" v-model="account.EinvoiceContactMobile"/>
                                 </div>
 
                             </div>
                             <div class="tab-right">
-                                <BaseInput typeInput="input" label="Đại diện theo PL" placeholder="Đại diện theo PL" title="Đại diện theo pháp luật" />
+                                <BaseInput typeInput="input" label="Đại diện theo PL" placeholder="Đại diện theo PL" title="Đại diện theo pháp luật" v-model="account.LegalRepresentative"/>
                             </div>
                         </span>
                         <span v-if="tabSelected == 1">
                             <div>
                                 <div class="tab-only-one">
                                     <BaseInput typeInput="input" label="Điều khoản thanh toán" placeholder="Chưa làm được" styleInput="margin-right:10px;" />
-                                    <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" />
-                                    <BaseInput typeInput="input" label="Số nợ tối đa" :isNumber="true" />
+                                    <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" v-model="account.DueTime"/>
+                                    <BaseInput typeInput="input" label="Số nợ tối đa" :isNumber="true" v-model="account.MaximizeDebtAmount"/>
                                 </div>
                                 <div class="tab-only-one">
                                     <BaseInput typeInput="input" label="Tài khoản công nợ phải trả" styleInput="margin-top:10px;"  placeholder="Chưa làm được"/>
@@ -135,7 +135,7 @@
                         </span>
                         <span v-if="tabSelected == 4">
                             <div style="width:100%">
-                                <BaseInput typeInput="textarea" styleTextArea="height:215px;" />
+                                <BaseInput typeInput="textarea" styleTextArea="height:215px;" v-model="account.Description"/>
                             </div>
                         </span>
 
@@ -166,6 +166,7 @@ import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import * as mylib from '@/js/resourcs.js'
+
 export default {
     components: {
         BaseButton,
@@ -174,20 +175,43 @@ export default {
         BaseCheckbox,
         BaseInput
     },
+    props:{
+        accountTable:null,//Lấy từ cha gửi vào cho con là Detail
+        editMode:mylib.misaEnum.editMode.NoAction,//Mặc định hành động là chưa làm gì cả
+    },
     data() {
         return {
             typeDetail: '1',
 
-            tabSelected: 3,
+            tabSelected: 0,
             listTabIndex: mylib.data.listTabIndex,
+            readOnly:false,//Thực hiện để mở khóa hay đóng lại các ô input
+            
+            account:{},
         }
+    },
+    async created(){
+        var me = this;
+        //Thiết lập mặc định là có
+
+        if(me.editMode == mylib.misaEnum.editMode.View){//Nếu nó thuộc kiểu xem thì sẽ vô hiệu hóa các ô lại
+            me.readOnly = true;
+        }
+        await me.getAccountTable();
     },
     methods: {
         btnSave(value) {
             alert("value " + value);
         },
+        /**
+         * Thực hiện khi click vào nút hủy trong Trong form Account Detail
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
         btnCloseForm() {
-            alert("Đóng form");
+            // var me = this;
+
+            //Thực hiện đóng form detail
+            this.$parent.isShowAccountDetail = false;
         },
         changeTypeDetail() {
             // alert("change type detail");
@@ -195,6 +219,16 @@ export default {
         selectedTabIndex(index) {
             var me = this;
             me.tabSelected = index;
+        },
+        /**
+         * Lấy giá trị của một Account của table gán vào cho form ( có thể là có account hoặc là một rỗng)
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
+        getAccountTable(){
+            var me = this;
+            for (var propName in me.accountTable) {
+                me.account[propName]= me.accountTable[propName];    
+            }
         }
 
     }

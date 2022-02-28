@@ -40,7 +40,7 @@ export default {
             default: false,
             type: Boolean
         },
-        value: String, //Mặc định nó là như vậy thay bằng tên là gì cũng được VD:(giatri, valusessssss ) ,  nó sẽ :value sẽ map với v-model ở bên ngoài
+        value: [String,Number], //Mặc định nó là như vậy thay bằng tên là gì cũng được VD:(giatri, valusessssss ) ,  nó sẽ :value sẽ map với v-model ở bên ngoài
         hasIcon: { //Mặc định không có icon 
             default: false,
             type: Boolean

@@ -10,7 +10,7 @@
                         <div class="title-tour">Hướng dẫn</div>
                     </div>
                     <BaseButtonFunction label="Tiện ích" />
-                    <BaseButtonFunction label="Thêm" :hasBackground="true" />
+                    <BaseButtonFunction label="Thêm" :hasBackground="true" @btnClick="btnAddAccount" />
                 </div>
             </div>
             <div class="top-header-bottom">
@@ -76,7 +76,10 @@
         @btnRemove="btnRemoveAccount"
         @btnEdit ="btnEditAccount"
     />
+<AccountDetail v-if="isShowAccountDetail" :accountTable="accountSelected" :editMode="editModeTable"/>
 </div>
+
+
 </template>
 
 <script>
@@ -90,6 +93,8 @@ import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 
 import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 
+import AccountDetail from '@/view/account_object/AccountDetail.vue'
+
 import * as mylib from '../../js/resourcs.js'
 export default {
     components: {
@@ -99,7 +104,9 @@ export default {
         BaseInput,
         BaseTableList,
         BaseTablePaging,
-        BaseDropDownFunction
+        BaseDropDownFunction,
+
+        AccountDetail
     },
     mounted() {
 
@@ -120,12 +127,29 @@ export default {
 
             listChecked :Array (),
 
+            isShowAccountDetail:false,
+            accountSelected:null,
+            editModeTable:mylib.misaEnum.editMode.NoAction,//Mặc định đầu tiên là chưa làm gì cả
+
         }
     },
     watch: {
 
     },
     methods: {
+        /**
+         * Thực hiện khi click vào nút thêm trong Account List
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
+        btnAddAccount(){
+            var me = this;
+            me.editModeTable = mylib.misaEnum.editMode.Add;//Thực hiện thêm mới
+            me.accountSelected = {};//Thực hiện gián rỗng đối tượng mới
+            
+            me.isShowAccountDetail = true;//Thực hiện mở form detail
+            
+        },
+
         btnSelectPage(){
             var me =this;
             me.isShowPage = !me.isShowPage;
@@ -143,14 +167,31 @@ export default {
             console.log("number: " + number);
             me.pageAction = number;
         },
+        /**
+         * Thực hiện xem thông tin của nhà cung cấp 
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
         btnSeeInfoAccount({object}){
-            console.log("đối tượng là ", object);
+            var me = this;
+            me.editModeTable = mylib.misaEnum.editMode.View;//Thực hiện xem thông tin 
+
+            me.accountSelected = object;//Thực hiện gián rỗng đối tượng mới
+            me.isShowAccountDetail = true;//Thực hiện mở form detail
+            
         },
+         /**
+         * Thực hiện khi click vào nút dropdown của mỗi dòng của function 
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
         btnDropDown({eve, object, index }){
             var me = this;
-            console.log("Những giá trị là: ", eve, object, index);
-            me.isShowFunction = true;
+            console.log(index);
+            me.accountSelected = object;//Gián giá trị đối tượng dòng đang chọn vào đối tượng đang chờ để thực hiện thao tác
+
+            //Thực hiện truyền tọa độ thích hợp cho dropdown 
             me.positionTopFunction = eve.clientY < 500 ? (eve.clientY + 14) : (eve.clientY - 105);
+            me.isShowFunction = true;
+            
         },
         btnDuplicateAccount(){
             alert("Duplicate");
@@ -158,8 +199,15 @@ export default {
         btnRemoveAccount(){
             alert("Remove");
         },
+         /**
+         * Thực hiện khi click vào nút sửa trong dropdown 
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
         btnEditAccount(){
-            alert("Edit");
+            var me  = this;
+            me.editModeTable = mylib.misaEnum.editMode.Edit;//Thực hiện Sửa thông tin
+
+            me.isShowAccountDetail = true;//Mở form detail
         },
         btnClose(){
             var me = this;

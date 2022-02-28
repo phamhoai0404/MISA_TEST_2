@@ -7,7 +7,7 @@ import CAProcess from './view/cash/CAProcess.vue'
 import CAReceipt from './view/cash/CAReceipt.vue'
 import Overview from './view/overview/Overview.vue'
 import AccountList from './view/account_object/AccountList.vue'
-import AccountDetail from './view/account_object/AccountDetail.vue'
+// import AccountDetail from './view/account_object/AccountDetail.vue'
 
 
 
@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 
 //Thiết lập router
 const routes = [
-    { path: '/', component: AccountDetail },
+    { path: '/', component: AccountList },
     { path: '/overview', component: Overview },
     { path: '/account', component: AccountList },
     {
