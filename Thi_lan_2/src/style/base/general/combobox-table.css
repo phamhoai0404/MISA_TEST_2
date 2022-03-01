@@ -1,0 +1,58 @@
+.m-combobox-data.table-combo {
+    background-color: green;
+    width: 100%;
+    max-height: 198px;
+    min-height: 64px;
+    overflow: auto;
+    border: 1px solid #babec5;
+    box-sizing: border-box;
+}
+
+.m-combobox-data.table-combo::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.m-combobox-data.table-combo::-webkit-scrollbar-thumb {
+    background-color: #d5d6da;
+    width: 5px;
+}
+
+.m-combobox-data.table-combo table.m-table-combobox {
+    width: 100% !important;
+    border-spacing: unset;
+    z-index: 6;
+    border: unset;
+    border-left: none;
+    border-right: none;
+    overflow: auto;
+}
+
+.m-combobox-data.table-combo table.m-table-combobox thead th {
+    position: sticky;
+    padding: 0 10px;
+    background-color: rgb(236 238 241);
+    border: unset;
+    height: 32px;
+    text-align: left;
+    font-family: Notosans-Semi-bold;
+}
+
+.m-combobox-data.table-combo table thead {
+    position: sticky;
+    top: 0;
+    z-index: 7;
+}
+
+.m-combobox-data.table-combo table thead th {
+    position: sticky;
+    padding: 0 10px;
+    background-color: rgb(236 238 241);
+    border: unset;
+}
+
+.m-combobox-data.table-combo table.m-table-combobox td {
+    border: none;
+    padding: 0 10px;
+    height: 32px;
+}

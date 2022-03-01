@@ -25,7 +25,7 @@
 
 /* css cho sticky ấy */
 
-table.m-table {
+.m-grid table.m-table {
     width: 100% !important;
     border-spacing: unset;
     /* Chú ý phải bỏ cái thuộc tính như này đi */
@@ -36,48 +36,45 @@ table.m-table {
     border-right: none;
 }
 
-.sticky-checkbox {
-    /* position: -webkit-sticky; */
-    /* display: flex;
-    align-items: center; */
+.m-grid .sticky-checkbox {
     position: sticky;
     z-index: 5;
     left: 0;
     border-left: 1px solid #bbb;
 }
 
-.sticky-function {
+.m-grid .sticky-function {
     position: sticky;
     z-index: 5;
     right: 0;
     border-left: 1px solid #bbb;
 }
 
-td.sticky-checkbox {
+.m-grid td.sticky-checkbox {
     border-right: 1px dotted #bbb !important;
     border-left: none !important;
 }
 
-th.sticky-checkbox {
+.m-grid th.sticky-checkbox {
     border-left: unset;
     border-right: 1px solid #bbb;
 }
 
-td.sticky-function {
+.m-grid td.sticky-function {
     background-color: #fff;
 }
 
-tbody .sticky-checkbox {
+.m-grid tbody .sticky-checkbox {
     background-color: #fff;
 }
 
-table.m-table tr td {
+.m-grid table.m-table tr td {
     height: 44px;
     border: unset;
     box-sizing: border-box;
 }
 
-table.m-table tr th {
+.m-grid table.m-table tr th {
     height: 35px !important;
     text-align: left;
     font-size: 12px;
@@ -86,21 +83,20 @@ table.m-table tr th {
     font-family: Notosans-Bold;
 }
 
-table.m-table tr td {
+.m-grid table.m-table tr td {
     padding: 0 10px;
     border: unset;
     border-left: 1px dotted #bbb;
     border-bottom: 1px solid #bbb;
 }
 
-table thead {
+.m-grid table thead {
     position: sticky;
     top: 0;
     z-index: 7;
 }
 
-table thead th {
-    /* text-align: left; */
+.m-grid table thead th {
     position: sticky;
     top: -21px;
     padding: 0 10px;
@@ -116,28 +112,28 @@ table thead th {
 
 /*Các thành phần trong table */
 
-table.m-table tbody tr {
+.m-grid table.m-table tbody tr {
     background-color: #fff;
 }
 
-table.m-table tbody tr:hover td {
+.m-grid table.m-table tbody tr:hover td {
     background-color: #f5fbf9;
     cursor: pointer;
 }
 
-table.m-table tbody tr.m-row-selected {
+.m-grid table.m-table tbody tr.m-row-selected {
     background-color: #ebf9f4;
 }
 
 
 /* css cho các hành động */
 
-table.m-table tbody tr td.m-funtionsss {
+.m-grid table.m-table tbody tr td.m-funtionsss {
     width: 120px !important;
     box-sizing: border-box !important;
 }
 
-table.m-table tbody tr td .m-function {
+.m-grid table.m-table tbody tr td .m-function {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -146,21 +142,21 @@ table.m-table tbody tr td .m-function {
     width: 100px;
 }
 
-table.m-table tbody tr td .m-function .m-title {
+.m-grid table.m-table tbody tr td .m-function .m-title {
     font-size: 13px;
     font-weight: 600;
     color: #0075c0;
     font-family: Notosans-Semi-bold;
 }
 
-table.m-table tbody tr td .m-function button {
+.m-grid table.m-table tbody tr td .m-function button {
     border: unset;
     margin: unset;
     padding: unset;
     background-color: unset;
 }
 
-table.m-table tbody tr td .m-function button.m-button-function {
+.m-grid table.m-table tbody tr td .m-function button.m-button-function {
     margin: 8px 10px;
     width: 26px;
     box-sizing: border-box;
@@ -169,7 +165,7 @@ table.m-table tbody tr td .m-function button.m-button-function {
     border: none;
 }
 
-table.m-table tbody tr td .m-function button.m-button-function .m-button-icon {
+.m-grid table.m-table tbody tr td .m-function button.m-button-function .m-button-icon {
     background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -896px -359px;
     width: 16px;
     height: 16px;
@@ -180,6 +176,6 @@ table.m-table tbody tr td .m-function button.m-button-function .m-button-icon {
 
 /* Để xóa bỏ đi phần thừa không cần thiết của checkbox */
 
-.m-checkbox-table {
+.m-grid .m-checkbox-table {
     padding-right: 2px !important;
 }

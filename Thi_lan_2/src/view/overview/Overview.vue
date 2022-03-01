@@ -1,14 +1,18 @@
 <template>
     <div>
         <BaseComboboxNormal 
-            v-model="xinhgai"
-            :isRequire = "true"
+            v-model="xinhgai.FullName"
+            :isComboboxTable="true"
             :errorCombobox="checkCombobox"
             @btnClickDropdown="btnClickDropdownDemo"
-            @btnClickItem="btnSelectItem"
+            @btnClickItemTable="btnSelectItem"
             :isShowDataDropdown="isShowDropDown"
             :listData="listDataVocativeTemp"
+            :listFields="listFieldsTest"
             @hideDataDropDown="isShowDropDown = false"
+            keySearch="EmployeeId"
+            :object="xinhgai"
+            @input="changeInputCombobox"
         />
         sfsfsf
     </div>
@@ -16,17 +20,19 @@
 <script>
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import * as mylib from '@/js/resourcs.js'
-
+import MyFunction from '@/js/function.js'
 export default {
     components:{
         BaseComboboxNormal
     },
     watch:{
-        xinhgai:function(valueNew ){
+        'xinhgai.FullName'( valueNew,valueOld){
             var me = this;
-            if(!me.existValueInArray(me.listDataVocative, valueNew)){
+            // me.xinhgai.EmployeeId = null;//Thiết lập về trạng thái rỗng để không ăn với css
+            console.log(valueNew, valueOld);
+            if(!me.existValueInArrayObject(me.listDataVocative,'FullName', valueNew)){
                 me.isShowDropDown = true;
-                me.listDataVocativeTemp = me.selectFilter(me.listDataVocative,valueNew);
+                me.listDataVocativeTemp = me.selectFilterObject(me.listDataVocative,'FullName', valueNew);
             } 
         },
         
@@ -35,49 +41,41 @@ export default {
         var me = this;
         console.log(me.listDataVocative);
     },
-
     data() {
         return {
             isShowDropDown:false,
-            xinhgai:null,
+            xinhgai:{
+                EmployeeCode:null,
+                FullName:null,
+            },
             checkCombobox:false,
-            listDataVocative:mylib.data.listVocative,
+            listDataVocative:mylib.dataTest.listEmployee,
             listDataVocativeTemp:[],
+            listFieldsTest:mylib.data.listFieldEmployeeCombobox,
         }
     },
     methods:{
+        changeInputCombobox(){
+            this.xinhgai.EmployeeId = null;
+        },
         btnClickDropdownDemo(){
             this.listDataVocativeTemp = this.listDataVocative;
             this.isShowDropDown = !this.isShowDropDown;
         },
         btnSelectItem({object}){
             console.log('object:', object);
-            this.xinhgai = object;
+            this.xinhgai = this.sameObject(object);
             this.isShowDropDown = false;  
         },
-        /**
-         * Thực hiện tìm kiếm những giá trị trong dãy thỏa mãn dữ kiện đầu vào là và dãy ban đầu là arrayList value
-         * .toLowerCase(): Thực hiện chuyển về chữ thường để so sánh cho được nhiều nhất
-         * CreatedBy: HoaiPT(28/02/2022)
-         */
-        selectFilter(arrayList, value){
-            return arrayList.filter(itemValue => itemValue.toLowerCase().includes(value.toLowerCase()));
-        },
-        /**
-         * Thực hiện kiểm tra xem giá trị có tồn tại trong dãy
-         * CreatedBy: HoaiPT(28/02/2022)
-         */
-        existValueInArray(arrayList, value){
-            let arrayListTemp = arrayList.filter(itemValue => itemValue == value);
-            if(arrayListTemp.length > 0)
-                return true;
-            return false;
-        }
+        selectFilter:MyFunction.selectFilter,
+        existValueInArray:MyFunction.existValueInArray,
+        existValueInArrayObject:MyFunction.existValueInArrayObject,
+        selectFilterObject:MyFunction.selectFilterObject,
+        sameObject:MyFunction.sameObject,
     }
 }
 </script>
 
 
 <style scoped>
-
 </style>

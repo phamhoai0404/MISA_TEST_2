@@ -53,6 +53,7 @@
 
 <script>
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
+import MyFunction from '@/js/function.js'
 export default {
     components:{
         BaseCheckbox,
@@ -103,32 +104,16 @@ export default {
     filters: {
         /**
          * Thực hiện định dạng lại ngày
-         * CreatedBy: HoaiPT(08/02/2022)
+         * CreatedBy: HoaiPT(01/03/2022)
          */
-        formatDate: function (value) {
-            if (value) {
-                value = new Date(value);
-
-                let date = value.getDate();
-                date = date < 10 ? `0${date}` : date;
-
-                let month = value.getMonth() + 1;
-                month = month < 10 ? `0${month}` : month;
-
-                let year = value.getFullYear();
-
-                value = `${date}/${month}/${year}`;
-            } else value = "";
-
-            return value;
-        },
+        formatDate:MyFunction.formatDate,
     }
 }
 </script>
 
 <style scoped>
 @import url(../../style/base/table-list.css);
-.remove-border-left{
+.m-grid .remove-border-left{
     border-left:none;
 }
 

@@ -1,3 +1,9 @@
+/* css import */
+
+@import url('./general/combobox-table.css');
+
+/*  */
+
 .m-label {
     font-size: 13px;
     font-weight: 500;
@@ -112,11 +118,11 @@
     font-family: Notosans-Semi-bold;
 }
 
-.m-combobox-group .m-combobox-data .m-combobox-content-data .m-combobox-no-item {
+.m-combobox-group .m-combobox-data .m-combobox-no-item {
     text-align: center;
 }
 
-.m-combobox-group .m-combobox-data .m-combobox-content-data .m-combobox-item-.m-combobox-no-item:hover {
+.m-combobox-group .m-combobox-data .m-combobox-item-.m-combobox-no-item:hover {
     color: #111 !important;
     background-color: #fff;
     cursor: auto;

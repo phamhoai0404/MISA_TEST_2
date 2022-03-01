@@ -23,16 +23,31 @@
             </div>
         </div>
         <!-- Dùng cho combobox có dữ liệu là table -->
-        <div class="m-combobox-data" v-if="isShowDataDropdown && isComboboxTable" >
+        <div class="m-combobox-data table-combo" v-if="isShowDataDropdown && isComboboxTable" >
             <table border="1" class="m-table-combobox">
                 <thead>
                     <tr>
-                        <td v-for="(field,index) in listFields" :key="index">{{field.text}}</td>
+                        <th v-for="(field,index) in listFields" :key="index"
+                            :style="{ 
+                                width: field.width,
+                                textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
+                            }"
+                        
+                        >{{field.text}}</th >
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  v-for="(data,index) in listData" :key="index">
-                        <td v-for="(field,i) in listFields" :key="i">{{data[field.name]}}</td>
+                    <tr  v-for="(data,index) in listData" :key="index"  class="m-combobox-item-" :class="[comparisonValue(data[keySearch],object[keySearch])?'m-combobox-active':'' ]" >
+                        <td v-for="(field,i) in listFields" :key="i"
+                            :style="field.type =='number'?'text-align:right' : '' || field.type =='date'?'text-align:center' : ''"
+                            @click="btnClickItemTable(data)"
+                        >
+                            <span v-if="field.type == 'date' " >{{data[field.name] | formatDate }}</span>
+                            <span v-else >{{data[field.name]}}</span>
+                        </td>
+                    </tr>
+                    <tr v-if="listData.length == 0" class="m-combobox-item- m-combobox-no-item">
+                        <td :colspan="listFields.length" >Không có dữ liệu hiển thị</td>
                     </tr>
                 </tbody>
             </table>
@@ -69,7 +84,7 @@ export default {
             default: false,
             type: Boolean
         },
-        value: [String,Number],
+        value: [String,Number,Object],
         refText:String,
         placeholder:String,
         readOnly:{
@@ -77,7 +92,7 @@ export default {
             type:Boolean
         },
         isButtonAdd:{
-            default:false,
+            default:true,
             type:Boolean,
         },
         styleComboboxNormal:String,//Trường hợp muốn thêm css gì đó từ cha vào
@@ -97,7 +112,12 @@ export default {
             default:false,
             type:Boolean
         },
-        listData:Array,//Dữ liệu truyền vào
+        listData:Array,//Dữ liệu truyền vào,
+        listFields:Array, //Truyền fields nếu là là isComboboxTable
+
+        keySearch:String,//Để mục đích css,
+        displayView:String,
+        object:Object,
 
     },
     methods: {
@@ -125,6 +145,10 @@ export default {
         btnClickItem(object){
             this.$emit('btnClickItem',{object:object});
         },
+        btnClickItemTable(object){
+            this.$emit('btnClickItemTable',{object:object});
+        },
+
         /**
          * Thực hiện khi click bất kì ngoài ô đấy thì nó sẽ đóng lại
          */
@@ -132,7 +156,27 @@ export default {
             this.$emit('hideDataDropDown');
         },
         comparisonValue:MyFunction.comparisonValue,//import từ file js về
+
+        // suitable(valueOne, valueTwo, index){
+        //     var me = this;
+        //     let status= false;
+        //     if(me.comparisonValue(valueOne, valueTwo) && index != 0){
+        //        return status = true;
+        //     }
+        //     if(!me.comparisonValue(valueOne, valueTwo) && index==0){
+        //         status = true;
+        //     }
+        //     return status;
+        // }
+       
     },
+     filters: {
+        /**
+         * Thực hiện định dạng lại ngày
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
+        formatDate:MyFunction.formatDate,
+    }
 }
 </script>
 
