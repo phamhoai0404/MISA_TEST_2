@@ -74,7 +74,7 @@ var MyFunction = {
      */
     comparisonValue(value1, value2) {
         // console.log("giá trị: ", value1, )
-        if (value1 != "" && value2 != "" && value1 != null & value2 != null) {
+        if (value1 != "" && value2 != "" && value1 != null && value2 != null) {
 
             // Chuyển hai đối tượng về dạng chữ thường hết
             if (value1.toLowerCase() == value2.toLowerCase()) {
@@ -83,6 +83,10 @@ var MyFunction = {
         }
         return false;
     },
+    /**
+     * Thực hiện trả về một đối tượng có giá trị bằng đối tượng truyền vào
+     * CreatedBy: HoaiPT(01/03/2022)
+     */
     sameObject(objectTarget) {
         let objectTemp = {}; //Tạm thời
         for (var propName in objectTarget) {
@@ -90,5 +94,18 @@ var MyFunction = {
         }
         return objectTemp; //Trả về đối tượng muốn lấy mà không dính tới bind
     },
+    /**
+     * Thực hiện so sánh hai đối tượng có bằng nhau không
+     * true: trả về hai đối tượng bằng nhau
+     * false: trả về hai đối tượng có giá trị khác nhau
+     */
+    comparisonObject(object, objectTarget) {
+        for (var propName in objectTarget) {
+            if (object[propName] != objectTarget[propName]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 export default MyFunction

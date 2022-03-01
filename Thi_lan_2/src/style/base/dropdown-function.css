@@ -15,4 +15,5 @@
 .m-function-group .m-function-item:hover {
     color: #2ca01c;
     background-color: rgb(230, 224, 224);
+    cursor: pointer;
 }

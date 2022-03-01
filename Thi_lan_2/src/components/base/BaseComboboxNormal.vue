@@ -37,10 +37,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
                     <tr  v-for="(data,index) in listData" :key="index"  class="m-combobox-item-" 
                         :class="[
-                            comparisonValue(data[keySearch],object[keySearch])?'m-combobox-active':'',/**Nếu mà id bằng với cái id ở bên ngoài thì cho màu background */
-                            (object[keySearch]==null)&&(index==0)? 'm-combobox-active':''/**Nếu không tồn tại id (nó bằng null) và chỉ số nó bằng 0 thì sẽ cho background nó ở đấy */
+                           comparisonValue(data[keySearch],propertyCompare)?'m-combobox-active':'',/**Nếu mà bằng với cái ở bên ngoài thì cho màu background */
+                           (propertyCompare==null)&&(index==0)? 'm-combobox-active':''/**Nếu không tồn tại giá trị bằng (nó bằng null) và chỉ số nó bằng 0 thì sẽ cho background nó ở đấy */
                         ]" 
                     >
                         <td v-for="(field,i) in listFields" :key="i"
@@ -97,7 +98,7 @@ export default {
             type:Boolean
         },
         isButtonAdd:{
-            default:true,
+            default:false,
             type:Boolean,
         },
         styleComboboxNormal:String,//Trường hợp muốn thêm css gì đó từ cha vào
@@ -121,9 +122,7 @@ export default {
         listFields:Array, //Truyền fields nếu là là isComboboxTable
 
         keySearch:String,//Để mục đích css,
-        displayView:String,
-        object:Object,
-
+        propertyCompare:{},
     },
     methods: {
         /**
@@ -161,18 +160,6 @@ export default {
             this.$emit('hideDataDropDown');
         },
         comparisonValue:MyFunction.comparisonValue,//import từ file js về
-
-        // suitable(valueOne, valueTwo, index){
-        //     var me = this;
-        //     let status= false;
-        //     if(me.comparisonValue(valueOne, valueTwo) && index != 0){
-        //        return status = true;
-        //     }
-        //     if(!me.comparisonValue(valueOne, valueTwo) && index==0){
-        //         status = true;
-        //     }
-        //     return status;
-        // }
        
     },
      filters: {

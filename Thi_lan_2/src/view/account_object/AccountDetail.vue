@@ -17,7 +17,7 @@
             <div class="dialog-close">
 
                 <BaseButtonIcon iconClass="btn-icon-help" title="Giúp(F1)" />
-                <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseForm" title="Đóng(ESC)" />
+                <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseToolTip" title="Đóng(ESC)" shortKey="['esc']"  />
             </div>
         </div>
 
@@ -55,19 +55,20 @@
                             <BaseInput typeInput="input" label="Nhóm nhà cung cấp" />
                         </div>
                         <div class="dialog-one-row">
-                             <!-- <BaseComboboxNormal label="Nhân viên mua hàng"
-                                v-model="account.Employee"
+                             <BaseComboboxNormal label="Nhân viên mua hàng"
+                                v-model="account.FullName"
                                 :isComboboxTable="true"
+                                :isButtonAdd="true"
+                                :isShowDataDropdown="isShowComboboxEmployee"
+                                :listData="listEmployeeTemp"
+                                :listFields="listFieldEmployee"
+                                :propertyCompare="account.EmployeeId"
+                                keySearch="EmployeeId"
+                                @hideDataDropDown="isShowComboboxEmployee = false"
                                 @btnClickDropdown="btnClickDropdownEmployee"
                                 @btnClickItemTable="btnSelectItemEmployee"
-                                :isShowDataDropdown="isShowComboboxEmployee"
-                                :listData="listDataEmployeeTemp"
-                                :listFields="listFieldsEmployee"
-                                @hideDataDropDown="isShowComboboxEmployee = false"
-                                keySearch="EmployeeId"
-                                :object="xinhgai"
                                 @input="changeInputComboboxEmployee"
-                            /> -->
+                            />
                         </div>
                     </div>
                 </div>
@@ -177,6 +178,13 @@
             </div>
         </div>
     </div>
+<BaseMessQuestion  v-if="isShowMessQuestion"
+    typeMessage="question" 
+    :titleForm="titleMessQuestion"
+    @btnCancel="isShowMessQuestion = false"
+    @btnYes="btnSave(1)" 
+    @btnNo="btnCloseForm"
+/>
 </div>
 </template>
 
@@ -186,10 +194,14 @@ import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
-
 import BaseInput from '@/components/base/BaseInputNormal.vue'
+import BaseMessQuestion from '@/components/base/BaseMessage.vue'
+
+
+
 import * as mylib from '@/js/resourcs.js'
 import MyFunction from '@/js/function.js'
+import axios from 'axios'
 
 export default {
     components: {
@@ -198,7 +210,8 @@ export default {
         BaseRadio,
         BaseCheckbox,
         BaseInput,
-        BaseComboboxNormal
+        BaseComboboxNormal,
+        BaseMessQuestion
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail
@@ -218,14 +231,21 @@ export default {
             
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch
                 Prefix:null,
+                FullName:null,
             },
 
-            isShowComboboxEmployee:false,
+            titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
+            isShowMessQuestion:false,
+
+            isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
+            listEmployee:null,
+            listEmployeeTemp:null,
+            listFieldEmployee:mylib.data.listFieldEmployeeCombobox,
+            
         }
     },
     async created(){
         var me = this;
-        //Thiết lập mặc định là có
 
         if(me.editMode == mylib.misaEnum.editMode.View){//Nếu nó thuộc kiểu xem thì sẽ vô hiệu hóa các ô lại
             me.readOnly = true;
@@ -233,6 +253,8 @@ export default {
 
         //Cần phải viết như này để nó không bind từ detail ảnh hưởng đến table
         me.account= await MyFunction.sameObject(me.accountTable);
+
+        await me.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
     },
     watch:{
         /**
@@ -250,12 +272,71 @@ export default {
                 me.listDataPrefixTemp = MyFunction.selectFilter(me.listDataPrefix,valueNew);
             } 
         },
+         /**
+         * Thực hiện theo dõi FullName đồng thời thay đổi giá trị của EmployeeId
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        'account.FullName'( valueNew){
+            var me = this;
+            if(valueNew && me.listEmployee){//Nếu hai đối tượng này tồn tại
+                if(!me.existValueInArrayObject(me.listEmployee,'FullName', valueNew)){
+                    me.isShowComboboxEmployee = true;
+                    me.listEmployeeTemp = me.selectFilterObject(me.listEmployee,'FullName', valueNew);
+                } 
+            }
+            
+        },
     },
     methods: {
         btnSave(value) {
-            alert("value " + value);
+            console.log("value " + value, this.account);
+        },
+       
+        changeTypeDetail() {
+            // alert("change type detail");
+        },
+        
+      
+        /**
+         * Thực hiện khi thay đổi giá trị trong ô input
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        changeInputComboboxEmployee(){
+            this.account.EmployeeId = null;//Gán giá trị cho mã nhân viên của nhà cung cấp bằng null
+        },
+         /**
+         * Thực hiện click vào item bất kì trong data combobox employee
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnSelectItemEmployee({object}){
+            this.account.EmployeeId = object.EmployeeId;
+            this.account.FullName = object.FullName;
+            this.isShowComboboxEmployee = false;  
         },
         /**
+         * Thực hiện click vào nút dropdown ở combobox employee
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnClickDropdownEmployee(){
+            this.listEmployeeTemp = this.listEmployee;//Thực hiện gán toàn bộ dữ liệu vào tạm
+            this.isShowComboboxEmployee = !this.isShowComboboxEmployee;
+        },
+        /**
+         * Thực hiện khi click vào nút nhân ở bên góc phải trên cùng màn hình
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnCloseToolTip(){
+            var me = this;
+
+            //So sánh đối tượng lúc bắt đầu chuyển từ ngoài vào form detail với đối tượng account hiện tại
+            if(MyFunction.comparisonObject(me.accountTable,me.account)){
+                me.btnCloseForm();//Nếu hai đối tượng giống nhau thì bắt đầu đóng form
+            }else{
+                //Còn hai đối tượng khác nhau
+                me.isShowMessQuestion = true;//Thực hiện mở form question 
+            }
+        },
+         /**
          * Thực hiện khi click vào nút hủy trong Trong form Account Detail
          * CreatedBy: HoaiPT(28/02/2022)
          */
@@ -264,9 +345,6 @@ export default {
 
             //Thực hiện đóng form detail
             this.$parent.isShowAccountDetail = false;
-        },
-        changeTypeDetail() {
-            // alert("change type detail");
         },
         /**
          * Thực hiện khi select cái TabIndex để thay đổi view xem và thêm thông tin
@@ -292,14 +370,26 @@ export default {
             this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
             this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
         },
-        btnSelectItemEmployee(){
-
+        async getListEmployee() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/Employees')
+                    .then(function(res) {
+                        me.listEmployee = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
         },
-        btnClickDropdownEmployee(){
-
-        },
-        changeInputComboboxEmployee(){
-        }
+        /**
+         * Thực hiện lấy những cái này từ file js
+         * CreatedBy:HoaiPT(02/03/2022)
+         */
+        selectFilter:MyFunction.selectFilter,
+        existValueInArray:MyFunction.existValueInArray,
+        existValueInArrayObject:MyFunction.existValueInArrayObject,
+        selectFilterObject:MyFunction.selectFilterObject,
+        sameObject:MyFunction.sameObject,
     }
 }
 </script>

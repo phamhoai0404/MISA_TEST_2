@@ -28,10 +28,10 @@ namespace MISA.Fresher.Web12.Core.Services
         public string getCodeNewService()
         {
             //Thực hiện lấy ra chỉ là số mà thôi bỏ đi phần chữ và số 0 thừa
-            int codeMax = int.Parse(_accountObjectRepository.GetCodeMax().Substring(3)) ;
+            int codeMax = int.Parse(_accountObjectRepository.GetCodeMax().Substring(3)) + 1  ;
 
             //Mã code mới sinh ra sẽ bằng giá trị lớn nhất hiện tại cộng thêm 1
-            var codeNew = codeMax +1 + "";
+            var codeNew = codeMax  + "";
             switch (codeNew.Length)
             {
                 case 1:
