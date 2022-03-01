@@ -215,6 +215,49 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
                 return enities;
             }
         }
+
+
+        public object GetPaging(int pageIndex, int pageSize, string searchText)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sql = $"Proc_Get{className}Paging";
+                var parameters = new DynamicParameters();
+                parameters.Add("@m_SearchText", searchText);
+                parameters.Add("@m_PageIndex", pageIndex);
+                parameters.Add("@m_PageSize", pageSize);
+
+                parameters.Add("@m_TotalRecord", direction: System.Data.ParameterDirection.Output);
+                parameters.Add("@m_TotalPage", direction: System.Data.ParameterDirection.Output);
+
+                var entites = SqlConnection.Query(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure);//Thực hiện lấy các bản ghi
+                var totalRecord = parameters.Get<int>("@m_TotalRecord");//Lấy tổng số bản ghi
+                var totalPage = parameters.Get<int>("@m_TotalPage");//Lấy tổng số trang
+
+                return new
+                {
+                    Data = entites,//Trả về bảng
+                    TotalRecord = totalRecord,//Trả về tổng số bản ghi
+                    TotalPage = totalPage//Trả về tổng số trang
+                };
+
+            }
+        }
+
+
+
+        public string GetCodeMax()
+        {
+            //Thực hiện khởi tạo kết nối và sau khi làm xong là nó tự ngắt kết nối luôn
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                //Thực hiện truy vấn dữ liệu trong database
+                var enities = SqlConnection.QueryFirstOrDefault<string>($"SELECT MAX({className}Code) FROM {className}");
+                return enities;
+            }
+
+        }
+
         #endregion
 
         #region Methods Validate

@@ -203,5 +203,57 @@ namespace MISA.Fresher.Web12.Core.Entities
         [PropertyName("Người cập nhật")]
         public string? ModifiedBy { get; set; }
         #endregion
+
+        #region Notmap
+        /// <summary>
+        /// Mã tài khoản công nợ
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? PayAccountCode { get; set; }
+
+        /// <summary>
+        /// Tên tài khoản công nợ
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? PayAccountName { get; set; }
+
+
+        /// <summary>
+        /// Mã nhân viên
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? EmployeeCode { get; set; }
+
+        /// <summary>
+        /// Tên nhân viên
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? FullName { get; set; }
+
+        /// <summary>
+        /// Mã điều khoản
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? PaymentTermCode { get; set; }
+
+        /// <summary>
+        /// Tên điều khoản
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        public string? PaymentTermName { get; set; }
+
+        #endregion
     }
 }

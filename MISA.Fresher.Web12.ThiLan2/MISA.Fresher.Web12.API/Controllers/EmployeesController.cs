@@ -69,24 +69,6 @@ namespace MISA.Fresher.Web12.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Thực hiện phân trang lấy dữ liệu với từ khóa tìm kiếm
-        /// </summary>
-        /// <returns></returns>
-        /// Created: HoaiPT(17/02/2022)
-        [HttpGet("GetPaging")]
-        public IActionResult GetPaging(int pageIndex, int pageSize, string? searchText)
-        {
-            try
-            {
-                var res = _employeeService.GetPagingService(searchText,pageSize,pageIndex);
-                return StatusCode(200, res);
-            }
-            catch (Exception ex)
-            {
-                return this.AllException(ex, null);
-            }
-        }
 
         /// <summary>
         /// Thực hiện xuất ra file excel danh sách nhân viên

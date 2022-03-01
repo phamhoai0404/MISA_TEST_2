@@ -62,7 +62,7 @@ export default {
          */
         hideFunction() {
             var me = this;
-            me.$emit('btnClose');
+            me.$emit('hideFunction');
         }
     }
 }

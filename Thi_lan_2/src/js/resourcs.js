@@ -2,7 +2,8 @@ var resourcs = {
     VI: {
         errorMsg: "Có lỗi xảy ra vui lòng liên hệ Misa! ",
         titlePage: " bản ghi trên 1 trang",
-        fileNameExport: "Danh_sach_nhan_vien",
+        fileNameEmployeeExport: "Danh_sach_nhan_vien",
+        fileNameAccountObjectExport: "Danh_sach_nha_cung_cap",
         deleteMulti: "Bạn thực sự có muốn xóa những nhân viên đã chọn không?",
         confirmEdit: "Dữ liệu đã bị thay đổi bạn có muốn cất không?",
         errorEmployeeCode: "Mã nhân viên không đúng định dạng!",
@@ -10,6 +11,8 @@ var resourcs = {
         notNullEmployeeCode: "Mã không được phép để trống!",
         notNullDepartmentName: "Đơn vị không được phép để trống!",
         inputSearch: "Nhập từ khóa tìm kiếm",
+
+        titleErrorRemoveAccountObject: "Xóa không thành công, Mã đã có phát sinh !",
     }
 }
 var misaEnum = {

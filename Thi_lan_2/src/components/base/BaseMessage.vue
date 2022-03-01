@@ -68,7 +68,7 @@ export default {
     props: {
         titleForm: { // Thông điệp của messeage truyền từ cha vào con
             type: String,
-            required: true
+            // required: true
         },
         typeMessage: {
             type: String, //Xem Message thuộc loại nào để hiển thị cho phù hợp

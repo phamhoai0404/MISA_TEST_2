@@ -67,7 +67,7 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         /// true: tồn tại
         /// false: chưa tồn tại
         /// </returns>
-        bool CheckDuplicate_IsUpdate(bool isUpate, Guid? id, string propName, string propValue );
+        bool CheckDuplicate_IsUpdate(bool isUpate, Guid? id, string propName, string propValue);
 
         /// <summary>
         /// Thực hiện lấy dữ liệu export excel theo bảng
@@ -77,6 +77,24 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         /// Update: HoaiPT(12/02/2022)
         public IEnumerable<MISAEnity> GetDataExport();
 
-        
+        /// <summary>
+        /// Thực hiện phân trang và tìm kiếm lấy dữ liệu
+        /// </summary>
+        /// <param name="pageIndex">Số thứ tự trang</param>
+        /// <param name="pageSize">Kích thước trang</param>
+        /// <param name="searchText">Từ khóa tìm kiếm</param>
+        /// <returns></returns>
+        /// Created: HoaiPT(17/02/2022)
+        /// UpdateBy: HoaiPT(01/03/2022)
+        object GetPaging(int pageIndex, int pageSize, string searchText);
+
+
+        /// <summary>
+        /// Lấy ra mã code lớn nhất có trong entity hiện tại
+        /// </summary>
+        /// <returns></returns>
+        /// Created: HoaiPT(13/02/2022)
+        /// UpdatedBy: HoaiPT(01/03/2022)
+        string GetCodeMax();
     }
 }

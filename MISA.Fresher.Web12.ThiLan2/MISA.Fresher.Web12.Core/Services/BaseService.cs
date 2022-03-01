@@ -70,6 +70,22 @@ namespace MISA.Fresher.Web12.Core.Services
             var res = _baseRepository.Update(entityId,entity);
             return res;
         }
+
+        public object GetPagingService(string searchText, int pageSize, int pageIndex)
+        {
+            //Nếu mà không tồn tại searchText thì gán giá trị bằng rỗng
+            if (searchText == null)
+                searchText = "";
+
+            //Nếu không tồn tại thứ tự trang hoặc <1 thì mặc định bằng 1
+            if (pageIndex == null || pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+
+            return _baseRepository.GetPaging(pageIndex, pageSize, searchText); ;
+        }
+
         #endregion
 
         #region Methods Private

@@ -72,37 +72,6 @@ namespace MISA.Fresher.Web12.Core.Services
             }
         }
 
-        public string GetEmployeeCodeNew()
-        {
-            List<string> listEmployeeCode = this._employeeRepository.GetAllEmployeeCode() as List<string>;
-
-            var z = "";
-            List<int> listNumberEmployeeCode = new List<int>();
-            for (int i = 0; i < listEmployeeCode.Count; i++)
-            {
-                int u = int.Parse(listEmployeeCode[i].Substring(3));
-                listNumberEmployeeCode.Add(u);
-            }
-            int k = listNumberEmployeeCode.Max();
-            z += k+1;
-            switch (z.Length)
-            {
-                case 1:
-                    z = "NV-000" + z;
-                    break;
-                case 2:
-                    z = "NV-00" + z;
-                    break;
-                case 3:
-                    z = "NV-0" + z;
-                    break;
-                default:
-                    z = "NV-" + z;
-                    break;
-            }
-            return z;
-        }
-
         public int DeleteManyService(List<string> listEmployeeId)
         {
             
@@ -123,20 +92,12 @@ namespace MISA.Fresher.Web12.Core.Services
            
         }
 
-        public object GetPagingService(string searchText, int pageSize, int pageIndex)
+        public string GetEmployeeCodeNew()
         {
-            //Nếu mà không tồn tại searchText thì gán giá trị bằng rỗng
-            if (searchText == null)
-                searchText = "";
-
-            //Nếu không tồn tại thứ tự trang hoặc <1 thì mặc định bằng 1
-            if(pageIndex == null || pageIndex < 1)
-            {
-                pageIndex = 1;
-            }
-
-            return _employeeRepository.GetPaging(pageIndex, pageSize, searchText); ;
+            throw new NotImplementedException();
         }
+
+
         #endregion
 
     }

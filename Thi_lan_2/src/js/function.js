@@ -26,7 +26,9 @@ var MyFunction = {
      * CreatedBy: HoaiPT(28/02/2022)
      */
     selectFilter(arrayList, value) {
-        value = value.toLowerCase();
+        if (value != null) {
+            value = value.toLowerCase();
+        }
         return arrayList.filter(itemValue => itemValue.toLowerCase().includes(value));
     },
     /**

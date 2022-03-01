@@ -37,7 +37,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  v-for="(data,index) in listData" :key="index"  class="m-combobox-item-" :class="[comparisonValue(data[keySearch],object[keySearch])?'m-combobox-active':'' ]" >
+                    <tr  v-for="(data,index) in listData" :key="index"  class="m-combobox-item-" 
+                        :class="[
+                            comparisonValue(data[keySearch],object[keySearch])?'m-combobox-active':'',/**Nếu mà id bằng với cái id ở bên ngoài thì cho màu background */
+                            (object[keySearch]==null)&&(index==0)? 'm-combobox-active':''/**Nếu không tồn tại id (nó bằng null) và chỉ số nó bằng 0 thì sẽ cho background nó ở đấy */
+                        ]" 
+                    >
                         <td v-for="(field,i) in listFields" :key="i"
                             :style="field.type =='number'?'text-align:right' : '' || field.type =='date'?'text-align:center' : ''"
                             @click="btnClickItemTable(data)"
@@ -77,7 +82,7 @@ export default {
     },
     props: {
         label: {
-            default: "xinh gái ",
+            default: "",
             type: String
         },
         isRequire: { //Xem trường có bắt buộc có hay không

@@ -55,7 +55,19 @@
                             <BaseInput typeInput="input" label="Nhóm nhà cung cấp" />
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="input" label="Nhân viên mua hàng" />
+                             <!-- <BaseComboboxNormal label="Nhân viên mua hàng"
+                                v-model="account.Employee"
+                                :isComboboxTable="true"
+                                @btnClickDropdown="btnClickDropdownEmployee"
+                                @btnClickItemTable="btnSelectItemEmployee"
+                                :isShowDataDropdown="isShowComboboxEmployee"
+                                :listData="listDataEmployeeTemp"
+                                :listFields="listFieldsEmployee"
+                                @hideDataDropDown="isShowComboboxEmployee = false"
+                                keySearch="EmployeeId"
+                                :object="xinhgai"
+                                @input="changeInputComboboxEmployee"
+                            /> -->
                         </div>
                     </div>
                 </div>
@@ -207,6 +219,8 @@ export default {
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch
                 Prefix:null,
             },
+
+            isShowComboboxEmployee:false,
         }
     },
     async created(){
@@ -217,7 +231,8 @@ export default {
             me.readOnly = true;
         }
 
-        await me.getAccountTable();
+        //Cần phải viết như này để nó không bind từ detail ảnh hưởng đến table
+        me.account= await MyFunction.sameObject(me.accountTable);
     },
     watch:{
         /**
@@ -227,8 +242,8 @@ export default {
         'account.Prefix'(valueNew){
             var me = this;
 
-            //Kiểm tra nếu mà không tồn tại giá trị trong mảng thì bắt đầu tìm kiếm
-            if(! MyFunction.existValueInArray(me.listDataPrefix, valueNew)){
+            //Kiểm tra nếu mà không tồn tại giá trị trong mảng, và cái giá trị valueNew nó có tồn tại hay không thì bắt đầu tìm kiếm
+            if(! MyFunction.existValueInArray(me.listDataPrefix, valueNew) && valueNew){
                 me.isShowComboboxPrefix = true;
 
                 //Thực hiện lọc theo từ khóa truyền vào mới
@@ -262,16 +277,6 @@ export default {
             me.tabSelected = index;
         },
         /**
-         * Lấy giá trị của một Account của table gán vào cho form ( có thể là có account hoặc là một rỗng)
-         * CreatedBy: HoaiPT(28/02/2022)
-         */
-        getAccountTable(){
-            var me = this;
-            for (var propName in me.accountTable) {
-                me.account[propName]= me.accountTable[propName];    
-            }
-        },
-        /**
          * Thực hiện khi click vào nút dropdown của Prefix
          * CreatedBy: HoaiPT(28/02/2021)
          */
@@ -287,6 +292,14 @@ export default {
             this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
             this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
         },
+        btnSelectItemEmployee(){
+
+        },
+        btnClickDropdownEmployee(){
+
+        },
+        changeInputComboboxEmployee(){
+        }
     }
 }
 </script>

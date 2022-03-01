@@ -32,6 +32,8 @@ builder.Services.AddSwaggerGen();
 //Xử lý DI: Thực hiện tiêm Repository với Service mong muốn cho interface
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IAccountObjectRepository, AccountObjectRepository>();
+builder.Services.AddScoped<IAccountObjectService, AccountObjectService>();
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));

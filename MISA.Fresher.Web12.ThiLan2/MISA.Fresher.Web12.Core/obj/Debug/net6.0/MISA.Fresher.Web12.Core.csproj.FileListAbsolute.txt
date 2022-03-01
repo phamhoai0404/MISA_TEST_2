@@ -18,7 +18,6 @@ D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\bin\Debug\net6.0\MISA.Fresher.Web12.Core.dll
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\bin\Debug\net6.0\ref\MISA.Fresher.Web12.Core.dll
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\bin\Debug\net6.0\MISA.Fresher.Web12.Core.pdb
-D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.csproj.AssemblyReference.cache
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.Resourcs.EntitiesVN.DepartmentVN.resources
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.Resourcs.EntitiesVN.EmployeeVN.resources
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.Resourcs.ResourceVN.resources
@@ -30,3 +29,5 @@ D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.dll
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\ref\MISA.Fresher.Web12.Core.dll
 D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.pdb
+D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.Resourcs.EntitiesVN.AccountObjectVN.resources
+D:\THUC_TAP_MISA\z_kiem_tra_2\MISA.Fresher.Web12.ThiLan2\MISA.Fresher.Web12.Core\obj\Debug\net6.0\MISA.Fresher.Web12.Core.csproj.AssemblyReference.cache
