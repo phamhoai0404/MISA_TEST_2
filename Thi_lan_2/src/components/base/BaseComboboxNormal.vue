@@ -23,7 +23,7 @@
             </div>
         </div>
         <!-- Dùng cho combobox có dữ liệu là table -->
-        <div class="m-combobox-data table-combo" v-if="isShowDataDropdown && isComboboxTable" >
+        <div class="m-combobox-data table-combo" v-if="isShowDataDropdown && isComboboxTable" :style="styleDataCombobox">
             <table border="1" class="m-table-combobox">
                 <thead>
                     <tr>
@@ -102,6 +102,7 @@ export default {
             type:Boolean,
         },
         styleComboboxNormal:String,//Trường hợp muốn thêm css gì đó từ cha vào
+        styleDataCombobox:String,
         styleBorder:{//Mặc định là không border
             default:'',
             type:String

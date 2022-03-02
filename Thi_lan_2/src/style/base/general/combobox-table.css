@@ -1,11 +1,12 @@
 .m-combobox-data.table-combo {
-    background-color: green;
     width: 100%;
     max-height: 198px;
     min-height: 64px;
     overflow: auto;
     border: 1px solid #babec5;
     box-sizing: border-box;
+    /* Cần phải hỏi cái này vì nó không cho lên trước được */
+    z-index: 1000 !important;
 }
 
 .m-combobox-data.table-combo::-webkit-scrollbar {
@@ -21,7 +22,7 @@
 .m-combobox-data.table-combo table.m-table-combobox {
     width: 100% !important;
     border-spacing: unset;
-    z-index: 6;
+    /* z-index: 6; */
     border: unset;
     border-left: none;
     border-right: none;

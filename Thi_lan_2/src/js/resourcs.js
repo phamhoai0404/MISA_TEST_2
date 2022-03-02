@@ -105,13 +105,13 @@ var data = {
     ],
     listFieldEmployeeCombobox: [{
             name: "EmployeeCode",
-            text: "MÃ NHÂN VIÊN",
+            text: "Mã nhân viên",
             width: "40%",
             title: "Tên trang web công ty",
         },
         {
             name: "FullName",
-            text: "TÊN NHÂN VIÊN",
+            text: "Tên nhân viên",
             width: "60%",
             title: "Tên trang web công ty"
         },
@@ -129,7 +129,30 @@ var data = {
         //     title: "Tên trang web công ty",
         //     type: "number"
         // },
+    ],
+    listFieldPayAccountCombobox: [{
+            name: "PayAccountCode",
+            text: "Số tài khoản",
+            width: "45%"
+        },
+        {
+            name: "PayAccountName",
+            text: "Tên tài khoản",
+            width: "55%"
+        },
+    ],
+    listFieldPaymentTermCombobox: [{
+            name: "PaymentTermCode",
+            text: "Mã điều khoản thanh toán",
+            width: "45%"
+        },
+        {
+            name: "PaymentTermName",
+            text: "Tên điều khoản thanh toán",
+            width: "55%"
+        },
     ]
+
 }
 var dataTest = {
     listAccount: [{

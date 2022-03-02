@@ -111,12 +111,37 @@
                         <span v-if="tabSelected == 1">
                             <div>
                                 <div class="tab-only-one">
-                                    <BaseInput typeInput="input" label="Điều khoản thanh toán" placeholder="Chưa làm được" styleInput="margin-right:10px;" />
+                                     <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
+                                        v-model="account.PaymentTermName"
+                                        :isComboboxTable="true"
+                                        :isButtonAdd="true"
+                                        :isShowDataDropdown="isShowComboboxPaymentTerm"
+                                        :listData="listPaymentTermTemp"
+                                        :listFields="listFieldPaymentTerm"
+                                        :propertyCompare="account.PaymentTermId"
+                                        keySearch="PaymentTermId"
+                                        @hideDataDropDown="isShowComboboxPaymentTerm = false"
+                                        @btnClickDropdown="btnClickDropdownPaymentTerm"
+                                        @btnClickItemTable="btnSelectItemPaymentTerm"
+                                        @input="changeInputComboboxPaymentTerm"
+                                    />
                                     <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" v-model="account.DueTime"/>
                                     <BaseInput typeInput="input" label="Số nợ tối đa" :isNumber="true" v-model="account.MaximizeDebtAmount"/>
                                 </div>
                                 <div class="tab-only-one">
-                                    <BaseInput typeInput="input" label="Tài khoản công nợ phải trả" styleInput="margin-top:10px;"  placeholder="Chưa làm được"/>
+                                    <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
+                                        v-model="account.PayAccountName"
+                                        :isComboboxTable="true"
+                                        :isShowDataDropdown="isShowComboboxPayAccount"
+                                        :listData="listPayAccountTemp"
+                                        :listFields="listFieldPayAccount"
+                                        :propertyCompare="account.PayAccountId"
+                                        keySearch="PayAccountId"
+                                        @hideDataDropDown="isShowComboboxPayAccount = false"
+                                        @btnClickDropdown="btnClickDropdownPayAccount"
+                                        @btnClickItemTable="btnSelectItemPayAccount"
+                                        @input="changeInputComboboxPayAccount"
+                                    />
                                 </div>
                               
                             </div>
@@ -231,7 +256,13 @@ export default {
             
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch
                 Prefix:null,
+                
+                EmployeeId:null,
                 FullName:null,
+
+                PayAccountId:null,
+                PayAccountName:null,
+
             },
 
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
@@ -241,6 +272,16 @@ export default {
             listEmployee:null,
             listEmployeeTemp:null,
             listFieldEmployee:mylib.data.listFieldEmployeeCombobox,
+
+            isShowComboboxPayAccount:false,//Trạng thái đầu tiên của combobox
+            listPayAccount:null,
+            listPayAccountTemp:null,
+            listFieldPayAccount:mylib.data.listFieldPayAccountCombobox,
+
+            isShowComboboxPaymentTerm:false,//Trạng thái đầu tiên của combobox
+            listPaymentTerm:null,
+            listPaymentTermTemp:null,
+            listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
             
         }
     },
@@ -255,6 +296,8 @@ export default {
         me.account= await MyFunction.sameObject(me.accountTable);
 
         await me.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
+        await me.getListPayAccount()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
+        await me.getListPaymentTerm()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
     },
     watch:{
         /**
@@ -286,6 +329,34 @@ export default {
             }
             
         },
+         /**
+         * Thực hiện theo dõi PayAccountName đồng thời thay đổi giá trị của PayAccountId
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        'account.PayAccountName'( valueNew){
+            var me = this;
+            if(valueNew && me.listPayAccount){//Nếu hai đối tượng này tồn tại
+                if(!me.existValueInArrayObject(me.listPayAccount,'PayAccountName', valueNew)){
+                    me.isShowComboboxPayAccount = true;
+                    me.listPayAccountTemp = me.selectFilterObject(me.listPayAccount,'PayAccountName', valueNew);
+                } 
+            }
+            
+        },
+         /**
+         * Thực hiện theo dõi PaymentTermName đồng thời thay đổi giá trị của PaymentTermId
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        'account.PaymentTermName'(valueNew){
+            var me = this;
+            if(valueNew && me.listPaymentTerm){//Nếu hai đối tượng này tồn tại
+                if(!me.existValueInArrayObject(me.listPaymentTerm,'PaymentTermName', valueNew)){
+                    me.isShowComboboxPaymentTerm = true;
+                    me.listPaymentTermTemp = me.selectFilterObject(me.listPaymentTerm,'PaymentTermName', valueNew);
+                } 
+            }
+            
+        },
     },
     methods: {
         btnSave(value) {
@@ -295,8 +366,57 @@ export default {
         changeTypeDetail() {
             // alert("change type detail");
         },
-        
-      
+
+
+
+        /**
+         * Thực hiện khi thay đổi giá trị trong ô input
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        changeInputComboboxPaymentTerm(){
+            this.account.PaymentTermId = null;
+        },
+         /**
+         * Thực hiện click vào item bất kì trong data combobox PayAccount
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnSelectItemPaymentTerm({object}){
+            this.account.PaymentTermId = object.PaymentTermId;
+            this.account.PaymentTermName = object.PaymentTermName;
+            this.isShowComboboxPaymentTerm = false;  
+        },
+        /**
+         * Thực hiện click vào nút dropdown ở combobox PaymentTerm
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnClickDropdownPaymentTerm(){
+            this.listPaymentTermTemp = this.listPaymentTerm;//Thực hiện gán toàn bộ dữ liệu vào tạm
+            this.isShowComboboxPaymentTerm = !this.isShowComboboxPaymentTerm;
+        },
+         /**
+         * Thực hiện khi thay đổi giá trị trong ô input
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        changeInputComboboxPayAccount(){
+            this.account.PayAccountId = null;
+        },
+         /**
+         * Thực hiện click vào item bất kì trong data combobox PayAccount
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnSelectItemPayAccount({object}){
+            this.account.PayAccountId = object.PayAccountId;
+            this.account.PayAccountName = object.PayAccountName;
+            this.isShowComboboxPayAccount = false;  
+        },
+        /**
+         * Thực hiện click vào nút dropdown ở combobox PayAccount
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        btnClickDropdownPayAccount(){
+            this.listPayAccountTemp = this.listPayAccount;//Thực hiện gán toàn bộ dữ liệu vào tạm
+            this.isShowComboboxPayAccount = !this.isShowComboboxPayAccount;
+        },
         /**
          * Thực hiện khi thay đổi giá trị trong ô input
          * CreatedBy: HoaiPT(02/03/2021)
@@ -370,12 +490,34 @@ export default {
             this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
             this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
         },
+        async getListPaymentTerm() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/PaymentTerms')
+                    .then(function(res) {
+                        me.listPaymentTerm = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
         async getListEmployee() {
             try {
                 var me = this;
                 await axios.get('https://localhost:44338/api/v1/Employees')
                     .then(function(res) {
                         me.listEmployee = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        async getListPayAccount() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/PayAccounts')
+                    .then(function(res) {
+                        me.listPayAccount = res.data;
                     })
             } catch {
                 console.log(mylib.resourcs["VI"].errorMsg);
