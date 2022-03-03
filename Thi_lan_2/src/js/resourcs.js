@@ -6,13 +6,20 @@ var resourcs = {
         fileNameAccountObjectExport: "Danh_sach_nha_cung_cap",
         deleteMulti: "Bạn thực sự có muốn xóa những nhân viên đã chọn không?",
         confirmEdit: "Dữ liệu đã bị thay đổi bạn có muốn cất không?",
-        errorEmployeeCode: "Mã nhân viên không đúng định dạng!",
+        errorFormatCode: "Mã không đúng định dạng!",
         notNullFullName: "Tên không được phép để trống!",
-        notNullEmployeeCode: "Mã không được phép để trống!",
-        notNullDepartmentName: "Đơn vị không được phép để trống!",
+        notNullCode: "Mã không được phép để trống!",
+        notNullAll: " không được phép để trống!",
         inputSearch: "Nhập từ khóa tìm kiếm",
 
         titleErrorRemoveAccountObject: "Xóa không thành công, Mã đã có phát sinh !",
+
+        notNullName: "Tên không được để trống!",
+
+        notExistEmployeeId: "Không tồn tại mã nhân viên!",
+        notExistPayAccountId: "Không tồn tại mã tài khoản công nợ!",
+        notExistPaymentTermId: "Không tồn tại mã tài điều khoản!",
+        notExistAccountObjectGroupId: "Không tồn tại nhóm mã nhà cung cấp!",
     }
 }
 var misaEnum = {

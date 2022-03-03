@@ -20,7 +20,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Khóa chính
         /// </summary>
         [Primarykey]
-        public Guid AccountObjectId { get; set; }
+        public Guid? AccountObjectId { get; set; }
 
         /// <summary>
         /// Mã nhà cung cấp
@@ -34,7 +34,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// </summary>
         [NotEmpty]
         [PropertyName("Tên nhà cung cấp")]
-        public string AccountObjectName { get; set; }
+        public string? AccountObjectName { get; set; }
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Danh sách nhóm nhà cung cấp
         /// </summary>
         [PropertyName("Danh sách nhóm nhà cung cấp")]
-        public string AccountObjectGroupListId { get; set; }
+        public string? AccountObjectGroupListId { get; set; }
 
 
         /// <summary>

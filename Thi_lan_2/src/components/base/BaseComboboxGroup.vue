@@ -1,5 +1,5 @@
 <template>
-<div :style="styleComboboxGroup" v-click-outside="hideDataDropDown" >
+<div :style="styleComboboxGroup" v-click-outside="hideDataDropDown" :title="title">
     <div v-if="label" class="m-label">
         <div>{{label}}</div>&nbsp;
         <div v-if="isRequire" style="color:red;">*</div>
@@ -83,6 +83,10 @@ export default {
         label: {
             default: "",
             type: String
+        },
+        title:{
+            default:"",
+            type:String
         },
         isRequire: { //Xem trường có bắt buộc có hay không
             default: false,

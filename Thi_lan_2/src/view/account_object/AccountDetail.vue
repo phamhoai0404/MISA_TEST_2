@@ -31,11 +31,21 @@
                             </div>
 
                             <div class="right-row">
-                                <BaseInput typeInput="input" label="Mã nhà cung cấp" :isRequire="true" v-model="account.AccountObjectCode" :readOnly="readOnly" />
+                                <BaseInput typeInput="input" label="Mã nhà cung cấp" :isRequire="true"
+                                    v-model="account.AccountObjectCode" 
+                                    :readOnly="readOnly"
+                                    :errorInput="errorCode"
+                                    :title="titleCode"
+                                 />
                             </div>
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="input" label="Tên nhà cung cấp" :isRequire="true" v-model="account.AccountObjectName" />
+                            <BaseInput typeInput="input" label="Tên nhà cung cấp" :isRequire="true" 
+                                v-model="account.AccountObjectName"
+                                :readOnly="readOnly"
+                                :errorInput="errorName"
+                                :title="titleName" 
+                            />
                         </div>
                         <div class="dialog-one-row">
                             <BaseInput typeInput="textarea" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" label="Địa chỉ" v-model="account.Address"/>
@@ -52,8 +62,10 @@
                             </div>
                         </div>
                         <div class="dialog-one-row">
-                            <BaseComboboxGroup label="Nhân viên mua hàng"
+                            <BaseComboboxGroup label="Nhóm nhà cung cấp"
                                 v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
+                                :errorCombobox="errorAccountObjectGroup"
+                                :title="titleAccountObjectGroup"
                                 :isShowDataDropdown="isShowDropDownAccountObjectGroup"
                                 :listData="listAccountObjectGroupTemp"
                                 :listFields="listFieldAccountObjectGroup"
@@ -69,6 +81,8 @@
                              <BaseComboboxNormal label="Nhân viên mua hàng"
                                 v-model="account.FullName"
                                 :isComboboxTable="true"
+                                :errorCombobox="errorEmployee"
+                                :title="titleEmployee"
                                 :isButtonAdd="true"
                                 :isShowDataDropdown="isShowComboboxEmployee"
                                 :listData="listEmployeeTemp"
@@ -124,6 +138,8 @@
                                 <div class="tab-only-one">
                                      <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
                                         v-model="account.PaymentTermName"
+                                        :errorCombobox="errorPaymentTerm"
+                                        :title="titlePaymentTerm"
                                         :isComboboxTable="true"
                                         :isButtonAdd="true"
                                         :isShowDataDropdown="isShowComboboxPaymentTerm"
@@ -142,6 +158,8 @@
                                 <div class="tab-only-one">
                                     <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
                                         v-model="account.PayAccountName"
+                                        :errorCombobox="errorPayAccount"
+                                        :title="titlePayAccount"
                                         :isComboboxTable="true"
                                         :isShowDataDropdown="isShowComboboxPayAccount"
                                         :listData="listPayAccountTemp"
@@ -214,12 +232,24 @@
             </div>
         </div>
     </div>
-<BaseMessQuestion  v-if="isShowMessQuestion"
+<BaseMess  v-if="isShowMessQuestion"
     typeMessage="question" 
     :titleForm="titleMessQuestion"
     @btnCancel="isShowMessQuestion = false"
     @btnYes="btnSave(1)" 
     @btnNo="btnCloseForm"
+/>
+<BaseMess  v-if="isShowMessWarning"
+    typeMessage="warning" 
+    :titleForm="titleMessWarning"
+    @btnYes="isShowMessWarning = false"
+    
+/>
+<BaseMess  v-if="isShowMessInfo"
+    typeMessage="info" 
+    :titleForm="titleMessInfo"
+    @btnClose="isShowMessInfo = false"
+    
 />
 </div>
 </template>
@@ -231,7 +261,7 @@ import BaseRadio from '@/components/base/BaseRadio.vue'
 import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
-import BaseMessQuestion from '@/components/base/BaseMessage.vue'
+import BaseMess from '@/components/base/BaseMessage.vue'
 import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
 
 
@@ -248,7 +278,7 @@ export default {
         BaseCheckbox,
         BaseInput,
         BaseComboboxNormal,
-        BaseMessQuestion,
+        BaseMess,
         BaseComboboxGroup
     },
     props:{
@@ -275,11 +305,20 @@ export default {
 
                 PayAccountId:null,
                 PayAccountName:null,
+                
+                AccountObjectCode:null,
+                AccountObjectName:null
 
             },
 
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
             isShowMessQuestion:false,
+
+            isShowMessWarning:false,
+            titleMessWarning:"",
+
+            isShowMessInfo:false,
+            titleMessInfo:"DDos lnha",
 
             isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
             listEmployee:null,
@@ -303,8 +342,25 @@ export default {
             listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
 
             listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
-            textSearchAccountObjectGroup:""
+            textSearchAccountObjectGroup:"",
+
+            errorCode:false,//Lỗi hay không lỗi của code
+            titleCode:"",//Title thể hiện là chữ phù hợp
+
+            errorName:false,//Lỗi hay không lỗi của Name
+            titleName:"",
+
+            errorEmployee:false,
+            titleEmployee:"",
+
+            errorPayAccount:false,
+            titlePayAccount:"",
+
+            errorPaymentTerm:false,
+            titlePaymentTerm:"",
             
+            errorAccountObjectGroup:false,
+            titleAccountObjectGroup:"",
         }
     },
     async created(){
@@ -322,6 +378,7 @@ export default {
         await me.getListPaymentTerm()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
         await me.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
         
+        //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
         this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
     },
     watch:{
@@ -352,6 +409,8 @@ export default {
                     me.listEmployeeTemp = me.selectFilterObject(me.listEmployee,'FullName', valueNew);
                 } 
             }
+            me.errorEmployee = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
+            me.titleEmployee="";
             
         },
          /**
@@ -366,6 +425,8 @@ export default {
                     me.listPayAccountTemp = me.selectFilterObject(me.listPayAccount,'PayAccountName', valueNew);
                 } 
             }
+            me.errorPayAccount = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
+            me.titlePayAccount="";
             
         },
          /**
@@ -380,40 +441,302 @@ export default {
                     me.listPaymentTermTemp = me.selectFilterObject(me.listPaymentTerm,'PaymentTermName', valueNew);
                 } 
             }
+            me.errorPaymentTerm=false;
+            me.titlePaymentTerm="";
             
         },
         /**
          * Thực hiện theo dõi những chữ trong ô input của combobox của AccountObjectGroup
+         * CreatedBy: HoaiPT(02/03/2021)
          */
-         'textSearchAccountObjectGroup'( valueNew){
+        'textSearchAccountObjectGroup'( valueNew){
             var me = this;
             me.isShowDropDownAccountObjectGroup = true;
             me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
-          
+
+            me.errorAccountObjectGroup = false;
+            me.titleAccountObjectGroup = "";
         },
+        /**
+         * Thực hiện theo dõi AccountObjectCode
+         * CreatedBy: HoaiPT(03/03/2021)
+         */
+        'account.AccountObjectCode'(valueNew){
+            var me = this;
+            if(valueNew !=null){
+                 if(valueNew.trim()==""){//Nếu mà nó để trống thì báo lỗi
+                    me.errorCode = true;
+                    me.titleCode = mylib.resourcs["VI"].notNullCode;
+                }else{//Còn nếu mà không trống thì không báo lỗi gì cả
+                    me.errorCode = false;
+                    me.titleCode = "";
+                }
+            }
+           
+            
+        },
+         /**
+         * Thực hiện theo dõi AccountObjectName
+         * CreatedBy: HoaiPT(03/03/2021)
+         */
+        'account.AccountObjectName'(valueNew){
+            var me = this;
+                if(valueNew !=null ){//Nếu tồn tại
+                    if(valueNew.trim()==""){//Nếu mà nó để trống thì báo lỗi
+                    me.errorName = true;
+                    me.titleName = mylib.resourcs["VI"].notNullName;
+                }else{//Còn nếu mà không trống thì không báo lỗi gì cả
+                    me.errorName = false;
+                    me.titleName = "";
+                }
+            }
+        },
+        
     },
     methods: {
-        btnSave(value) {
-            // var me = this;
-            // let xinhgai= new Array();
-            // xinhgai.push("lan");
-            // xinhgai.push("hoa");
-            // xinhgai.push("ngọc");
-            console.log("value " + value, this.account);
-            // me.account.AccountObjectGroupListId = xinhgai;
-            // axios.post('https://localhost:44338/api/v1/AccountObjects', me.account)
-            //     .then(function () {
-            //         console.log("được nha");
-            //     })
-            //     .catch(function () {
-            //         console.log("lỗi nhá nha");
-            //     })
+        /**
+         * Hành động khi ấn vào nút (Cất) hoặc (Cất và Thêm)
+         *CreatedBy: HoaiPT(03/03/2022)
+         */
+        async  btnSave(value) {
+             try {
+                var me = this;
+                if(! await me.validateNotNull()){ //Kiểm tra những trường không được để trống nếu để trống thì return luôn
+                    return;
+                }
+                if(!await me.validateFormatAccountObjectCode()){ //Kiểm tra định dạng của mã code
+                    return;
+                }
+                if(!await me.validateEmployee()){//Kiểm tra mã nhân viên mua hàng
+                    return;
+                }
+                if(!await me.validatePaymentTerm()){//Kiểm tra mã điều khoản
+                    return;
+                }
+                if(!await me.validatePayAccount()){//Kiểm tra mã tài khoản công nợ
+                    return;
+                }
+                if(!await me.validateAccountObjectGroup()){
+                    return;
+                }
+              
+
+                let tamp= me.listAccountGroupSelected.join(",");
+                me.account.AccountObjectGroupListId = tamp;
+                console.log("giá trị là ", me.account);
+                switch (me.editMode) {
+                    case mylib.misaEnum.editMode.Add: //Thực hiện thêm mới
+                        await axios.post('https://localhost:44338/api/v1/AccountObjects', me.account)
+                            .then(function () {
+                                me.checkAction(value);
+                            })
+                            .catch(function () {
+                                me.openWarning();
+                            })
+                        break;
+                    case mylib.misaEnum.editMode.Edit: //Thực hiện sửa
+                        await axios.put(`https://localhost:44338/api/v1/AccountObjects/${me.account.AccountObjectId}`, me.account)
+                            .then(function () {
+                                me.checkAction(value);
+                            })
+                            .catch(function () {
+                                me.openWarning();
+                            })
+                        break;
+                    default:
+                        alert('có lỗi xảy ra có thể bạn đang đi vào xem rồi');
+                        break;
+                }
+            } catch (error) {
+                console.error('Lỗi gì đó ' + error);
+            }
         },
-       
-        changeTypeDetail() {
-            // alert("change type detail");
+         /**
+         * Thực hiện kiểm tra ô input nhóm nhà cung cấp
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validateAccountObjectGroup(){
+            var me = this;
+            if(me.textSearchAccountObjectGroup.trim()!=""){
+                me.errorAccountObjectGroup = true;
+                me.titleAccountObjectGroup = mylib.resourcs["VI"].notExistAccountObjectGroupId;
+
+                me.titleMessInfo = mylib.resourcs["VI"].notExistAccountObjectGroupId;
+                me.isShowMessInfo = true;
+                return false;
+            }
+            return true;
+        },
+        /**
+         * Thực hiện kiểm tra ô input điều khoản
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validatePaymentTerm(){
+            var me = this;
+            if(me.account.PaymentTermId == null){//Nếu mà không tồn tại mã
+                if(me.account.PaymentTermName == null)//Nếu không tồn tại
+                    return true;//Cho qua
+                else{
+                    if(me.account.PaymentTermName.trim()==""){//Nếu mà bằng rỗng thì cũng cho qua
+                        return true;//Cho qua
+                    }else {
+                        me.errorPaymentTerm = true;
+                        me.titlePaymentTerm = mylib.resourcs["VI"].notExistPaymentTermId;
+
+                        me.titleMessInfo = mylib.resourcs["VI"].notExistPaymentTermId;
+                        me.isShowMessInfo = true;
+                        return false;//Nếu mà tồn tại giá trị thì không cho qua
+                    }
+                }
+            }
+            return true;//Cho qua
+        },
+        /**
+         * Thực hiện kiểm tra ô input tài khoản công nợ
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validatePayAccount(){
+            var me = this;
+            if(me.account.PayAccountId == null){//Nếu mà không tồn tại mã
+                if(me.account.PayAccountName == null)//Nếu không tồn tại
+                    return true;//Cho qua
+                else{
+                    if(me.account.PayAccountName.trim()==""){//Nếu mà bằng rỗng thì cũng cho qua
+                        return true;//Cho qua
+                    }else {
+                        me.errorPayAccount = true;
+                        me.titlePayAccount = mylib.resourcs["VI"].notExistPayAccountId;
+
+                        me.titleMessInfo = mylib.resourcs["VI"].notExistPayAccountId;
+                        me.isShowMessInfo = true;
+                        return false;//Nếu mà tồn tại giá trị thì không cho qua
+                    }
+                }
+            }
+            return true;//Cho qua
+        },
+        /**
+         * Thực hiện kiểm tra ô input nhân viên mua hàng
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validateEmployee(){
+            var me = this;
+            if(me.account.EmployeeId == null){//Nếu mà không tồn tại mã
+                if(me.account.FullName == null)//Nếu không tồn tại FullName
+                    return true;//Cho qua
+                else{
+                    if(me.account.FullName.trim()==""){//Nếu mà FullName bằng rỗng thì cũng cho qua
+                        return true;//Cho qua
+                    }else {
+                        me.errorEmployee = true;
+                        me.titleEmployee = mylib.resourcs["VI"].notExistEmployeeId;
+
+                        me.titleMessInfo = mylib.resourcs["VI"].notExistEmployeeId;
+                        me.isShowMessInfo = true;
+                        return false;//Nếu mà tồn tại giá trị thì không cho qua
+                    }
+                }
+            }
+            return true;//Cho qua
         },
 
+        /**
+         * Thực hiện validate Code xem có chuẩn không
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validateFormatAccountObjectCode() {
+            var me = this;
+            let temp = /^NCC[0-9]{5}$/.test(me.account.AccountObjectCode);
+            if (temp == true)return true;
+            else{
+                me.errorCode = true;
+                me.titleCode = mylib.resourcs["VI"].errorFormatCode;
+                me.titleMessInfo = mylib.resourcs["VI"].errorFormatCode;
+                me.isShowMessInfo = true;
+                return false;
+            }       
+        },
+        /**
+         * Thực hiện kiểm tra những ô not null
+         * CreatedBy: HoaiPT(03/03/2022)
+         */
+        validateNotNull(){
+            var me = this;
+            let titleTemp = "";
+            if(me.account.AccountObjectCode.trim()==""){
+                me.errorCode = true;
+                me.titleCode = mylib.resourcs["VI"].notNullCode;
+                titleTemp +="Mã";
+            }
+            if(me.account.AccountObjectName == null || me.account.AccountObjectName.trim()==""){
+                me.errorName = true;
+                me.titleName = mylib.resourcs["VI"].notNullName;
+                titleTemp += titleTemp !=""? ", Tên": " Tên";
+            }
+            if(titleTemp=="")return true;
+            else{
+                me.titleMessInfo = titleTemp + mylib.resourcs["VI"].notNullAll;
+                me.isShowMessInfo = true;
+                return false;
+            }
+        },
+        /**
+         * Mở form cảnh báo khi có lỗi
+         *CreatedBy: HoaiPT(03/03/2022)
+         */
+        openWarning(){
+            var me = this;
+            me.titleMessWarning =  `Mã  nhân viên <${me.account.AccountObjectCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`;
+            me.isShowMessWarning = true;
+            me.errorCode = true;//Thể hiện viền đỏ của ô Code,
+            me.titleCode = "Mã đã tồn tại!";
+        },
+        /**
+         * Thực hiện kiểm tra xem là hành động (Cất) | (Cất và Thêm) để thực hiện phù hợp
+         * 1: Cất
+         * 2: Cất và Thêm
+         *CreatedBy: HoaiPT(03/03/2022)
+         */
+        async checkAction(value) {
+            var me = this;
+            switch (value) {
+                case 1: //Nếu là cất
+                    me.$parent.isShowAccountDetail = false;//Thực hiện đóng form 
+                    await me.$parent.showData();//Load lại dữ liệu
+                    break;
+                case 2: //Nếu là cất và thêm 
+                    me.$parent.editModeTable = mylib.misaEnum.editMode.Add; //Đây là hành động thêm mới
+                    await me.$parent.showData();//Load lại dữ liệu
+                    await me.resetFormDetail(); //reset form 
+                    await me.getCodeNewDetail();//Lấy mã mới  và đồng thời form message question hay không khi click vào nút tích ở góc bên phải trên cùng màn hình
+                    break;
+                default:
+                    break;
+            }
+        },
+        /**
+         * Thực hiện lấy mã mới cho account
+         * CreatedBy:HoaiPT(03/03/2022)
+         */
+        async getCodeNewDetail(){
+            var me = this;
+            me.$parent.accountSelected={};//Phục vụ cho mục đích nếu có hiện form message question hay không
+            await me.$parent.getCodeNew(); //Lấy ở data mã code mới
+            me.account.AccountObjectCode = me.$parent.accountSelected.AccountObjectCode;
+        },
+        /**
+         * Làm mới form detail
+         *CreatedBy: HoaiPT(03/03/2022)
+         */
+        resetFormDetail() {
+            var me = this;
+            me.textSearchAccountObjectGroup="";//Ô tìm kiếm trong searchgroud == rỗng,
+            me.listAccountGroupSelected=[];//gán đang lựa chọn bằng []
+            //Làm mới toàn bộ để lại mã mới tự tăng
+            for (var propName in me.account) {
+                me.account[propName] = null;
+            }
+        },
         /**
          * Thực hiện khi click vào nút đóng nhỏ của mỗi item AccountObjectGroup ở trong ô
          * Đó là thực hiện xóa nó đi khỏi mảng
@@ -564,6 +887,11 @@ export default {
             this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
             this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
         },
+         /**
+         * Thực hiện khi khi thay đổi giá trị của tổ chức hay cá nhân ấy nhưng hiện tại chỉ cần vẽ thôi
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
+        changeTypeDetail(){},
         async getListPaymentTerm() {
             try {
                 var me = this;
