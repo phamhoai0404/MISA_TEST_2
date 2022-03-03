@@ -20,6 +20,8 @@ var resourcs = {
         notExistPayAccountId: "Không tồn tại mã tài khoản công nợ!",
         notExistPaymentTermId: "Không tồn tại mã tài điều khoản!",
         notExistAccountObjectGroupId: "Không tồn tại nhóm mã nhà cung cấp!",
+
+        noActionEvery: "Không thể thực hiện vì bạn đang xem!",
     }
 }
 var misaEnum = {

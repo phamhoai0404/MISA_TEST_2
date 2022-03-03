@@ -12,17 +12,17 @@
             ] " 
         :placeholder="[[placeholder]]"  
         :value="value" @input="onInput"
-        :ref="refText"
         :readonly="readOnly"
+        ref="input"
     >
     <textarea v-else-if="typeInput == 'textarea' "
         type="text" class="m-input m-input-textarea"
         :class=" [hasIcon?'m-input-icon':'', readOnly?'m-input-readOnly':'', errorInput? 'm-border-red':''] " 
         :placeholder="[[placeholder]]" 
         :value="value" @input="onInput"
-        :ref="refText"
         :readonly="readOnly"
         :style="styleTextArea"
+        ref="input"
     />
 </div>
 </template>
@@ -45,7 +45,6 @@ export default {
             default: false,
             type: Boolean
         },
-        refText:String,
         readOnly:{
             default:false,
             type:Boolean
@@ -79,7 +78,11 @@ export default {
          */
         onInput(event) {
             this.$emit('input', event.target.value) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
+        },
+        focus: function () {
+            this.$refs.input.focus()
         }
+        
     },
 }
 </script>

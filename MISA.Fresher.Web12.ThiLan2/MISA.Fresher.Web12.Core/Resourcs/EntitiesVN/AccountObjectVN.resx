@@ -180,6 +180,9 @@
   <data name="ProvinceOrCity" xml:space="preserve">
     <value>Thành phố</value>
   </data>
+  <data name="RegexAccountObjectCode" xml:space="preserve">
+    <value>^NCC[0-9]{5}$</value>
+  </data>
   <data name="TaxCode" xml:space="preserve">
     <value>Mã số thuế</value>
   </data>

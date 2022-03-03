@@ -128,7 +128,7 @@
     <value>Có lỗi xảy ra vui lòng liên hệ MISA để được trợ giúp!</value>
   </data>
   <data name="ErrorFormatCode" xml:space="preserve">
-    <value>Không đúng định dạng mã nhân viên!</value>
+    <value>Không đúng định dạng mã!</value>
   </data>
   <data name="Gender_Female" xml:space="preserve">
     <value>Nữ</value>

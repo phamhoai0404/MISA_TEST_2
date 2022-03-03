@@ -250,6 +250,15 @@ namespace MISA.Fresher.Web12.Core.Resourcs.EntitiesVN {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ^NCC[0-9]{5}$.
+        /// </summary>
+        public static string RegexAccountObjectCode {
+            get {
+                return ResourceManager.GetString("RegexAccountObjectCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mã số thuế.
         /// </summary>
         public static string TaxCode {

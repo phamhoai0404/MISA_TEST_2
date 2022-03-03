@@ -4,6 +4,7 @@
         <div class="dialog-header">
             <div class="dialog-title">
                 <div class="title">Thông tin nhà cung cấp</div>
+                
                 <div class="group-function">
                     <div class="group-radio">
                         <BaseRadio label="Tổ chức" styleRadio="margin-right:20px;" id="organization" name="typeRadioDetail" valueReal="1" @change="changeTypeDetail" :value="typeDetail" />
@@ -20,16 +21,18 @@
                 <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseToolTip" title="Đóng(ESC)" shortKey="['esc']"  />
             </div>
         </div>
-
         <div class="dialog-body">
             <div class="dialog-main" id="dialog-main">
                 <div class="dialog-main-one">
                     <div class="dialog-one-left">
                         <div class="dialog-two-row">
                             <div class="left-row">
-                                <BaseInput typeInput="input" label="Mã số thuế" />
+                                <BaseInput typeInput="input" label="Mã số thuế"
+                                    v-model="account.TaxCode"
+                                    :readOnly="readOnly" 
+                                    ref="TaxCode" 
+                                 />
                             </div>
-
                             <div class="right-row">
                                 <BaseInput typeInput="input" label="Mã nhà cung cấp" :isRequire="true"
                                     v-model="account.AccountObjectCode" 
@@ -48,22 +51,31 @@
                             />
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="textarea" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" label="Địa chỉ" v-model="account.Address"/>
+                            <BaseInput typeInput="textarea" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" label="Địa chỉ" 
+                                v-model="account.Address"
+                                :readOnly="readOnly"
+                            />
                         </div>
                     </div>
                     <div class="dialog-one-right">
                         <div class="dialog-two-row">
                             <div class="left-row">
-                                <BaseInput typeInput="input" label="Điện thoại" v-model="account.Phone"/>
+                                <BaseInput typeInput="input" label="Điện thoại" 
+                                v-model="account.Phone"
+                                :readOnly="readOnly"
+                                />
                             </div>
-
                             <div class="right-row">
-                                <BaseInput typeInput="input" label="Website" v-model="account.Website"/>
+                                <BaseInput typeInput="input" label="Website" 
+                                    v-model="account.Website"
+                                    :readOnly="readOnly"
+                                />
                             </div>
                         </div>
                         <div class="dialog-one-row">
-                            <BaseComboboxGroup label="Nhóm nhà cung cấp"
+                            <BaseComboboxGroup label="Nhóm nhà cung cấp" 
                                 v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
+                                :readOnly="readOnly"
                                 :errorCombobox="errorAccountObjectGroup"
                                 :title="titleAccountObjectGroup"
                                 :isShowDataDropdown="isShowDropDownAccountObjectGroup"
@@ -80,6 +92,7 @@
                         <div class="dialog-one-row">
                              <BaseComboboxNormal label="Nhân viên mua hàng"
                                 v-model="account.FullName"
+                                :readOnly="readOnly"
                                 :isComboboxTable="true"
                                 :errorCombobox="errorEmployee"
                                 :title="titleEmployee"
@@ -106,31 +119,44 @@
                             <div class="tab-left">
                                 <div class="tab-two-row">
                                     <div class="tab-two-left" style="width:30%">
-                                        <BaseComboboxNormal v-model="account.Prefix"
-                                            label="Người liên hệ" placeholder="Xưng hô"
+                                        <BaseComboboxNormal label="Người liên hệ" placeholder="Xưng hô"
+                                            v-model="account.Prefix"
+                                            :readOnly="readOnly"
                                             :isShowDataDropdown="isShowComboboxPrefix"
                                             :listData="listDataPrefixTemp"
                                             @hideDataDropDown="isShowComboboxPrefix = false"
                                             @btnClickDropdown="btnClickDropdownPrefix"
                                             @btnClickItem="btnSelectItemPrefix" 
-                                            :readOnly="readOnly"
+                                           
                                         />
                                     </div>
                                     <div class="tab-two-right" style="width:68%">
-                                        <BaseInput typeInput="input" placeholder="Họ và tên" v-model="account.EinvoiceContactName"/>
+                                        <BaseInput typeInput="input" placeholder="Họ và tên" 
+                                            v-model="account.EinvoiceContactName"
+                                            :readOnly="readOnly"
+                                        />
                                     </div>
 
                                 </div>
                                 <div class="tab-one-row">
-                                    <BaseInput typeInput="input" placeholder="Email" v-model="account.EinvoiceContactEmail"/>
+                                    <BaseInput typeInput="input" placeholder="Email" 
+                                        v-model="account.EinvoiceContactEmail"
+                                        :readOnly="readOnly"
+                                    />
                                 </div>
                                 <div class="tab-one-row">
-                                    <BaseInput typeInput="input" placeholder="Số điện thoại" styleInput="width:40%;" v-model="account.EinvoiceContactMobile"/>
+                                    <BaseInput typeInput="input" placeholder="Số điện thoại" styleInput="width:40%;" 
+                                        v-model="account.EinvoiceContactMobile"
+                                        :readOnly="readOnly"
+                                    />
                                 </div>
 
                             </div>
                             <div class="tab-right">
-                                <BaseInput typeInput="input" label="Đại diện theo PL" placeholder="Đại diện theo PL" title="Đại diện theo pháp luật" v-model="account.LegalRepresentative"/>
+                                <BaseInput typeInput="input" label="Đại diện theo PL" placeholder="Đại diện theo PL" title="Đại diện theo pháp luật" 
+                                    v-model="account.LegalRepresentative"
+                                    :readOnly="readOnly"
+                                />
                             </div>
                         </span>
                         <span v-if="tabSelected == 1">
@@ -138,6 +164,7 @@
                                 <div class="tab-only-one">
                                      <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
                                         v-model="account.PaymentTermName"
+                                        :readOnly="readOnly"
                                         :errorCombobox="errorPaymentTerm"
                                         :title="titlePaymentTerm"
                                         :isComboboxTable="true"
@@ -152,12 +179,19 @@
                                         @btnClickItemTable="btnSelectItemPaymentTerm"
                                         @input="changeInputComboboxPaymentTerm"
                                     />
-                                    <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" v-model="account.DueTime"/>
-                                    <BaseInput typeInput="input" label="Số nợ tối đa" :isNumber="true" v-model="account.MaximizeDebtAmount"/>
+                                    <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" 
+                                        v-model="account.DueTime"
+                                        :readOnly="readOnly"
+                                    />
+                                    <BaseInput typeInput="input" label="Số nợ tối đa" :isNumber="true" 
+                                        v-model="account.MaximizeDebtAmount"
+                                        :readOnly="readOnly"
+                                    />
                                 </div>
                                 <div class="tab-only-one">
                                     <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
                                         v-model="account.PayAccountName"
+                                        :readOnly="readOnly"
                                         :errorCombobox="errorPayAccount"
                                         :title="titlePayAccount"
                                         :isComboboxTable="true"
@@ -212,7 +246,10 @@
                         </span>
                         <span v-if="tabSelected == 4">
                             <div style="width:100%">
-                                <BaseInput typeInput="textarea" styleTextArea="height:215px;" v-model="account.Description"/>
+                                <BaseInput typeInput="textarea" styleTextArea="height:215px;" 
+                                    v-model="account.Description"
+                                    :readOnly="readOnly"
+                                />
                             </div>
                         </span>
 
@@ -381,6 +418,10 @@ export default {
         //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
         this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
     },
+    mounted() {
+       this.$refs.TaxCode.focus() //Tập trung vào ô mã đầu tiên
+    },
+    
     watch:{
         /**
          * Thực hiện theo dõi Prefix
@@ -401,16 +442,17 @@ export default {
          * Thực hiện theo dõi FullName đồng thời thay đổi giá trị của EmployeeId
          * CreatedBy: HoaiPT(02/03/2021)
          */
-        'account.FullName'( valueNew){
+        'account.FullName'(valueNew){
             var me = this;
+            me.errorEmployee = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
+            me.titleEmployee="";
+
             if(valueNew && me.listEmployee){//Nếu hai đối tượng này tồn tại
                 if(!me.existValueInArrayObject(me.listEmployee,'FullName', valueNew)){
                     me.isShowComboboxEmployee = true;
                     me.listEmployeeTemp = me.selectFilterObject(me.listEmployee,'FullName', valueNew);
                 } 
-            }
-            me.errorEmployee = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
-            me.titleEmployee="";
+            }    
             
         },
          /**
@@ -419,15 +461,15 @@ export default {
          */
         'account.PayAccountName'( valueNew){
             var me = this;
+            me.errorPayAccount = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
+            me.titlePayAccount="";
+
             if(valueNew && me.listPayAccount){//Nếu hai đối tượng này tồn tại
                 if(!me.existValueInArrayObject(me.listPayAccount,'PayAccountName', valueNew)){
                     me.isShowComboboxPayAccount = true;
                     me.listPayAccountTemp = me.selectFilterObject(me.listPayAccount,'PayAccountName', valueNew);
                 } 
-            }
-            me.errorPayAccount = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
-            me.titlePayAccount="";
-            
+            } 
         },
          /**
          * Thực hiện theo dõi PaymentTermName đồng thời thay đổi giá trị của PaymentTermId
@@ -435,14 +477,16 @@ export default {
          */
         'account.PaymentTermName'(valueNew){
             var me = this;
+            me.errorPaymentTerm=false;
+            me.titlePaymentTerm="";
+            
+
             if(valueNew && me.listPaymentTerm){//Nếu hai đối tượng này tồn tại
                 if(!me.existValueInArrayObject(me.listPaymentTerm,'PaymentTermName', valueNew)){
                     me.isShowComboboxPaymentTerm = true;
                     me.listPaymentTermTemp = me.selectFilterObject(me.listPaymentTerm,'PaymentTermName', valueNew);
                 } 
             }
-            me.errorPaymentTerm=false;
-            me.titlePaymentTerm="";
             
         },
         /**
@@ -451,11 +495,14 @@ export default {
          */
         'textSearchAccountObjectGroup'( valueNew){
             var me = this;
-            me.isShowDropDownAccountObjectGroup = true;
-            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
 
             me.errorAccountObjectGroup = false;
             me.titleAccountObjectGroup = "";
+
+            me.isShowDropDownAccountObjectGroup = true;
+            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
+
+           
         },
         /**
          * Thực hiện theo dõi AccountObjectCode
@@ -499,31 +546,30 @@ export default {
          *CreatedBy: HoaiPT(03/03/2022)
          */
         async  btnSave(value) {
-             try {
+            try {
                 var me = this;
-                if(! await me.validateNotNull()){ //Kiểm tra những trường không được để trống nếu để trống thì return luôn
+                //DO XẢY RA BẤT ĐỒNG BỘ NÊN MỚI PHẢI VIẾT DÀI NHƯ NÀY
+                if(! me.validateNotNull()){ //Kiểm tra những trường không được để trống nếu để trống thì return luôn
                     return;
                 }
-                if(!await me.validateFormatAccountObjectCode()){ //Kiểm tra định dạng của mã code
+                if(!me.validateFormatAccountObjectCode()){ //Kiểm tra định dạng của mã code
                     return;
                 }
-                if(!await me.validateEmployee()){//Kiểm tra mã nhân viên mua hàng
+                if(!me.validateAccountObjectGroup()){
                     return;
                 }
-                if(!await me.validatePaymentTerm()){//Kiểm tra mã điều khoản
+                if(!me.validateEmployee()){//Kiểm tra mã nhân viên mua hàng
                     return;
                 }
-                if(!await me.validatePayAccount()){//Kiểm tra mã tài khoản công nợ
+                if(!me.validatePaymentTerm()){//Kiểm tra mã điều khoản
                     return;
                 }
-                if(!await me.validateAccountObjectGroup()){
+                if(!me.validatePayAccount()){//Kiểm tra mã tài khoản công nợ
                     return;
                 }
-              
+                let temp= me.listAccountGroupSelected.join(",");
+                me.account.AccountObjectGroupListId = temp;
 
-                let tamp= me.listAccountGroupSelected.join(",");
-                me.account.AccountObjectGroupListId = tamp;
-                console.log("giá trị là ", me.account);
                 switch (me.editMode) {
                     case mylib.misaEnum.editMode.Add: //Thực hiện thêm mới
                         await axios.post('https://localhost:44338/api/v1/AccountObjects', me.account)
@@ -543,15 +589,19 @@ export default {
                                 me.openWarning();
                             })
                         break;
+                    case mylib.misaEnum.editMode.View: //Thực hiện xem
+                        me.titleMessInfo = mylib.resourcs["VI"].noActionEvery;
+                        me.isShowMessInfo = true;
+                        break;
                     default:
-                        alert('có lỗi xảy ra có thể bạn đang đi vào xem rồi');
+                        alert(mylib.resourcs["VI"].errorMsg);
                         break;
                 }
-            } catch (error) {
-                console.error('Lỗi gì đó ' + error);
+            } catch {
+                console.error(mylib.resourcs["VI"].errorMsg);
             }
         },
-         /**
+        /**
          * Thực hiện kiểm tra ô input nhóm nhà cung cấp
          * CreatedBy: HoaiPT(03/03/2022)
          */
@@ -560,7 +610,6 @@ export default {
             if(me.textSearchAccountObjectGroup.trim()!=""){
                 me.errorAccountObjectGroup = true;
                 me.titleAccountObjectGroup = mylib.resourcs["VI"].notExistAccountObjectGroupId;
-
                 me.titleMessInfo = mylib.resourcs["VI"].notExistAccountObjectGroupId;
                 me.isShowMessInfo = true;
                 return false;
@@ -573,20 +622,13 @@ export default {
          */
         validatePaymentTerm(){
             var me = this;
-            if(me.account.PaymentTermId == null){//Nếu mà không tồn tại mã
-                if(me.account.PaymentTermName == null)//Nếu không tồn tại
-                    return true;//Cho qua
-                else{
-                    if(me.account.PaymentTermName.trim()==""){//Nếu mà bằng rỗng thì cũng cho qua
-                        return true;//Cho qua
-                    }else {
-                        me.errorPaymentTerm = true;
-                        me.titlePaymentTerm = mylib.resourcs["VI"].notExistPaymentTermId;
-
-                        me.titleMessInfo = mylib.resourcs["VI"].notExistPaymentTermId;
-                        me.isShowMessInfo = true;
-                        return false;//Nếu mà tồn tại giá trị thì không cho qua
-                    }
+            if(me.account.PaymentTermId == null &&me.account.PaymentTermName != null){//Nếu mà không tồn tại mã
+                if(me.account.PaymentTermName.trim()!=""){//Nếu mà bằng rỗng thì cũng cho qua
+                    me.errorPaymentTerm = true;
+                    me.titlePaymentTerm = mylib.resourcs["VI"].notExistPaymentTermId;
+                    me.titleMessInfo = mylib.resourcs["VI"].notExistPaymentTermId;
+                    me.isShowMessInfo = true;
+                    return false;//Nếu mà tồn tại giá trị thì không cho qua
                 }
             }
             return true;//Cho qua
@@ -597,20 +639,13 @@ export default {
          */
         validatePayAccount(){
             var me = this;
-            if(me.account.PayAccountId == null){//Nếu mà không tồn tại mã
-                if(me.account.PayAccountName == null)//Nếu không tồn tại
-                    return true;//Cho qua
-                else{
-                    if(me.account.PayAccountName.trim()==""){//Nếu mà bằng rỗng thì cũng cho qua
-                        return true;//Cho qua
-                    }else {
-                        me.errorPayAccount = true;
-                        me.titlePayAccount = mylib.resourcs["VI"].notExistPayAccountId;
-
-                        me.titleMessInfo = mylib.resourcs["VI"].notExistPayAccountId;
-                        me.isShowMessInfo = true;
-                        return false;//Nếu mà tồn tại giá trị thì không cho qua
-                    }
+            if(me.account.PayAccountId == null && me.account.PayAccountName != null){//Nếu mà không tồn tại mã    
+                if(me.account.PayAccountName.trim()!=""){//Nếu mà bằng rỗng thì cũng cho qua
+                    me.errorPayAccount = true;
+                    me.titlePayAccount = mylib.resourcs["VI"].notExistPayAccountId;
+                    me.titleMessInfo = mylib.resourcs["VI"].notExistPayAccountId;
+                    me.isShowMessInfo = true;
+                    return false;//Nếu mà tồn tại giá trị thì không cho qua
                 }
             }
             return true;//Cho qua
@@ -621,25 +656,17 @@ export default {
          */
         validateEmployee(){
             var me = this;
-            if(me.account.EmployeeId == null){//Nếu mà không tồn tại mã
-                if(me.account.FullName == null)//Nếu không tồn tại FullName
-                    return true;//Cho qua
-                else{
-                    if(me.account.FullName.trim()==""){//Nếu mà FullName bằng rỗng thì cũng cho qua
-                        return true;//Cho qua
-                    }else {
-                        me.errorEmployee = true;
-                        me.titleEmployee = mylib.resourcs["VI"].notExistEmployeeId;
-
-                        me.titleMessInfo = mylib.resourcs["VI"].notExistEmployeeId;
-                        me.isShowMessInfo = true;
-                        return false;//Nếu mà tồn tại giá trị thì không cho qua
-                    }
-                }
+            if(me.account.EmployeeId == null && me.account.FullName != null){//Nếu mà không tồn tại mã    
+                if(me.account.FullName.trim()!=""){//Nếu mà FullName bằng rỗng thì cũng cho qua
+                    me.errorEmployee = true;
+                    me.titleEmployee = mylib.resourcs["VI"].notExistEmployeeId;
+                    me.titleMessInfo = mylib.resourcs["VI"].notExistEmployeeId;
+                    me.isShowMessInfo = true;
+                    return false;//Nếu mà tồn tại giá trị thì không cho qua
+                } 
             }
             return true;//Cho qua
         },
-
         /**
          * Thực hiện validate Code xem có chuẩn không
          * CreatedBy: HoaiPT(03/03/2022)
@@ -656,6 +683,7 @@ export default {
                 return false;
             }       
         },
+
         /**
          * Thực hiện kiểm tra những ô not null
          * CreatedBy: HoaiPT(03/03/2022)
@@ -948,6 +976,9 @@ export default {
         sameObject:MyFunction.sameObject,
         cutStrings:MyFunction.cutStrings,
         removeValueInArray:MyFunction.removeValueInArray,
+        focus: function () {
+        this.$refs.input.focus()
+        }
     }
 }
 </script>

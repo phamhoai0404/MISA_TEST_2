@@ -12,9 +12,9 @@
             <a class="inventory">
                 <div>Kiểm kê quỹ</div>
             </a>
-            <a class="pay-money">
+            <router-link to="/CA/CAReceipt" class="pay-money">
                 <div>Chi tiền</div>
-            </a>
+            </router-link>
         </div>
         <div class="process-footer">
             <a class="process-item">

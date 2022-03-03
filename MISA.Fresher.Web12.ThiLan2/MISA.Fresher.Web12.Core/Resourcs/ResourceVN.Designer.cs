@@ -88,7 +88,7 @@ namespace MISA.Fresher.Web12.Core.Resourcs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Không đúng định dạng mã nhân viên!.
+        ///   Looks up a localized string similar to Không đúng định dạng mã!.
         /// </summary>
         public static string ErrorFormatCode {
             get {

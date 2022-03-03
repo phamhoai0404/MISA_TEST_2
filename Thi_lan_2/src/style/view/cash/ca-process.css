@@ -66,10 +66,15 @@
     box-sizing: border-box;
 }
 
+.process-left .process-background a {
+    text-decoration: none;
+}
+
 .process-left .process-background a div {
     height: 28px;
     display: flex;
     justify-content: center;
+    color: #111;
 }
 
 .process-left .process-background a:hover {
