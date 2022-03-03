@@ -55,6 +55,15 @@ var MyFunction = {
         }
         return false;
     },
+    existValueInArray2(arrayList, value) {
+        // console.log(ho)
+        if (value != null) { //Nếu giá trị tồn tại
+            let arrayListTemp = arrayList.filter(itemValue => itemValue == value);
+            if (arrayListTemp.length > 0)
+                return true;
+        }
+        return false;
+    },
     /**
      * Thực hiện kiểm tra xem giá trị có tồn tại trong dãy gồm các đối tượng
      * CreatedBy: HoaiPT(01/03/2022)
@@ -106,6 +115,28 @@ var MyFunction = {
             }
         }
         return true;
+    },
+    /**
+     * Thực hiện cắt chuỗi từ có dấu phẩy ngăn cách
+     * CreatedBy: HoaiPT(02/03/2022)
+     */
+    cutStrings(value) {
+        if (value) {
+            return value.split(",");
+        }
+        return [];
+
+    },
+    /**
+     * Thực hiện xóa bỏ một giá trị trong Array
+     * CreatedBy: HoaiPT(02/03/2022)
+     */
+    removeValueInArray(arrayList, value) {
+        let arrayListTemp = [];
+        if (arrayList) {
+            arrayListTemp = arrayList.filter(itemValue => itemValue != value);
+        }
+        return arrayListTemp;
     }
 }
 export default MyFunction

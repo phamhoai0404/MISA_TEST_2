@@ -67,3 +67,11 @@
 .btn-plus-success {
     background-position: -32px -312px;
 }
+
+.btn-close-small {
+    background-position: -80px -312px;
+}
+
+.btn-item-selected {
+    background-position: -896px -312px;
+}

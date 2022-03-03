@@ -53,6 +53,11 @@ namespace MISA.Fresher.Web12.Core.Services
             return codeNew;
 
         }
+
+        protected override void ValidateInsertCustomer(AccountObject accountObject)
+        {
+          
+        }
         #endregion
     }
 }

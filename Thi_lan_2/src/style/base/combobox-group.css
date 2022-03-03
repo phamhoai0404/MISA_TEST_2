@@ -1,0 +1,62 @@
+@import url('./combobox-normal.css');
+.m-combobox-active-group {}
+
+.m-combobox-item- .m-combobox-sign {}
+
+.m-combobox-top .m-combobox-selected-group {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* chú ý cái này để nó xuống dòng khi cần thiết */
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.m-combobox-top .m-combobox-selected-group input.m-input-combobox.m-input-group {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    width: 20% !important;
+    /* background-color: red; */
+}
+
+.m-combobox-top .m-combobox-selected-group .m-item-selected {
+    padding: 2px 3px 2px 5px;
+    margin: 3px 2px 3px 3px;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    padding: 2px 3px 2px 5px;
+    display: flex;
+    font-size: 12px !important;
+}
+
+.m-over-size-combobox {
+    /* Cái này dùng để ghi đè vào cái chiều cao mặc định là 32 là tăng lên khi mà nó không đủ độ cao */
+    height: auto !important;
+}
+
+
+/* Chưa biết css cái này chú ý nao hỏi */
+
+.m-combobox-data-group {
+    top: calc(100% + 1px) !important;
+}
+
+
+/* Chỗ này vẫn chưa biết xử lý sao */
+
+
+/* .m-over-size-combobox .m-combobox-icon {
+    min-height: 100% !important;
+    background-color: red;
+}
+
+.m-over-size-combobox .m-combobox-icon .m-button-dropdown {
+    height: 100% !important;
+} */
+
+
+/* .m-button-dropdown.m-over-size-button {
+    height: 100% !important;
+} */

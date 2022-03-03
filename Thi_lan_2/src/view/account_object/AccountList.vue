@@ -148,7 +148,7 @@ export default {
             listPageText:mylib.data.listPageSize,
             totalRecord:0,
             pageAction:1,
-            totalPage:10,
+            totalPage:1,
             selectTextPage: 20,
 
             listChecked :Array (),
@@ -240,9 +240,7 @@ export default {
         },
         clickTest(){
             alert("hoa");
-        },
-
-        
+        },  
          /**
          * Thực hiện khi click vào nút xác nhận xóa
          * CreatedBy: HoaiPT(01/03/2022)

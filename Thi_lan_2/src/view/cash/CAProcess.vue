@@ -31,7 +31,7 @@
             </a>
             <a class="process-item">
                 <div class="icon-process calculate"></div>
-                <div class="icon-title">Tính tỉ giá xuấ quỹ</div>
+                <div class="icon-title">Tính tỉ giá xuất quỹ</div>
             </a>
         </div>
 

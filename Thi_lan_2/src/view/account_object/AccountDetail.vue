@@ -52,7 +52,18 @@
                             </div>
                         </div>
                         <div class="dialog-one-row">
-                            <BaseInput typeInput="input" label="Nhóm nhà cung cấp" />
+                            <BaseComboboxGroup label="Nhân viên mua hàng"
+                                v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
+                                :isShowDataDropdown="isShowDropDownAccountObjectGroup"
+                                :listData="listAccountObjectGroupTemp"
+                                :listFields="listFieldAccountObjectGroup"
+                                :listDataSelected="listAccountGroupSelected"
+                                @btnClickDropdown="btnClickDropdownAccountObjectGroup"
+                                @btnClickItemTable="btnSelectItemAccountObjectGroup"
+                                @hideDataDropDown="isShowDropDownAccountObjectGroup = false"
+                                @removeOneItem="removeOneAccountObjectGroup"
+                                keySearch="AccountObjectGroupCode"
+                            />
                         </div>
                         <div class="dialog-one-row">
                              <BaseComboboxNormal label="Nhân viên mua hàng"
@@ -221,6 +232,7 @@ import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseMessQuestion from '@/components/base/BaseMessage.vue'
+import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
 
 
 
@@ -236,7 +248,8 @@ export default {
         BaseCheckbox,
         BaseInput,
         BaseComboboxNormal,
-        BaseMessQuestion
+        BaseMessQuestion,
+        BaseComboboxGroup
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail
@@ -270,18 +283,27 @@ export default {
 
             isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
             listEmployee:null,
-            listEmployeeTemp:null,
+            listEmployeeTemp:[],
             listFieldEmployee:mylib.data.listFieldEmployeeCombobox,
 
             isShowComboboxPayAccount:false,//Trạng thái đầu tiên của combobox
             listPayAccount:null,
-            listPayAccountTemp:null,
+            listPayAccountTemp:[],
             listFieldPayAccount:mylib.data.listFieldPayAccountCombobox,
 
             isShowComboboxPaymentTerm:false,//Trạng thái đầu tiên của combobox
             listPaymentTerm:null,
-            listPaymentTermTemp:null,
+            listPaymentTermTemp:[],
             listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
+
+
+            isShowDropDownAccountObjectGroup:false,
+            listAccountObjectGroup:null,
+            listAccountObjectGroupTemp:[],
+            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
+
+            listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
+            textSearchAccountObjectGroup:""
             
         }
     },
@@ -298,6 +320,9 @@ export default {
         await me.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
         await me.getListPayAccount()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
         await me.getListPaymentTerm()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
+        await me.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
+        
+        this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
     },
     watch:{
         /**
@@ -357,18 +382,67 @@ export default {
             }
             
         },
+        /**
+         * Thực hiện theo dõi những chữ trong ô input của combobox của AccountObjectGroup
+         */
+         'textSearchAccountObjectGroup'( valueNew){
+            var me = this;
+            me.isShowDropDownAccountObjectGroup = true;
+            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
+          
+        },
     },
     methods: {
         btnSave(value) {
+            // var me = this;
+            // let xinhgai= new Array();
+            // xinhgai.push("lan");
+            // xinhgai.push("hoa");
+            // xinhgai.push("ngọc");
             console.log("value " + value, this.account);
+            // me.account.AccountObjectGroupListId = xinhgai;
+            // axios.post('https://localhost:44338/api/v1/AccountObjects', me.account)
+            //     .then(function () {
+            //         console.log("được nha");
+            //     })
+            //     .catch(function () {
+            //         console.log("lỗi nhá nha");
+            //     })
         },
        
         changeTypeDetail() {
             // alert("change type detail");
         },
 
-
-
+        /**
+         * Thực hiện khi click vào nút đóng nhỏ của mỗi item AccountObjectGroup ở trong ô
+         * Đó là thực hiện xóa nó đi khỏi mảng
+         * CreatedBy: HoaiPT(02/03/2022)
+         */
+        removeOneAccountObjectGroup({index}){
+            this.listAccountGroupSelected.splice(index, 1);
+        },
+        /**
+         * Thực hiện khi click vào nút dropdow và dữ liệu bằng đúng dữ liệu tất cả 
+         * CreatedBy: HoaiPT(02/03/2022)
+         */
+        btnClickDropdownAccountObjectGroup(){
+            this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
+            this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
+        },
+        /**
+         * Thực hiện khi click item bất kì trong dữ liệu data có thể thực hiện xóa hoặc là add thêm vào
+         * CreatedBy: HoaiPT(02/03/2022)
+         */
+        btnSelectItemAccountObjectGroup({object}){
+            console.log('object:', object);
+            var me = this;
+            if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
+                me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
+            }else{
+                me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
+            }
+        },
         /**
          * Thực hiện khi thay đổi giá trị trong ô input
          * CreatedBy: HoaiPT(02/03/2021)
@@ -523,15 +597,29 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
+        async getListAccountObjectGroup() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/AccountObjectGroups')
+                    .then(function(res) {
+                        me.listAccountObjectGroup = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
         /**
          * Thực hiện lấy những cái này từ file js
          * CreatedBy:HoaiPT(02/03/2022)
          */
         selectFilter:MyFunction.selectFilter,
         existValueInArray:MyFunction.existValueInArray,
+        existValueInArray2:MyFunction.existValueInArray2,
         existValueInArrayObject:MyFunction.existValueInArrayObject,
         selectFilterObject:MyFunction.selectFilterObject,
         sameObject:MyFunction.sameObject,
+        cutStrings:MyFunction.cutStrings,
+        removeValueInArray:MyFunction.removeValueInArray,
     }
 }
 </script>

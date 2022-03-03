@@ -1,77 +1,86 @@
 <template>
     <div>
-        <BaseComboboxNormal 
-            v-model="xinhgai.FullName"
-            :isComboboxTable="true"
-            :errorCombobox="checkCombobox"
-            @btnClickDropdown="btnClickDropdownDemo"
-            @btnClickItemTable="btnSelectItem"
-            :isShowDataDropdown="isShowDropDown"
-            :listData="listDataVocativeTemp"
-            :listFields="listFieldsTest"
-            @hideDataDropDown="isShowDropDown = false"
-            keySearch="EmployeeId"
-            :object="xinhgai"
-            @input="changeInputCombobox"
+        <BaseComboboxGroup 
+            v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
+            :isShowDataDropdown="isShowDropDownAccountObjectGroup"
+            :listData="listAccountObjectGroupTemp"
+            :listFields="listFieldAccountObjectGroup"
+            :listDataSelected="listAccountGroupSelected"
+            @btnClickDropdown="btnClickDropdownAccountObjectGroup"
+            @btnClickItemTable="btnSelectItemAccountObjectGroup"
+            @hideDataDropDown="isShowDropDownAccountObjectGroup = false"
+            @removeOneItem="removeOneAccountObjectGroup"
+            keySearch="AccountObjectGroupCode"
         />
-        sfsfsf
+        
     </div>
 </template>
 <script>
-import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
+
+import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
 import * as mylib from '@/js/resourcs.js'
 import MyFunction from '@/js/function.js'
 export default {
     components:{
-        BaseComboboxNormal
+        BaseComboboxGroup,
     },
     watch:{
-        'xinhgai.FullName'( valueNew,valueOld){
+        'textSearchAccountObjectGroup'( valueNew){
             var me = this;
-            // me.xinhgai.EmployeeId = null;//Thiết lập về trạng thái rỗng để không ăn với css
-            console.log(valueNew, valueOld);
-            if(!me.existValueInArrayObject(me.listDataVocative,'FullName', valueNew)){
-                me.isShowDropDown = true;
-                me.listDataVocativeTemp = me.selectFilterObject(me.listDataVocative,'FullName', valueNew);
-            } 
+            me.isShowDropDownAccountObjectGroup = true;
+            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
+          
         },
         
     },
     created(){
         var me = this;
-        console.log(me.listDataVocative);
+        this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
+        console.log(this.listAccountGroupSelected);
     },
     data() {
         return {
-            isShowDropDown:false,
-            xinhgai:{
-                EmployeeCode:null,
-                FullName:null,
-            },
-            checkCombobox:false,
-            listDataVocative:mylib.dataTest.listEmployee,
-            listDataVocativeTemp:[],
-            listFieldsTest:mylib.data.listFieldEmployeeCombobox,
+            isShowDropDownAccountObjectGroup:false,
+            listAccountObjectGroup:mylib.dataTest.listAccountObjectGroup,
+            listAccountObjectGroupTemp:[],
+            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
+
+            account:mylib.dataTest.accountTest,
+            listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
+            textSearchAccountObjectGroup:""
         }
     },
     methods:{
+        removeOneAccountObjectGroup({object,index}){
+            console.log('đối tượng:', object, '-chỉ số:', index);
+            this.listAccountGroupSelected.splice(index, 1);
+        },
         changeInputCombobox(){
-            this.xinhgai.EmployeeId = null;
+
         },
-        btnClickDropdownDemo(){
-            this.listDataVocativeTemp = this.listDataVocative;
-            this.isShowDropDown = !this.isShowDropDown;
+        btnClickDropdownAccountObjectGroup(){
+            this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
+            this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
         },
-        btnSelectItem({object}){
+        btnSelectItemAccountObjectGroup({object}){
             console.log('object:', object);
-            this.xinhgai = this.sameObject(object);
-            this.isShowDropDown = false;  
+            var me = this;
+            // this.isShowDropDownAccountObjectGroup = false;  
+            if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
+                me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
+            }else{
+                me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
+            }
         },
         selectFilter:MyFunction.selectFilter,
         existValueInArray:MyFunction.existValueInArray,
+        existValueInArray2:MyFunction.existValueInArray2,
         existValueInArrayObject:MyFunction.existValueInArrayObject,
         selectFilterObject:MyFunction.selectFilterObject,
         sameObject:MyFunction.sameObject,
+        cutStrings:MyFunction.cutStrings,
+        removeValueInArray:MyFunction.removeValueInArray,
+        
     }
 }
 </script>

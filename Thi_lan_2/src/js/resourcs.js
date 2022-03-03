@@ -151,9 +151,22 @@ var data = {
             text: "Tên điều khoản thanh toán",
             width: "55%"
         },
-    ]
+    ],
+    listFieldAccountObjectGroupCombobox: [{
+            name: "AccountObjectGroupCode",
+            text: "Mã nhóm KH, NCC",
+            width: "40%"
+        },
+        {
+            name: "AccountObjectGroupName",
+            text: "Tên nhóm KH, NCC",
+            width: "60%"
+        },
+    ],
 
 }
+
+
 var dataTest = {
     listAccount: [{
             "AccountObjectId": "11452b0c-768e-5ff7-0d63-eeb1d8ed8cef",
@@ -732,7 +745,109 @@ var dataTest = {
             "GenderName": "Nữ",
             "DepartmentName": "Phòng Nhân sự"
         },
-    ]
+    ],
+    listAccountObjectGroup: [{
+            "AccountObjectGroupId": "3f8e6896-4c7d-15f5-a018-75d8bd200d7c",
+            "AccountObjectGroupCode": "NCC-1322",
+            "AccountObjectGroupName": "Sản xuất tiêu dùng ",
+            "CreatedDate": "1970-01-01T02:13:43",
+            "CreatedBy": "Norris Calderon",
+            "ModifiedDate": "11/24/2014 23:43:46",
+            "ModifiedBy": "Elwood Ligon"
+        },
+        {
+            "AccountObjectGroupId": "45ac3d26-18f2-18a9-3031-644313fbb055",
+            "AccountObjectGroupCode": "NCC-1351",
+            "AccountObjectGroupName": "Dịch vụ",
+            "CreatedDate": "1972-09-12T08:14:13",
+            "CreatedBy": "Aileen Pitts",
+            "ModifiedDate": "09/14/1996 03:31:03",
+            "ModifiedBy": "Courtney Abernathy"
+        },
+        {
+            "AccountObjectGroupId": "78aafe4a-67a7-2076-3bf3-eb0223d0a4f7",
+            "AccountObjectGroupCode": "NCC-1421",
+            "AccountObjectGroupName": "Sản xuất công nghiệp ",
+            "CreatedDate": "2008-09-05T16:27:46",
+            "CreatedBy": "Trey Christopher",
+            "ModifiedDate": "04/20/2004 17:47:05",
+            "ModifiedBy": "Natashia Blaylock"
+        },
+        {
+            "AccountObjectGroupId": "7c4f14d8-66fb-14ae-198f-6354f958f4c0",
+            "AccountObjectGroupCode": "NCC-5112",
+            "AccountObjectGroupName": "Sản xuất nông nghiệp",
+            "CreatedDate": "2003-01-23T12:12:00",
+            "CreatedBy": "Alaine Hickey",
+            "ModifiedDate": "10/08/2010 12:33:26",
+            "ModifiedBy": "Rose Aiello"
+        },
+        {
+            "AccountObjectGroupId": "7c4f14d8-66fb-14ae-198f-6354f958f4c0",
+            "AccountObjectGroupCode": "NCC-5113",
+            "AccountObjectGroupName": "Sản xuất nông nghiệp",
+            "CreatedDate": "2003-01-23T12:12:00",
+            "CreatedBy": "Alaine Hickey",
+            "ModifiedDate": "10/08/2010 12:33:26",
+            "ModifiedBy": "Rose Aiello"
+        },
+        {
+            "AccountObjectGroupId": "7c4f14d8-66fb-14ae-198f-6354f958f4c0",
+            "AccountObjectGroupCode": "NCC-5114",
+            "AccountObjectGroupName": "Sản xuất nông nghiệp",
+            "CreatedDate": "2003-01-23T12:12:00",
+            "CreatedBy": "Alaine Hickey",
+            "ModifiedDate": "10/08/2010 12:33:26",
+            "ModifiedBy": "Rose Aiello"
+        },
+        {
+            "AccountObjectGroupId": "7c4f14d8-66fb-14ae-198f-6354f958f4c0",
+            "AccountObjectGroupCode": "NCC-5115",
+            "AccountObjectGroupName": "Sản xuất nông nghiệp",
+            "CreatedDate": "2003-01-23T12:12:00",
+            "CreatedBy": "Alaine Hickey",
+            "ModifiedDate": "10/08/2010 12:33:26",
+            "ModifiedBy": "Rose Aiello"
+        }
+    ],
+    accountTest: {
+        "SortIndex": 1,
+        "AccountObjectId": "4eceddac-7dc2-38ea-7bdd-867949feb8b5",
+        "TaxCode": null,
+        "AccountObjectCode": "NCC00065",
+        "AccountObjectName": "Công ty BQLUY",
+        "Phone": null,
+        "Website": "http://tri7998.com",
+        "AccountObjectGroupListId": "NCC-1322,NCC-1351",
+        "Address": null,
+        "Prefix": "Ông",
+        "EinvoiceContactName": null,
+        "EinvoiceContactMobile": "0884427376",
+        "EinvoiceContactEmail": null,
+        "LegalRepresentative": "Võ Công Huy",
+        "MaximizeDebtAmount": null,
+        "DueTime": null,
+        "AccountObjectBankAccount": null,
+        "AccountObjectShippingAddress": null,
+        "Country": null,
+        "District": null,
+        "WardOrCommune": null,
+        "ProvinceOrCity": null,
+        "Description": "",
+        "CreatedBy": null,
+        "CreatedDate": null,
+        "ModifiedBy": "Leonardo Lockhart",
+        "ModifiedDate": "1999-03-21T04:27:32",
+        "PayAccountId": "68daa090-552d-1bc6-e8e4-8adc5263917a",
+        "PayAccountCode": "4555",
+        "PayAccountName": "Tài khoản công nợ 5",
+        "PaymentTermId": "26a546dc-51ef-474e-ec75-f433c80be791",
+        "PaymentTermCode": "ĐK113",
+        "PaymentTermName": "Điều khoản 3",
+        "EmployeeId": "5fab4ff7-1b8e-64d0-1880-de64d090a2c2",
+        "EmployeeCode": "NV-0007",
+        "FullName": "Trần Thảo Anh"
+    }
 }
 
 export {

@@ -60,7 +60,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Danh sách nhóm nhà cung cấp
         /// </summary>
         [PropertyName("Danh sách nhóm nhà cung cấp")]
-        public string? AccountObjectGroupListId { get; set; }
+        public string AccountObjectGroupListId { get; set; }
 
 
         /// <summary>
