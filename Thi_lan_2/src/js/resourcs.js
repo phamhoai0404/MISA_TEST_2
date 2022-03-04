@@ -172,6 +172,33 @@ var data = {
             width: "60%"
         },
     ],
+    listFieldBank: [{
+            name: "BankAccountNumber",
+            text: "SỐ TÀI KHOẢN",
+            width: "20%",
+
+        },
+        {
+            name: "BankName",
+            text: "TÊN NGÂN HÀNG",
+            width: "20%",
+
+        },
+        {
+            name: "BankBranchName",
+            text: "CHI NHÁNH",
+            width: "20%",
+
+        },
+        {
+            name: "ProvinceOrCity",
+            text: "TỈNH/TP CỦA NGÂN HÀNG",
+            width: "30%",
+
+        },
+
+
+    ]
 
 }
 
@@ -856,7 +883,33 @@ var dataTest = {
         "EmployeeId": "5fab4ff7-1b8e-64d0-1880-de64d090a2c2",
         "EmployeeCode": "NV-0007",
         "FullName": "Trần Thảo Anh"
-    }
+    },
+    listBank: [{
+            BankAccountNumber: "0225522",
+            BankName: "VietTien",
+            BankBranchName: "Hải Dương",
+            ProvinceOrCity: "TP Hải dương"
+        },
+        {
+            BankAccountNumber: "0225522",
+            BankName: "VietTien",
+            BankBranchName: "Hải Phòng",
+            ProvinceOrCity: "TP Hải dương"
+        },
+        {
+            BankAccountNumber: "0225522",
+            BankName: "VietTien",
+            BankBranchName: "Hà Nội",
+            ProvinceOrCity: "TP Hải dương"
+        },
+        {
+            BankAccountNumber: "0225522",
+            BankName: "VietTien",
+            BankBranchName: "Hưng Yên",
+            ProvinceOrCity: "TP Hải dương"
+        },
+
+    ]
 }
 
 export {

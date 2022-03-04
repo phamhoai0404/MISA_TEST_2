@@ -1,86 +1,74 @@
 <template>
     <div>
-        <BaseComboboxGroup 
-            v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
-            :isShowDataDropdown="isShowDropDownAccountObjectGroup"
-            :listData="listAccountObjectGroupTemp"
-            :listFields="listFieldAccountObjectGroup"
-            :listDataSelected="listAccountGroupSelected"
-            @btnClickDropdown="btnClickDropdownAccountObjectGroup"
-            @btnClickItemTable="btnSelectItemAccountObjectGroup"
-            @hideDataDropDown="isShowDropDownAccountObjectGroup = false"
-            @removeOneItem="removeOneAccountObjectGroup"
-            keySearch="AccountObjectGroupCode"
+        <BaseTableInsert
+            :listFields="listFieldBank"
+            :listData="listAccountObjectBankAccount"
+            :selectRowNumber="selectRowBank"
+            @clickItemRow="selectRowBankAction"
+            @cancelSelectRow="selectRowBank = -1"
+            @deleteItemRow="deleteItemBank"
+            @addItemRow="addItemBank"
+            @removeAllItem="removeAllBank"
+            ref="listBank"
         />
-        
+        <div @click="hien">sfs</div>
     </div>
+    
 </template>
 <script>
+import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 
-import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
 import * as mylib from '@/js/resourcs.js'
 import MyFunction from '@/js/function.js'
 export default {
     components:{
-        BaseComboboxGroup,
+       BaseTableInsert
     },
     watch:{
-        'textSearchAccountObjectGroup'( valueNew){
-            var me = this;
-            me.isShowDropDownAccountObjectGroup = true;
-            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
-          
-        },
+        
         
     },
-    created(){
-        var me = this;
-        this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
-        console.log(this.listAccountGroupSelected);
+    mounted(){
+         this.$refs.listBank.focus("BankAccountNumber0");
     },
     data() {
         return {
-            isShowDropDownAccountObjectGroup:false,
-            listAccountObjectGroup:mylib.dataTest.listAccountObjectGroup,
-            listAccountObjectGroupTemp:[],
-            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
-
-            account:mylib.dataTest.accountTest,
-            listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
-            textSearchAccountObjectGroup:""
+            listFieldBank:mylib.data.listFieldBank,
+            listAccountObjectBankAccount: mylib.dataTest.listBank,
+            selectRowBank:0,
         }
     },
     methods:{
-        removeOneAccountObjectGroup({object,index}){
-            console.log('đối tượng:', object, '-chỉ số:', index);
-            this.listAccountGroupSelected.splice(index, 1);
+        selectRowBankAction({index,fieldName}){
+            var me = this;
+            me.selectRowBank = index;
+            let refIndex = fieldName+index;
+            this.$refs.listBank.focus(refIndex);
+           
         },
-        changeInputCombobox(){
+        deleteItemBank({object,index}){
+            console.log(object,index);
+            var me= this;
+            me.listAccountObjectBankAccount.splice(index,1);
+        },
+        addItemBank(){
+            var me = this;
+            me.listAccountObjectBankAccount.push({});
 
         },
-        btnClickDropdownAccountObjectGroup(){
-            this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
-            this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
-        },
-        btnSelectItemAccountObjectGroup({object}){
-            console.log('object:', object);
+        removeAllBank(){
             var me = this;
-            // this.isShowDropDownAccountObjectGroup = false;  
-            if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
-                me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
-            }else{
-                me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
-            }
+            me.listAccountObjectBankAccount=[];
+            //CHÚ Ý CÁI NÀY NÓ KHÔNG ĂN 
+            // me.selectRowBank = 0;
+            // me.$refs.listBank.focus("BankAccountNumber0");
         },
-        selectFilter:MyFunction.selectFilter,
-        existValueInArray:MyFunction.existValueInArray,
-        existValueInArray2:MyFunction.existValueInArray2,
-        existValueInArrayObject:MyFunction.existValueInArrayObject,
-        selectFilterObject:MyFunction.selectFilterObject,
-        sameObject:MyFunction.sameObject,
-        cutStrings:MyFunction.cutStrings,
-        removeValueInArray:MyFunction.removeValueInArray,
-        
+        hien(){
+            var me = this;
+            me.listAccountObjectBankAccount = me.listAccountObjectBankAccount.filter(item=> me.existObject(item) );
+            console.log(me.listAccountObjectBankAccount);
+        },
+        existObject:MyFunction.existObject,
     }
 }
 </script>

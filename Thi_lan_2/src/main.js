@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 
 //Thiết lập router
 const routes = [
-    { path: '/', component: AccountList },
+    { path: '/', component: Overview },
     { path: '/overview', component: Overview },
     { path: '/account', component: AccountList },
     {

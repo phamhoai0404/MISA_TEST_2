@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="m-button-base" 
-        :style="{width:width}" 
+        :style="styleButton" 
         :class="{'m-button-background': hasBackground}"
         @click="btnClickButtonBase" 
         :title="[title]"
@@ -16,7 +16,7 @@
 export default {
     props: {
         title: String, //Title truyền vào
-        width: String, //Độ rộng mong muốn của button
+        styleButton: String, //Muốn css từ bên ngoài nếu muốn 
         label: String,
         backgroundColor: String, //Màu mong muốn nếu muốn thay đổi
         hasBackground: { //Button này có màu mặc định là màu xanh không
