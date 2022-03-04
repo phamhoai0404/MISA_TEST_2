@@ -210,8 +210,18 @@
                             </div>
                         </span>
                         <span v-if="tabSelected == 2">
-                            <div>
-                                <h1>Chưa vẽ được đến đây</h1>
+                            <div style="width: 100%">
+                                 <!-- <BaseTableInsert
+                                    :listFields="listFieldBank"
+                                    :listData="listAccountObjectBankAccount"
+                                    :selectRowNumber="selectRowBank"
+                                    @clickItemRow="selectRowBankAction"
+                                    @cancelSelectRow="selectRowBank = -1"
+                                    @deleteItemRow="deleteItemBank"
+                                    @addItemRow="addItemBank"
+                        
+                                    ref="listBank"
+                                /> -->
                             </div>
                         </span>
                         <span v-if="tabSelected == 3">
@@ -300,6 +310,7 @@ import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseMess from '@/components/base/BaseMessage.vue'
 import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
+// import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 
 
 
@@ -316,7 +327,8 @@ export default {
         BaseInput,
         BaseComboboxNormal,
         BaseMess,
-        BaseComboboxGroup
+        BaseComboboxGroup,
+        // BaseTableInsert
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail
@@ -398,6 +410,10 @@ export default {
             
             errorAccountObjectGroup:false,
             titleAccountObjectGroup:"",
+
+            listFieldBank:mylib.data.listFieldBank,
+            listAccountObjectBankAccount: mylib.dataTest.listBank,
+            selectRowBank:0,
         }
     },
     async created(){
@@ -500,7 +516,10 @@ export default {
             me.titleAccountObjectGroup = "";
 
             me.isShowDropDownAccountObjectGroup = true;
-            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupName', valueNew);
+            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupId', valueNew);
+            // for(let object in me.listAccountObjectGroup){
+            //     if()
+            // }
 
            
         },
@@ -541,6 +560,7 @@ export default {
         
     },
     methods: {
+       
         /**
          * Hành động khi ấn vào nút (Cất) hoặc (Cất và Thêm)
          *CreatedBy: HoaiPT(03/03/2022)

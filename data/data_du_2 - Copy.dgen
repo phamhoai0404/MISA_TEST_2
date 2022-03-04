@@ -1701,19 +1701,19 @@
           <DataType>LONGTEXT</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
-            <EmptyStringProportion>10</EmptyStringProportion>
+            <EmptyStringProportion>0</EmptyStringProportion>
             <AllowNulls>true</AllowNulls>
-            <NullProportion>10</NullProportion>
+            <NullProportion>100</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>5</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>(((((($"FirstNamesMale.txt")|($"FirstNamesFemale.txt"))[_.]?)?($"LastNames.txt"))|(($"LastNames.txt")\C?)|(((($"FirstNamesMale.txt")|($"FirstNamesFemale.txt"))[_.]?(\C[_.]?)?)?($"LastNames.txt")))(\D{,3})?|\c{4,8}(\d{1,4}|[_.]\c{4,10}))@(example$"7"|nowhere$"3").com</Expression>
+            <Expression>()</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
-          <GeneratorName>Email</GeneratorName>
-          <GeneratorDescription>Danica.Foley@example.com, fstu@nowhere.com, CurtK_Burton@example.com, LaroseM696@nowhere.com, ...</GeneratorDescription>
-          <GeneratorCategory>Personal</GeneratorCategory>
+          <GeneratorName>ID (random)</GeneratorName>
+          <GeneratorDescription>54470, 16912, 43814, 06728, 36017, 82433, 95664, ...</GeneratorDescription>
+          <GeneratorCategory>Business</GeneratorCategory>
         </Column>
         <Column Name="AccountObjectShippingAddress">
           <Checked>true</Checked>

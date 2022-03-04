@@ -21,7 +21,7 @@
 /* css cho table insert */
 
 .m-table-insert-group .m-grid-table-insert {
-    max-height: 100px !important;
+    max-height: 150px !important;
     overflow-x: hidden;
     overflow-y: auto;
 }

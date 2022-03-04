@@ -2,14 +2,8 @@
     <div>
         <BaseTableInsert
             :listFields="listFieldBank"
-            :listData="listAccountObjectBankAccount"
-            :selectRowNumber="selectRowBank"
-            @clickItemRow="selectRowBankAction"
-            @cancelSelectRow="selectRowBank = -1"
-            @deleteItemRow="deleteItemBank"
-            @addItemRow="addItemBank"
-            @removeAllItem="removeAllBank"
-            ref="listBank"
+            :datas="listAccountObjectBankAccount"
+            @btnRemoveAll="btnRemoveAll"
         />
         <div @click="hien">sfs</div>
     </div>
@@ -29,40 +23,23 @@ export default {
         
     },
     mounted(){
-         this.$refs.listBank.focus("BankAccountNumber0");
+        //  this.$refs.listBank.focus("BankAccountNumber0");
     },
     data() {
         return {
             listFieldBank:mylib.data.listFieldBank,
             listAccountObjectBankAccount: mylib.dataTest.listBank,
-            selectRowBank:0,
+            
         }
     },
     methods:{
-        selectRowBankAction({index,fieldName}){
-            var me = this;
-            me.selectRowBank = index;
-            let refIndex = fieldName+index;
-            this.$refs.listBank.focus(refIndex);
-           
-        },
-        deleteItemBank({object,index}){
-            console.log(object,index);
-            var me= this;
-            me.listAccountObjectBankAccount.splice(index,1);
-        },
-        addItemBank(){
-            var me = this;
-            me.listAccountObjectBankAccount.push({});
+        //Đây là con bắn về 
+        btnRemoveAll(){
+           var me = this;
+           console.log("đó nha");
+           me.$children.removeAllItem();//Cái này con có ở trong cái function thì cha mới nhận được
+       },
 
-        },
-        removeAllBank(){
-            var me = this;
-            me.listAccountObjectBankAccount=[];
-            //CHÚ Ý CÁI NÀY NÓ KHÔNG ĂN 
-            // me.selectRowBank = 0;
-            // me.$refs.listBank.focus("BankAccountNumber0");
-        },
         hien(){
             var me = this;
             me.listAccountObjectBankAccount = me.listAccountObjectBankAccount.filter(item=> me.existObject(item) );

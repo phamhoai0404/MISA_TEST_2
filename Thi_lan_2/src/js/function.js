@@ -42,6 +42,7 @@ var MyFunction = {
         }
         return arrayList.filter(itemValue => itemValue[nameProperty].toLowerCase().includes(value));
     },
+
     /**
      * Thực hiện kiểm tra xem giá trị có tồn tại trong dãy
      * CreatedBy: HoaiPT(28/02/2022)
