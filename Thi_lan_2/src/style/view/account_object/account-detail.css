@@ -175,7 +175,7 @@
 .dialog-main-two .content-tab-index {
     min-height: 216px;
     max-height: 216px;
-    background-color: rgba(255, 215, 215, 0.452);
+    background-color: #fff;
     border: 1px solid #e0e0e0;
     padding: 10px;
 }
@@ -213,6 +213,11 @@
 
 .dialog-main-two .content-tab-index .tab-right .tab-group-title {
     display: flex;
+    padding-bottom: 5px;
+}
+
+.dialog-main-two .content-tab-index .tab-right .tab-content-table {
+    width: 100%;
 }
 
 .dialog-main-two .content-tab-index .tab-right .tab-group-title .tab-title-child {

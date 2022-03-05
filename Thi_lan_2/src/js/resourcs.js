@@ -22,6 +22,8 @@ var resourcs = {
         notExistAccountObjectGroupId: "Không tồn tại nhóm mã nhà cung cấp!",
 
         noActionEvery: "Không thể thực hiện vì bạn đang xem!",
+
+        questionRemoveAll: "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?"
     }
 }
 var misaEnum = {
@@ -198,7 +200,11 @@ var data = {
         },
 
 
-    ]
+    ],
+    listFieldShippingAddress: [{
+        name: "AddressShipName",
+        width: "80%"
+    }]
 
 }
 

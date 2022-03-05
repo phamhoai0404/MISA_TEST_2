@@ -211,17 +211,11 @@
                         </span>
                         <span v-if="tabSelected == 2">
                             <div style="width: 100%">
-                                 <!-- <BaseTableInsert
+                                 <BaseTableInsert
+                                    v-model ="listAccountObjectBankAccount"
                                     :listFields="listFieldBank"
-                                    :listData="listAccountObjectBankAccount"
-                                    :selectRowNumber="selectRowBank"
-                                    @clickItemRow="selectRowBankAction"
-                                    @cancelSelectRow="selectRowBank = -1"
-                                    @deleteItemRow="deleteItemBank"
-                                    @addItemRow="addItemBank"
-                        
-                                    ref="listBank"
-                                /> -->
+                                    :readOnly="readOnly"             
+                                />
                             </div>
                         </span>
                         <span v-if="tabSelected == 3">
@@ -249,7 +243,12 @@
                                     <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" />
                                 </div>
                                 <div class="tab-content-table">
-                                  <h1>Đây là phần table cũng chưa làm được</h1>
+                                    <BaseTableInsert
+                                        v-model ="listAccountObjectShippingAddress"
+                                        :listFields="listFieldShippingAddress"
+                                        :readOnly="readOnly"
+                                        :showField="false"          
+                                    />
                                 </div>
                             </div>
 
@@ -298,6 +297,12 @@
     @btnClose="isShowMessInfo = false"
     
 />
+<BaseMess  v-if="isShowMessInfo"
+    typeMessage="info" 
+    :titleForm="titleMessInfo"
+    @btnClose="isShowMessInfo = false"
+    
+/>
 </div>
 </template>
 
@@ -310,7 +315,7 @@ import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseMess from '@/components/base/BaseMessage.vue'
 import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
-// import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
+import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 
 
 
@@ -328,7 +333,7 @@ export default {
         BaseComboboxNormal,
         BaseMess,
         BaseComboboxGroup,
-        // BaseTableInsert
+        BaseTableInsert
     },
     props:{
         accountTable:null,//Lấy từ cha gửi vào cho con là Detail
@@ -367,7 +372,7 @@ export default {
             titleMessWarning:"",
 
             isShowMessInfo:false,
-            titleMessInfo:"DDos lnha",
+            titleMessInfo:"",
 
             isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
             listEmployee:null,
@@ -412,8 +417,10 @@ export default {
             titleAccountObjectGroup:"",
 
             listFieldBank:mylib.data.listFieldBank,
-            listAccountObjectBankAccount: mylib.dataTest.listBank,
-            selectRowBank:0,
+            listAccountObjectBankAccount: [],
+
+            listFieldShippingAddress:mylib.data.listFieldShippingAddress,
+            listAccountObjectShippingAddress: [],
         }
     },
     async created(){
@@ -432,7 +439,13 @@ export default {
         await me.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
         
         //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
-        this.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
+        me.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
+
+        //Thực hiện gán giá trị cho listAccountObjectBankAccount,listShipdress
+        me.getValueJsontoArrayAccount();
+
+        //Thực hiện gán giá trị cho 
+      
     },
     mounted() {
        this.$refs.TaxCode.focus() //Tập trung vào ô mã đầu tiên
@@ -556,11 +569,29 @@ export default {
                     me.titleName = "";
                 }
             }
-        },
+        }
         
     },
     methods: {
-       
+        /**
+         * Thực hiện chuyển đổi giá trị AccountObjectBankAccount để cho data base nhận được đồng thời xóa bỏ đối tượng rỗng
+         * CreatedBy: HoaiPT(05/03/2022) 
+         * */ 
+        setValueArraytoJsonAccount(){
+            var me =this;
+            me.account.AccountObjectBankAccount = me.formatArrayToJson(me.listAccountObjectBankAccount);
+            me.account.AccountObjectShippingAddress = me.formatArrayToJson(me.listAccountObjectShippingAddress);
+        },    
+        /**
+         * Thực hiện gán giá trị cho listAccountObjectBankAccount
+         * CreatedBy: HoaiPT(05/03/2022)
+         */
+        async getValueJsontoArrayAccount(){
+            var me = this;
+            me.listAccountObjectBankAccount = await me.formatJsonToArray(me.account.AccountObjectBankAccount);
+            me.listAccountObjectShippingAddress = await me.formatJsonToArray(me.account.AccountObjectShippingAddress);
+
+        },
         /**
          * Hành động khi ấn vào nút (Cất) hoặc (Cất và Thêm)
          *CreatedBy: HoaiPT(03/03/2022)
@@ -589,6 +620,9 @@ export default {
                 }
                 let temp= me.listAccountGroupSelected.join(",");
                 me.account.AccountObjectGroupListId = temp;
+                
+                me.setValueArraytoJsonAccount();//Gián giá trị thích hợp cho shiperAddress, bankAccount
+                
 
                 switch (me.editMode) {
                     case mylib.misaEnum.editMode.Add: //Thực hiện thêm mới
@@ -996,9 +1030,9 @@ export default {
         sameObject:MyFunction.sameObject,
         cutStrings:MyFunction.cutStrings,
         removeValueInArray:MyFunction.removeValueInArray,
-        focus: function () {
-        this.$refs.input.focus()
-        }
+        existObject:MyFunction.existObject,
+        formatJsonToArray:MyFunction.formatJsonToArray,
+        formatArrayToJson: MyFunction.formatArrayToJson,
     }
 }
 </script>

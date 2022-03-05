@@ -81,6 +81,7 @@
     color: #111111;
     cursor: pointer;
     font-family: Notosans-Bold;
+    text-transform: uppercase;
 }
 
 .m-grid table.m-table tr td {

@@ -140,7 +140,7 @@ var MyFunction = {
         return arrayListTemp;
     },
     /**
-     * kiểm tra xem có tồn tại đối tượng hay không, đối tượng đó cũng phải khác có tất cả object[prop] =="", chỉ cần object[prop].trim() !="" thì có tồn tại
+     * Kiểm tra xem có tồn tại đối tượng hay không, đối tượng đó cũng phải khác có tất cả object[prop] =="", chỉ cần object[prop].trim() !="" thì có tồn tại
      * CreateBy: HoaiPT(04/03/2022)
      */
     existObject(object) {
@@ -152,6 +152,33 @@ var MyFunction = {
             }
         }
         return false; //Nó không có đối tượng nào cả
+    },
+    /**
+     * Thực hiện chuyển từ Json sang Array, 
+     * Nếu mà không tồn tại hoặc mảng không có phần tử nào thì mặc định add một rỗng vào
+     * CreateBy: HoaiPT(05/03/2022)
+     */
+    async formatJsonToArray(valueString) {
+        let arrayList = [];
+        if (valueString == null) {
+            arrayList.push({});
+        } else {
+            arrayList = await JSON.parse(valueString);
+            if (arrayList.length == 0) {
+                arrayList.push({});
+            }
+        }
+        return arrayList;
+    },
+    /**
+     * Thực chuyển từ Array sang Json 
+     * Đồng thời thực hiện xóa bỏ đi đối tượng rỗng hoặc tất cả các giá trị đều ""
+     */
+    formatArrayToJson(arrayList) {
+        arrayList = arrayList.filter(item => this.existObject(item));
+        let temp = arrayList;
+        console.log(temp);
+        return JSON.stringify(temp);
     }
 }
 export default MyFunction

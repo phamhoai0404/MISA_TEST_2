@@ -45,9 +45,6 @@
                     :listData ="listAccount"
                     @btnView = 'btnSeeInfoAccount'
                     @btnDropDown = 'btnDropDown'
-                    @btnAllCheckbox ='btnTestAllCheckBox'
-                    @btnCheckbox='btnTestCheckbox'
-
                     :nameTable="'AccountObject'"
                 />
                 <BaseTablePaging  
@@ -179,9 +176,6 @@ export default {
         }
     },
     methods: {
-       
-        
-       
         /**
          * Thực hiện xem thông tin của nhà cung cấp 
          * CreatedBy: HoaiPT(28/02/2022)
@@ -219,27 +213,6 @@ export default {
             me.editModeTable = mylib.misaEnum.editMode.Edit;//Thực hiện Sửa thông tin
             me.isShowFunction = false;
             me.isShowAccountDetail = true;//Mở form detail
-        },
-        changeValue(newValue){
-            var me = this;
-            me.testRadio = newValue;
-        },
-        btnCheckboxTest({id}){
-            console.log("is", id);
-        },
-        btnTestAllCheckBox({id}){
-            console.log("all", id);
-        },
-        btnTestCheckbox({id}){
-            console.log("cuộc đời cong");
-            console.log("item", id);
-            const item = document.getElementById(id);
-            console.log(item.checked);
-            this.listChecked.push(id);
-            console.log(this.listChecked);
-        },
-        clickTest(){
-            alert("hoa");
         },  
          /**
          * Thực hiện khi click vào nút xác nhận xóa

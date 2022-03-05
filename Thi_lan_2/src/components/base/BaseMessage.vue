@@ -76,18 +76,34 @@ export default {
         }
     },
     methods: {
+        /**
+         * Thực hiện đồng ý
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         btnYes() {
             var me = this;
             me.$emit('btnYes');
         }, //Đồng ý
+        /**
+         * Thực hiện không đồng ý 
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         btnNo() {
             var me = this;
             me.$emit('btnNo');
-        }, //Không đống ý
+        },  
+        /**
+         * Thực hiện xóa bỏ
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         btnCancel() {
             var me = this;
             me.$emit('btnCancel');
-        }, //Hủy hành động đang muốn làm
+        },   
+        /**
+         * Thực hiện đóng 
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         btnClose() {
             var me = this;
             me.$emit('btnClose');

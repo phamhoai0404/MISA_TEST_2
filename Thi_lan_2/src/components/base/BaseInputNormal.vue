@@ -23,6 +23,7 @@
         :readonly="readOnly"
         :style="styleTextArea"
         ref="input"
+        style="resize: none;"
     />
 </div>
 </template>
