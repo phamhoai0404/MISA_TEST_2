@@ -282,7 +282,7 @@
     typeMessage="question" 
     :titleForm="titleMessQuestion"
     @btnCancel="isShowMessQuestion = false"
-    @btnYes="btnSave(1)" 
+    @btnYes="btnYesQuestion" 
     @btnNo="btnCloseForm"
 />
 <BaseMess  v-if="isShowMessWarning"
@@ -297,12 +297,7 @@
     @btnClose="isShowMessInfo = false"
     
 />
-<BaseMess  v-if="isShowMessInfo"
-    typeMessage="info" 
-    :titleForm="titleMessInfo"
-    @btnClose="isShowMessInfo = false"
-    
-/>
+
 </div>
 </template>
 
@@ -591,6 +586,16 @@ export default {
             me.listAccountObjectBankAccount = await me.formatJsonToArray(me.account.AccountObjectBankAccount);
             me.listAccountObjectShippingAddress = await me.formatJsonToArray(me.account.AccountObjectShippingAddress);
 
+        },
+        /**
+         * Thực hiện hành động khi click vào nút có của form hỏi bạn có muốn đóng không
+         * CreatedBy: HoaiPT(05/03/2022)
+         */
+        btnYesQuestion(){
+            var me =this;
+            me.isShowMessQuestion = false;//Đóng form question
+
+            me.btnSave(1);//Thực hiện hành động Cất
         },
         /**
          * Hành động khi ấn vào nút (Cất) hoặc (Cất và Thêm)
