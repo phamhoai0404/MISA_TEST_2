@@ -13,7 +13,7 @@
                 </div>
                 <input class="m-input-combobox m-input-group"
                     :placeholder="[[placeholder]]"  
-                    :value="value" @input="onInput"
+                    :value="value" @input="onInput($event.target.value)"
                     :ref="refText"
                     :readonly="readOnly"
                 >
@@ -113,19 +113,64 @@ export default {
             default:false,//Mặc định là không có lỗi,
             type:Boolean
         },
-        isShowDataDropdown:{
-            default:false,//Mặc định là đóng data dropdown
-            type:Boolean
-        },
-        listData:Array,//Dữ liệu truyền vào,
+        datas:Array,//Dữ liệu truyền vào,
         listFields:Array, //Truyền fields nếu là là isComboboxTable
 
         keySearch:String,//Để mục đích css,
 
+        listDataSelectedSource:Array(),
 
-        listDataSelected:Array(),
+        searchAllField:{//Có tìm kiếm theo tất cả các trường có trong fied không
+            default:true,// có tìm kiếm tất cả nếu là false thì chỉ tìm kiếm theo giá trị inputText
+            type:Boolean
+        },
+        inputText:{//Trường dữ liệu để tìm kiếm nếu searchAllField == false
+            type:String
+        },
+    },
+
+    data() {
+        return {
+            listDataSource: this.datas,
+            listDataSelected :this.listDataSelectedSource,
+            listData:[],//Dữ liệu temp để tìm kiếm ở combobox ấy,
+            isShowDataDropdown: false,//Mặc định là đóng dropdown data
+        }
+    },
+    watch:{
+         /**
+         * Thực hiện theo dõi những chữ trong ô input của combobox của 
+         * CreatedBy: HoaiPT(02/03/2021)
+         */
+        value(valueNew){
+            var me = this;
+            me.isShowDataDropdown = true;
+
+            if(me.searchAllField == false){//Nghĩa là không tìm tất cả
+                me.listData = me.selectFilterObject(me.listDataSource,me.inputText, valueNew);
+            }else{//Tìm tất cả các field
+               me.listData = me.selectFilterObjectInAllField(me.listDataSource, me.listFields, valueNew);
+            }
+            
+        },
+        listDataSelectedSource(){
+            this.listDataSelected = this.listDataSelectedSource;
+        }
     },
     methods: {
+        /**
+         * Thực hiện khi thay đổi giá trị trong ô Input
+         * CreatedBy: HoaiPT(28/02/2022)
+         */
+        onInput(value) {
+            this.$emit('input', value) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
+        },
+        /**
+         * Thực hiện thay đổi giá trị của listDataSelectedSource
+         */
+        onChangeListSelected(value){
+            this.$emit('onChangeListSelected', value)
+        },
         /**
          * Thực hiện khi click vào nút bỏ 1 item
          * CreatedBy: HoaiPT(02/03/2022)
@@ -133,16 +178,9 @@ export default {
         removeItemSelected(object,index){
             var me = this;
             if(!this.readOnly){//Nếu mà không có lệnh chỉ đọc thì mới được thực hiện ở bên trong
-                me.$emit('removeOneItem',{object:object, index:index});
+                this.listDataSelected.splice(index, 1);
+                me.$emit('updateListDataSelected',this.listDataSelected);
             }
-        },
-
-        /**
-         * Thực hiện khi thay đổi giá trị trong ô Input
-         * CreatedBy: HoaiPT(28/02/2022)
-         */
-        onInput(event) {
-            this.$emit('input', event.target.value) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
         },
         /**
          * Thực hiện click nút dropdown
@@ -150,29 +188,35 @@ export default {
          */
         btnClickDropdown(){
             if(!this.readOnly){//Nếu mà không có lệnh chỉ đọc thì mới được thực hiện ở bên trong
-                this.$emit('btnClickDropdown');
+                this.listData = this.datas;
+                this.isShowDataDropdown = !this.isShowDataDropdown;
             }
-            
         },
         /**
          * Thực hiện click vào một Item bất kỳ
          * CreatedBy: HoaiPT(28/02/2022)
          */
-        btnClickItem(object){
-            this.$emit('btnClickItem',{object:object});
-        },
         btnClickItemTable(object){
-            this.$emit('btnClickItemTable',{object:object});
+            var me = this;
+            if(me.existValueInArray(me.listDataSelected, object[this.keySearch])){
+                me.listDataSelected = me.removeValueInArray(me.listDataSelected, object[this.keySearch]);
+            }else{
+                me.listDataSelected.push(object[this.keySearch]);
+                
+            }
+            me.$emit('updateListDataSelected',this.listDataSelected);
         },
 
         /**
          * Thực hiện khi click bất kì ngoài ô đấy thì nó sẽ đóng lại
          */
         hideDataDropDown(){
-            this.$emit('hideDataDropDown');
+           this.isShowDataDropdown = false;
         },
         existValueInArray:MyFunction.existValueInArray2,
-       
+        selectFilterObject:MyFunction.selectFilterObject,
+        removeValueInArray:MyFunction.removeValueInArray,
+        selectFilterObjectInAllField:MyFunction.selectFilterObjectInAllField,
     },
      filters: {
         /**

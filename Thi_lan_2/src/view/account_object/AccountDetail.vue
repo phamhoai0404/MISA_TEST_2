@@ -1,4 +1,4 @@
-<template>
+<template v-if="isLoadDataTrue">
 <div class="dialog">
     <div class="dialog-content">
         <div class="dialog-header">
@@ -72,40 +72,43 @@
                                 />
                             </div>
                         </div>
-                        <div class="dialog-one-row">
-                            <BaseComboboxGroup label="Nhóm nhà cung cấp" 
-                                v-model="textSearchAccountObjectGroup" :isButtonAdd="true"
+                        <div class="dialog-one-row" v-if="isShowDropDownAccountObjectGroup">
+                            <BaseComboboxGroup label="Nhóm nhà cung cấp" :isButtonAdd="true"
+                                v-model="textSearchAccountObjectGroup" 
                                 :readOnly="readOnly"
+
                                 :errorCombobox="errorAccountObjectGroup"
                                 :title="titleAccountObjectGroup"
-                                :isShowDataDropdown="isShowDropDownAccountObjectGroup"
-                                :listData="listAccountObjectGroupTemp"
+
                                 :listFields="listFieldAccountObjectGroup"
-                                :listDataSelected="listAccountGroupSelected"
-                                @btnClickDropdown="btnClickDropdownAccountObjectGroup"
-                                @btnClickItemTable="btnSelectItemAccountObjectGroup"
-                                @hideDataDropDown="isShowDropDownAccountObjectGroup = false"
-                                @removeOneItem="removeOneAccountObjectGroup"
-                                keySearch="AccountObjectGroupCode"
+                                :datas="listAccountObjectGroup"
+                                
+                                :listDataSelectedSource="listAccountGroupSelected"
+                                
+                                keySearch="AccountObjectGroupCode" 
+                                inputText="AccountObjectGroupName"
+                                @updateListDataSelected="changeListAccountGroupSelected"
+                                @input="changeSearchTextAccountGroup"
                             />
                         </div>
-                        <div class="dialog-one-row">
-                             <BaseComboboxNormal label="Nhân viên mua hàng"
+                        <div class="dialog-one-row" v-if="isShowEmployee">
+                             <BaseComboboxNormal label="Nhân viên mua hàng" :isButtonAdd="true"
                                 v-model="account.FullName"
-                                :readOnly="readOnly"
                                 :isComboboxTable="true"
+                                :readOnly="readOnly"
+                                
                                 :errorCombobox="errorEmployee"
                                 :title="titleEmployee"
-                                :isButtonAdd="true"
-                                :isShowDataDropdown="isShowComboboxEmployee"
-                                :listData="listEmployeeTemp"
+                                
                                 :listFields="listFieldEmployee"
+                                :datas="listEmployee"
+                                
+                                inputText="FullName"
                                 :propertyCompare="account.EmployeeId"
                                 keySearch="EmployeeId"
-                                @hideDataDropDown="isShowComboboxEmployee = false"
-                                @btnClickDropdown="btnClickDropdownEmployee"
-                                @btnClickItemTable="btnSelectItemEmployee"
-                                @input="changeInputComboboxEmployee"
+
+                                @onChangeValueKeySearch ="changeIdEmployee"
+                                @input="changeFullName"
                             />
                         </div>
                     </div>
@@ -122,11 +125,7 @@
                                         <BaseComboboxNormal label="Người liên hệ" placeholder="Xưng hô"
                                             v-model="account.Prefix"
                                             :readOnly="readOnly"
-                                            :isShowDataDropdown="isShowComboboxPrefix"
-                                            :listData="listDataPrefixTemp"
-                                            @hideDataDropDown="isShowComboboxPrefix = false"
-                                            @btnClickDropdown="btnClickDropdownPrefix"
-                                            @btnClickItem="btnSelectItemPrefix" 
+                                            :datas="listDataPrefix"
                                            
                                         />
                                     </div>
@@ -161,23 +160,25 @@
                         </span>
                         <span v-if="tabSelected == 1">
                             <div>
-                                <div class="tab-only-one">
-                                     <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
+                                <div class="tab-only-one" v-if="isShowPaymentTerm">
+                                    <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
+                                        :isButtonAdd="true"
                                         v-model="account.PaymentTermName"
+                                        :isComboboxTable="true"
                                         :readOnly="readOnly"
+                                        
                                         :errorCombobox="errorPaymentTerm"
                                         :title="titlePaymentTerm"
-                                        :isComboboxTable="true"
-                                        :isButtonAdd="true"
-                                        :isShowDataDropdown="isShowComboboxPaymentTerm"
-                                        :listData="listPaymentTermTemp"
+                                        
                                         :listFields="listFieldPaymentTerm"
+                                        :datas="listPaymentTerm"
+                                        
+                                        inputText="PaymentTermName"
                                         :propertyCompare="account.PaymentTermId"
                                         keySearch="PaymentTermId"
-                                        @hideDataDropDown="isShowComboboxPaymentTerm = false"
-                                        @btnClickDropdown="btnClickDropdownPaymentTerm"
-                                        @btnClickItemTable="btnSelectItemPaymentTerm"
-                                        @input="changeInputComboboxPaymentTerm"
+
+                                        @onChangeValueKeySearch ="changeIdPaymentTerm"
+                                        @input="changePaymentTermName"
                                     />
                                     <BaseInput typeInput="input" label="Số ngày được nợ" :isNumber="true" styleInput="margin-right:10px;" 
                                         v-model="account.DueTime"
@@ -189,21 +190,23 @@
                                     />
                                 </div>
                                 <div class="tab-only-one">
-                                    <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
+                                     <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
                                         v-model="account.PayAccountName"
+                                        :isComboboxTable="true"
                                         :readOnly="readOnly"
+                                        
                                         :errorCombobox="errorPayAccount"
                                         :title="titlePayAccount"
-                                        :isComboboxTable="true"
-                                        :isShowDataDropdown="isShowComboboxPayAccount"
-                                        :listData="listPayAccountTemp"
+                                        
                                         :listFields="listFieldPayAccount"
+                                        :datas="listPayAccount"
+                                        
+                                        inputText="PayAccountName"
                                         :propertyCompare="account.PayAccountId"
                                         keySearch="PayAccountId"
-                                        @hideDataDropDown="isShowComboboxPayAccount = false"
-                                        @btnClickDropdown="btnClickDropdownPayAccount"
-                                        @btnClickItemTable="btnSelectItemPayAccount"
-                                        @input="changeInputComboboxPayAccount"
+
+                                        @onChangeValueKeySearch ="changeIdPayAccount"
+                                        @input="changePayAccountName"
                                     />
                                 </div>
                               
@@ -342,15 +345,12 @@ export default {
             listTabIndex: mylib.data.listTabIndex,//Danh sách list Tên của TabIndex được lưu trữ trong resource
             readOnly:false,//Thực hiện để mở khóa hay đóng lại các ô input
 
-            isShowComboboxPrefix:false,//Mặc định ban đầu là đóng
+            // isShowComboboxPrefix:false,//Mặc định ban đầu là đóng
             listDataPrefix:mylib.data.listPrefix,//Dữ liệu chính
-            listDataPrefixTemp:[],//Tạm thời là rỗng
+            // listDataPrefixTemp:[],//Tạm thời là rỗng
             
-            account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch
-                Prefix:null,
-                
+            account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch  
                 EmployeeId:null,
-                FullName:null,
 
                 PayAccountId:null,
                 PayAccountName:null,
@@ -370,8 +370,7 @@ export default {
             titleMessInfo:"",
 
             isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
-            listEmployee:null,
-            listEmployeeTemp:[],
+            listEmployee:[],
             listFieldEmployee:mylib.data.listFieldEmployeeCombobox,
 
             isShowComboboxPayAccount:false,//Trạng thái đầu tiên của combobox
@@ -384,10 +383,8 @@ export default {
             listPaymentTermTemp:[],
             listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
 
-
-            isShowDropDownAccountObjectGroup:false,
-            listAccountObjectGroup:null,
-            listAccountObjectGroupTemp:[],
+            listAccountObjectGroup:[],
+            // listAccountObjectGroupTemp:[],
             listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
 
             listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
@@ -416,10 +413,17 @@ export default {
 
             listFieldShippingAddress:mylib.data.listFieldShippingAddress,
             listAccountObjectShippingAddress: [],
+
+            isShowEmployee: false,
+            isShowPaymentTerm:false,
+            isShowPayAccount:false,
+            isShowDropDownAccountObjectGroup:false,
+            
         }
     },
     async created(){
         var me = this;
+        me.$parent.isShowLoading = true;//Thực hiện show loading
 
         if(me.editMode == mylib.misaEnum.editMode.View){//Nếu nó thuộc kiểu xem thì sẽ vô hiệu hóa các ô lại
             me.readOnly = true;
@@ -428,109 +432,31 @@ export default {
         //Cần phải viết như này để nó không bind từ detail ảnh hưởng đến table
         me.account= await MyFunction.sameObject(me.accountTable);
 
-        await me.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
-        await me.getListPayAccount()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
-        await me.getListPaymentTerm()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
-        await me.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
-        
-        //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
-        me.listAccountGroupSelected = me.cutStrings(me.account.AccountObjectGroupListId);
-
-        //Thực hiện gán giá trị cho listAccountObjectBankAccount,listShipdress
-        me.getValueJsontoArrayAccount();
-
         //Thực hiện gán giá trị cho 
-      
+        
     },
-    mounted() {
-       this.$refs.TaxCode.focus() //Tập trung vào ô mã đầu tiên
+    async mounted() {
+        this.$refs.TaxCode.focus() //Tập trung vào ô mã đầu tiên
+        
+        await this.getListPayAccount()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox
+        await this.getListPaymentTerm()//Thực hiện gán dữ liệu  phục vụ cho combobox
+        await this.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
+        await this.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
+        //Thực hiện gán giá trị cho listAccountObjectBankAccount,listShipdress
+        this.getValueJsontoArrayAccount();
+        
+        this.isShowEmployee = true;//Thực hiện hiện html
+        this.isShowPaymentTerm = true;//Thực hiện hiện html
+        this.isShowPayAccount = true;//Thực hiện hiện html
+
+        //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
+        this.listAccountGroupSelected = this.cutStrings(this.account.AccountObjectGroupListId);
+        this.isShowDropDownAccountObjectGroup = true;
+
+        this.$parent.isShowLoading = false;
     },
     
-    watch:{
-        /**
-         * Thực hiện theo dõi Prefix
-         * CreatedBy: HoaiPT(28/02/2021)
-         */
-        'account.Prefix'(valueNew){
-            var me = this;
-
-            //Kiểm tra nếu mà không tồn tại giá trị trong mảng, và cái giá trị valueNew nó có tồn tại hay không thì bắt đầu tìm kiếm
-            if(! MyFunction.existValueInArray(me.listDataPrefix, valueNew) && valueNew){
-                me.isShowComboboxPrefix = true;
-
-                //Thực hiện lọc theo từ khóa truyền vào mới
-                me.listDataPrefixTemp = MyFunction.selectFilter(me.listDataPrefix,valueNew);
-            } 
-        },
-         /**
-         * Thực hiện theo dõi FullName đồng thời thay đổi giá trị của EmployeeId
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        'account.FullName'(valueNew){
-            var me = this;
-            me.errorEmployee = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
-            me.titleEmployee="";
-
-            if(valueNew && me.listEmployee){//Nếu hai đối tượng này tồn tại
-                if(!me.existValueInArrayObject(me.listEmployee,'FullName', valueNew)){
-                    me.isShowComboboxEmployee = true;
-                    me.listEmployeeTemp = me.selectFilterObject(me.listEmployee,'FullName', valueNew);
-                } 
-            }    
-            
-        },
-         /**
-         * Thực hiện theo dõi PayAccountName đồng thời thay đổi giá trị của PayAccountId
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        'account.PayAccountName'( valueNew){
-            var me = this;
-            me.errorPayAccount = false;//Bỏ viền đỏ khi mà nếu nó báo lỗi
-            me.titlePayAccount="";
-
-            if(valueNew && me.listPayAccount){//Nếu hai đối tượng này tồn tại
-                if(!me.existValueInArrayObject(me.listPayAccount,'PayAccountName', valueNew)){
-                    me.isShowComboboxPayAccount = true;
-                    me.listPayAccountTemp = me.selectFilterObject(me.listPayAccount,'PayAccountName', valueNew);
-                } 
-            } 
-        },
-         /**
-         * Thực hiện theo dõi PaymentTermName đồng thời thay đổi giá trị của PaymentTermId
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        'account.PaymentTermName'(valueNew){
-            var me = this;
-            me.errorPaymentTerm=false;
-            me.titlePaymentTerm="";
-            
-
-            if(valueNew && me.listPaymentTerm){//Nếu hai đối tượng này tồn tại
-                if(!me.existValueInArrayObject(me.listPaymentTerm,'PaymentTermName', valueNew)){
-                    me.isShowComboboxPaymentTerm = true;
-                    me.listPaymentTermTemp = me.selectFilterObject(me.listPaymentTerm,'PaymentTermName', valueNew);
-                } 
-            }
-            
-        },
-        /**
-         * Thực hiện theo dõi những chữ trong ô input của combobox của AccountObjectGroup
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        'textSearchAccountObjectGroup'( valueNew){
-            var me = this;
-
-            me.errorAccountObjectGroup = false;
-            me.titleAccountObjectGroup = "";
-
-            me.isShowDropDownAccountObjectGroup = true;
-            me.listAccountObjectGroupTemp = me.selectFilterObject(me.listAccountObjectGroup,'AccountObjectGroupId', valueNew);
-            // for(let object in me.listAccountObjectGroup){
-            //     if()
-            // }
-
-           
-        },
+    watch:{  
         /**
          * Thực hiện theo dõi AccountObjectCode
          * CreatedBy: HoaiPT(03/03/2021)
@@ -545,9 +471,7 @@ export default {
                     me.errorCode = false;
                     me.titleCode = "";
                 }
-            }
-           
-            
+            }    
         },
          /**
          * Thực hiện theo dõi AccountObjectName
@@ -568,6 +492,38 @@ export default {
         
     },
     methods: {
+        changeSearchTextAccountGroup(){
+            this.errorAccountObjectGroup = false;
+            this.titleAccountObjectGroup ="";
+        },
+        changeListAccountGroupSelected(data){
+            this.listAccountGroupSelected = data;
+        },
+        changePayAccountName(){
+            this.errorPayAccount = false;
+            this.titlePayAccount ="";
+            this.account.PayAccountId = null;
+        },
+
+        changeIdPayAccount(id){
+             this.account.PayAccountId = id;
+        },
+        changePaymentTermName(){
+            this.errorPaymentTerm = false;
+            this.titlePaymentTerm ="";
+            this.account.PaymentTermId = null;
+        },
+        changeIdPaymentTerm(id){
+            this.account.PaymentTermId = id;
+        },
+        changeFullName(){
+            this.errorEmployee = false;
+            this.titleEmployee ="";
+            this.account.EmployeeId = null;
+        },
+        changeIdEmployee(id){
+            this.account.EmployeeId = id;
+        },
         /**
          * Thực hiện chuyển đổi giá trị AccountObjectBankAccount để cho data base nhận được đồng thời xóa bỏ đối tượng rỗng
          * CreatedBy: HoaiPT(05/03/2022) 
@@ -627,7 +583,6 @@ export default {
                 me.account.AccountObjectGroupListId = temp;
                 
                 me.setValueArraytoJsonAccount();//Gián giá trị thích hợp cho shiperAddress, bankAccount
-                
 
                 switch (me.editMode) {
                     case mylib.misaEnum.editMode.Add: //Thực hiện thêm mới
@@ -819,6 +774,14 @@ export default {
             var me = this;
             me.textSearchAccountObjectGroup="";//Ô tìm kiếm trong searchgroud == rỗng,
             me.listAccountGroupSelected=[];//gán đang lựa chọn bằng []
+            me.lli
+
+            me.listAccountObjectBankAccount = [{}];//Đưa về [] với mặc định là có một phần tử rỗng
+            me.listAccountObjectShippingAddress =[{}];//Tương tự như trên
+
+            me.tabSelected = 0;//Trở về đầu tiên
+
+
             //Làm mới toàn bộ để lại mã mới tự tăng
             for (var propName in me.account) {
                 me.account[propName] = null;
@@ -829,102 +792,31 @@ export default {
          * Đó là thực hiện xóa nó đi khỏi mảng
          * CreatedBy: HoaiPT(02/03/2022)
          */
-        removeOneAccountObjectGroup({index}){
-            this.listAccountGroupSelected.splice(index, 1);
-        },
-        /**
-         * Thực hiện khi click vào nút dropdow và dữ liệu bằng đúng dữ liệu tất cả 
-         * CreatedBy: HoaiPT(02/03/2022)
-         */
-        btnClickDropdownAccountObjectGroup(){
-            this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
-            this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
-        },
+        // removeOneAccountObjectGroup({index}){
+        //     this.listAccountGroupSelected.splice(index, 1);
+        // },
+        // /**
+        //  * Thực hiện khi click vào nút dropdow và dữ liệu bằng đúng dữ liệu tất cả 
+        //  * CreatedBy: HoaiPT(02/03/2022)
+        //  */
+        // btnClickDropdownAccountObjectGroup(){
+        //     this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
+        //     this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
+        // },
         /**
          * Thực hiện khi click item bất kì trong dữ liệu data có thể thực hiện xóa hoặc là add thêm vào
          * CreatedBy: HoaiPT(02/03/2022)
          */
-        btnSelectItemAccountObjectGroup({object}){
-            console.log('object:', object);
-            var me = this;
-            if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
-                me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
-            }else{
-                me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
-            }
-        },
-        /**
-         * Thực hiện khi thay đổi giá trị trong ô input
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        changeInputComboboxPaymentTerm(){
-            this.account.PaymentTermId = null;
-        },
-         /**
-         * Thực hiện click vào item bất kì trong data combobox PayAccount
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnSelectItemPaymentTerm({object}){
-            this.account.PaymentTermId = object.PaymentTermId;
-            this.account.PaymentTermName = object.PaymentTermName;
-            this.isShowComboboxPaymentTerm = false;  
-        },
-        /**
-         * Thực hiện click vào nút dropdown ở combobox PaymentTerm
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnClickDropdownPaymentTerm(){
-            this.listPaymentTermTemp = this.listPaymentTerm;//Thực hiện gán toàn bộ dữ liệu vào tạm
-            this.isShowComboboxPaymentTerm = !this.isShowComboboxPaymentTerm;
-        },
-         /**
-         * Thực hiện khi thay đổi giá trị trong ô input
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        changeInputComboboxPayAccount(){
-            this.account.PayAccountId = null;
-        },
-         /**
-         * Thực hiện click vào item bất kì trong data combobox PayAccount
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnSelectItemPayAccount({object}){
-            this.account.PayAccountId = object.PayAccountId;
-            this.account.PayAccountName = object.PayAccountName;
-            this.isShowComboboxPayAccount = false;  
-        },
-        /**
-         * Thực hiện click vào nút dropdown ở combobox PayAccount
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnClickDropdownPayAccount(){
-            this.listPayAccountTemp = this.listPayAccount;//Thực hiện gán toàn bộ dữ liệu vào tạm
-            this.isShowComboboxPayAccount = !this.isShowComboboxPayAccount;
-        },
-        /**
-         * Thực hiện khi thay đổi giá trị trong ô input
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        changeInputComboboxEmployee(){
-            this.account.EmployeeId = null;//Gán giá trị cho mã nhân viên của nhà cung cấp bằng null
-        },
-         /**
-         * Thực hiện click vào item bất kì trong data combobox employee
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnSelectItemEmployee({object}){
-            this.account.EmployeeId = object.EmployeeId;
-            this.account.FullName = object.FullName;
-            this.isShowComboboxEmployee = false;  
-        },
-        /**
-         * Thực hiện click vào nút dropdown ở combobox employee
-         * CreatedBy: HoaiPT(02/03/2021)
-         */
-        btnClickDropdownEmployee(){
-            this.listEmployeeTemp = this.listEmployee;//Thực hiện gán toàn bộ dữ liệu vào tạm
-            this.isShowComboboxEmployee = !this.isShowComboboxEmployee;
-        },
+        // btnSelectItemAccountObjectGroup({object}){
+        //     console.log('object:', object);
+        //     var me = this;
+        //     if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
+        //         me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
+        //     }else{
+        //         me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
+        //     }
+        // },
+        
         /**
          * Thực hiện khi click vào nút nhân ở bên góc phải trên cùng màn hình
          * CreatedBy: HoaiPT(02/03/2021)
@@ -957,22 +849,6 @@ export default {
         selectedTabIndex(index) {
             var me = this;
             me.tabSelected = index;
-        },
-        /**
-         * Thực hiện khi click vào nút dropdown của Prefix
-         * CreatedBy: HoaiPT(28/02/2021)
-         */
-        btnClickDropdownPrefix(){
-            this.listDataPrefixTemp = this.listDataPrefix;//Gán dữ liệu tất cả vào tạm --> Lấy ra toàn bộ ấy
-            this.isShowComboboxPrefix = !this.isShowComboboxPrefix;//Thực hiện chuyển đổi trạng thái
-        },
-        /**
-         * Thực hiện khi click vào một item trong listDataPrefixTemp
-         * CreatedBy: HoaiPT(28/02/2021)
-         */
-        btnSelectItemPrefix({object}){
-            this.account.Prefix = object;//Thực hiện gán đối tượng vào cho Prefix
-            this.isShowComboboxPrefix = false; //Đóng data combobox của Prefix
         },
          /**
          * Thực hiện khi khi thay đổi giá trị của tổ chức hay cá nhân ấy nhưng hiện tại chỉ cần vẽ thôi
@@ -1027,15 +903,11 @@ export default {
          * Thực hiện lấy những cái này từ file js
          * CreatedBy:HoaiPT(02/03/2022)
          */
-        selectFilter:MyFunction.selectFilter,
-        existValueInArray:MyFunction.existValueInArray,
         existValueInArray2:MyFunction.existValueInArray2,
-        existValueInArrayObject:MyFunction.existValueInArrayObject,
         selectFilterObject:MyFunction.selectFilterObject,
         sameObject:MyFunction.sameObject,
         cutStrings:MyFunction.cutStrings,
         removeValueInArray:MyFunction.removeValueInArray,
-        existObject:MyFunction.existObject,
         formatJsonToArray:MyFunction.formatJsonToArray,
         formatArrayToJson: MyFunction.formatArrayToJson,
     }

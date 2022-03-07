@@ -652,7 +652,7 @@
             <SeedValue>19</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>Điều khoản (${counter([1-9]{1})})</Expression>
+            <Expression>(Chuyển tiền bằng điện tín)|(Chuyển tiền bằng thư)|(Phương thức thanh toán nhờ thu)|(Phương thức tín dụng chứng từ)|(Một số phương thức khác)</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
           <GeneratorName>NickName</GeneratorName>

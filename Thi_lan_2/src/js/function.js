@@ -1,3 +1,4 @@
+import MyFunction2 from "./function2";
 var MyFunction = {
     /**
      * Thực hiện định dạng lại ngày
@@ -40,7 +41,8 @@ var MyFunction = {
         if (value != null) {
             value = value.toLowerCase();
         }
-        return arrayList.filter(itemValue => itemValue[nameProperty].toLowerCase().includes(value));
+        let temp = arrayList.filter(itemValue => itemValue[nameProperty].toLowerCase().includes(value));
+        return temp;
     },
 
     /**
@@ -57,7 +59,6 @@ var MyFunction = {
         return false;
     },
     existValueInArray2(arrayList, value) {
-        // console.log(ho)
         if (value != null) { //Nếu giá trị tồn tại
             let arrayListTemp = arrayList.filter(itemValue => itemValue == value);
             if (arrayListTemp.length > 0)
@@ -139,20 +140,7 @@ var MyFunction = {
         }
         return arrayListTemp;
     },
-    /**
-     * Kiểm tra xem có tồn tại đối tượng hay không, đối tượng đó cũng phải khác có tất cả object[prop] =="", chỉ cần object[prop].trim() !="" thì có tồn tại
-     * CreateBy: HoaiPT(04/03/2022)
-     */
-    existObject(object) {
-        if (Object.keys(object).length != 0) {
-            for (let propName in object) {
-                if (object[propName].trim() != "") {
-                    return true;
-                }
-            }
-        }
-        return false; //Nó không có đối tượng nào cả
-    },
+
     /**
      * Thực hiện chuyển từ Json sang Array, 
      * Nếu mà không tồn tại hoặc mảng không có phần tử nào thì mặc định add một rỗng vào
@@ -175,10 +163,29 @@ var MyFunction = {
      * Đồng thời thực hiện xóa bỏ đi đối tượng rỗng hoặc tất cả các giá trị đều ""
      */
     formatArrayToJson(arrayList) {
-        arrayList = arrayList.filter(item => this.existObject(item));
+        arrayList = arrayList.filter(item => MyFunction2.existObject(item));
         let temp = arrayList;
-        console.log(temp);
         return JSON.stringify(temp);
+    },
+    /**
+     * Lấy tất cả các đối tượng có giá trị thỏa mãn ở trong trùng với filed có sẵn
+     * CreatedBy: HoaiPT(07/03/2022)
+     */
+    selectFilterObjectInAllField(arraySource, arrayField, value) {
+
+        if (value != null) {
+            value = value.toLowerCase();
+        }
+        let temp = [];
+        for (let i = 0; i < arraySource.length; i++) {
+            for (let j = 0; j < arrayField.length; j++) {
+                if (arraySource[i][arrayField[j].name].toLowerCase().includes(value)) {
+                    temp.push(arraySource[i]);
+                    break;
+                }
+            }
+        }
+        return temp;
     }
 }
 export default MyFunction

@@ -74,6 +74,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Mã nhân viên
         /// </summary>
         [PropertyName("Mã nhân viên")]
+        [Foreignkey]
         public Guid? EmployeeId { get; set; }
 
         /// <summary>
@@ -112,6 +113,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Mã điều khoản
         /// </summary>
         [PropertyName("Mã điều khoản")]
+        [Foreignkey]
         public Guid? PaymentTermId { get; set; }
 
         /// <summary>
@@ -176,6 +178,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Mã tài khoản công nợ
         /// </summary>
         [PropertyName("Mã tài khoản công nợ")]
+        [Foreignkey]
         public Guid? PayAccountId { get; set; }
 
 

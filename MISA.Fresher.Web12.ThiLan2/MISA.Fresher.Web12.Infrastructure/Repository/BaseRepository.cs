@@ -174,12 +174,13 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
 
                     //Kiểm tra property có phải là khóa chính hay không 
                     var primaryKey = Attribute.IsDefined(prop, typeof(Primarykey));
+                    var foreignKey = Attribute.IsDefined(prop, typeof(Foreignkey));
 
                     //không phải là khóa chính
                     if (!(primaryKey == true || propName == $"{className}Id"))
                     {
-                        //Nó có giá trị truyền vào
-                        if (propValue != null)
+                        //Nó có giá trị truyền vào hoặc nó là khóa ngoài
+                        if (foreignKey == true || propValue != null)
                         {
                             var paramName = $"@{propName}";
                             sqlColum.Append($"{delimiter}{propName} = {paramName}");

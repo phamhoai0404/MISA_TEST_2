@@ -8,8 +8,7 @@
         <div class="m-combobox-top" :class=" [ isShowDataDropdown?'m-combobox-border-green':'',errorCombobox? 'm-combobox-border-red':'', readOnly?'m-combobox-readOnly':'']">
             <input class="m-input-combobox"
                 :placeholder="[[placeholder]]"  
-                :value="value" @input="onInput"
-                :ref="refText"
+                :value="value" @input="onInput($event.target.value)"
                 :readonly="readOnly"
             >
             <div class="m-combobox-icon">
@@ -95,7 +94,6 @@ export default {
             type: Boolean
         },
         value: [String,Number,Object],
-        refText:String,
         placeholder:String,
         readOnly:{
             default:false,
@@ -115,27 +113,77 @@ export default {
             default:false,//Mặc định là không có lỗi,
             type:Boolean
         },
-        isShowDataDropdown:{
-            default:false,//Mặc định là đóng data dropdown
-            type:Boolean
-        },
         isComboboxTable:{//Mặc định là combobox bình thường
             default:false,
             type:Boolean
         },
-        listData:Array,//Dữ liệu truyền vào,
+        datas:Array,//Dữ liệu truyền vào,
         listFields:Array, //Truyền fields nếu là là isComboboxTable
 
         keySearch:String,//Để mục đích css,
         propertyCompare:{},
+        inputText:{
+            type:String
+        },
+        searchAllField:{//Có tìm kiếm theo tất cả các trường có trong fied không
+            default:true,// có tìm kiếm tất cả nếu là false thì chỉ tìm kiếm theo giá trị inputText
+            type:Boolean
+        }
+    },
+    data(){
+        return {
+            listDataSource: this.datas,//dữ liệu gốc truyền vào,
+            listData:[],//Dữ liệu temp để tìm kiếm ở combobox ấy,
+            isShowDataDropdown:false,//Mặc định là dataCombobox đóng
+        }
+    },
+    watch:{
+        /**
+         * Thực hiện theo dõi Biến value
+         * CreatedBy: HoaiPT(28/02/2021)
+         */
+        value(valueNew){
+            var me = this;
+            
+            if(valueNew != null){
+                if(valueNew.trim() ==""){  //Nếu không tồn nhập dữ liệu gì  thì //bằng toàn toàn bộ dữ liệu
+                    me.isShowDataDropdown = true;
+                    me.listData = me.listDataSource;
+                }else{
+                    //Đây là trường hợp tìm kiếm bình thường mà thôi không phải là combobox table
+                    if(me.isComboboxTable == false){
+            
+                        //Kiểm tra nếu mà không tồn tại giá trị trong mảng, và cái giá trị valueNew nó có tồn tại hay không thì bắt đầu tìm kiếm
+                        if(! MyFunction.existValueInArray(me.listDataSource, valueNew) && valueNew){
+                            me.isShowDataDropdown = true;
+                            me.listData = MyFunction.selectFilter(me.listDataSource,valueNew); //Thực hiện lọc theo từ khóa truyền vào mới
+                        }        
+                    }
+                    else{
+                        if(valueNew && me.listDataSource){//Nếu hai đối tượng này tồn tại
+                            if(!me.existValueInArrayObject(me.listDataSource,me.inputText, valueNew)){
+                                me.isShowDataDropdown = true;//Mở data
+                                if(me.searchAllField == false){//Trường hợp là chỉ tìm theo field inputText
+                                    me.listData = me.selectFilterObject(me.listDataSource, me.inputText, valueNew);
+                                }else{//Trường hợp duyệt theo tất cả các trường
+                                    me.listData = me.selectFilterObjectInAllField(me.listDataSource, me.listFields, valueNew);
+                                }     
+                            }
+                        }
+                    }
+                }
+            }
+            
+           
+        },
     },
     methods: {
         /**
          * Thực hiện khi thay đổi giá trị trong ô Input
          * CreatedBy: HoaiPT(28/02/2022)
          */
-        onInput(event) {
-            this.$emit('input', event.target.value) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
+        onInput(data) {
+            this.$emit('input',data) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
         },
         /**
          * Thực hiện click nút dropdown
@@ -143,29 +191,35 @@ export default {
          */
         btnClickDropdown(){
             if(!this.readOnly){//Nếu mà không có lệnh chỉ đọc thì mới được thực hiện ở bên trong
-                this.$emit('btnClickDropdown');
-            }
-            
+                this.listData = this.listDataSource;
+                this.isShowDataDropdown = !this.isShowDataDropdown;//Đóng lại hoặc mở ra
+            }  
         },
         /**
          * Thực hiện click vào một Item bất kỳ
          * CreatedBy: HoaiPT(28/02/2022)
          */
         btnClickItem(object){
-            this.$emit('btnClickItem',{object:object});
+            this.onInput(object);//Thực hiện gán lại dữ liệu và bắn ra ngoài cho cha nhận được
+            this.isShowDataDropdown = false; //Đóng data combobox data
         },
         btnClickItemTable(object){
-            this.$emit('btnClickItemTable',{object:object});
+            this.onInput(object[this.inputText]);
+            this.isShowDataDropdown = false; //Đóng data combobox data
+            this.$emit('onChangeValueKeySearch', object[this.keySearch]);//Bắn dữ liệu ra ngoài để thay đổi id 
+            
         },
 
         /**
          * Thực hiện khi click bất kì ngoài ô đấy thì nó sẽ đóng lại
          */
         hideDataDropDown(){
-            this.$emit('hideDataDropDown');
+            this.isShowDataDropdown = false;//Thực hiện đóng dropdown
         },
         comparisonValue:MyFunction.comparisonValue,//import từ file js về
-       
+        existValueInArrayObject:MyFunction.existValueInArrayObject,
+        selectFilterObject:MyFunction.selectFilterObject,
+        selectFilterObjectInAllField:MyFunction.selectFilterObjectInAllField,
     },
      filters: {
         /**
@@ -173,6 +227,7 @@ export default {
          * CreatedBy: HoaiPT(01/03/2022)
          */
         formatDate:MyFunction.formatDate,
+       
     }
 }
 </script>

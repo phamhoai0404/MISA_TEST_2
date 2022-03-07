@@ -37,6 +37,13 @@ namespace MISA.Fresher.Web12.Core.MISAAttribute
     public class Primarykey : Attribute
     {
     }
+    /// <summary>
+    /// Đánh dấu property là khóa ngoài
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class Foreignkey : Attribute
+    {
+    }
 
     /// <summary>
     /// Thiết lập tên cho property 
@@ -49,5 +56,6 @@ namespace MISA.Fresher.Web12.Core.MISAAttribute
             this.Name = name;
         }
     }
-    
+
+        
 }
