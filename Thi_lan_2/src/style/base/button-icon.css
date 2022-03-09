@@ -52,6 +52,10 @@
     background-position: -675px -30px;
 }
 
+.btn-setting-normal {
+    background-position: -675px -30px;
+}
+
 .btn-icon-help {
     background-position: -89px -144px;
 }
@@ -78,4 +82,12 @@
 
 .btn-mi-delete {
     background-position: -464px -312px;
+}
+
+.btn-clock {
+    background-position: -648px -144px;
+}
+
+.btn-calendar {
+    background-position: -128px -312px;
 }

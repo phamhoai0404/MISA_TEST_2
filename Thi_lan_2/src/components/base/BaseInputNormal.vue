@@ -4,7 +4,7 @@
         <div>{{label}}</div>&nbsp;
         <div v-if="isRequire" style="color:red;">*</div>
     </div>
-    <input v-if="typeInput == 'input' "
+    <input v-if="typeInput == 'input'"
         :type="[isNumber?'number':'text']" class="m-input" 
         :class=" [
             hasIcon?'m-input-icon':'', readOnly?'m-input-readOnly':'', errorInput? 'm-border-red':'',
@@ -25,11 +25,27 @@
         ref="input"
         style="resize: none;"
     />
+    <div v-if="typeInput == 'date'">
+        <v-date-picker :value="value" color="green" :max-date='new Date()' :masks="masks">
+            <template v-slot="{ inputValue, inputEvents ,togglePopover }">
+                <div class="m-form-date">
+                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents">
+                    <div class="m-icon-date">
+                        <BaseButtonIcon iconClass="btn-calendar" :isSize16="true" @btnClick="togglePopover()" />
+                    </div>
+                </div>
+            </template>
+        </v-date-picker>
+    </div>
 </div>
 </template>
 
 <script>
+import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 export default {
+    components:{
+        BaseButtonIcon
+    },
     props: {
         label:{
             default:null,
@@ -71,6 +87,14 @@ export default {
             type:String
         }
     },
+    data() {
+        return {
+            masks: {
+                input: 'DD/MM/YYYY', //Dạng format của kiểu date
+            },
+        }
+    },
+    
     methods: {
         /**
          * Thực hiện khi thay đổi giá trị trong ô Input

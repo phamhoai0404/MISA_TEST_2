@@ -11,7 +11,7 @@
                 :value="value" @input="onInput($event.target.value)"
                 :readonly="readOnly"
             >
-            <div class="m-combobox-icon">
+            <div class="m-combobox-icon" style="background-color:#fff;">
                 <div  v-if="isButtonAdd" class="m-button-dropdown" style="border-right:1px solid #bbb;" >
                     <BaseButton iconClass="btn-plus-success" :isSize16="true"/>
                 </div>

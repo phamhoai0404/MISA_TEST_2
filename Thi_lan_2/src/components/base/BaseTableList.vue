@@ -44,6 +44,23 @@
 
                 </td>
             </tr>
+            <tr v-if="hasFooterTable" class="m-footer-table">
+
+                <td class="m-footer-sticky-left"></td>
+
+                <td v-for="(field,index) in listFields" :key="index" 
+                    :style="{ 
+                        minWidth: field.width +'px', 
+                        textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
+                    }" 
+                >
+                    <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(field.name)}}</span>
+                    <span v-else-if="index==0" style="font-family:Notosans-Semi-bold;">Tổng</span>
+                    <span v-else ></span>
+                </td>
+
+                <td class="m-footer-sticky-right"></td>
+            </tr>
 
         </tbody>
 
@@ -71,6 +88,10 @@ export default {
         listData:{//Trường dữ liệu 
             default:null,
             type:Array
+        },
+        hasFooterTable:{//Mặc định là không có chân
+            default:false,
+            type:Boolean
         }
 
 
@@ -99,6 +120,17 @@ export default {
         btnCheckbox({id}){
             var me = this;
             me.$emit('btnCheckbox', {id: id});
+        },
+        /**
+         * Tính tổng các trường
+         * CreatedBy: HoaiPT(08/03/2022)
+         */
+        sumFieldNumber(filed){
+            let sum = 0;
+            for(let i = 0 ;i<this.listData.length; i++){
+               sum += this.listData[i][filed];
+            }
+           return sum;
         }
     },
     filters: {

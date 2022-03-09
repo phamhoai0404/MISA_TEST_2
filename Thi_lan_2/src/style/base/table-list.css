@@ -180,3 +180,36 @@
 .m-grid .m-checkbox-table {
     padding-right: 2px !important;
 }
+
+
+/* css footer */
+
+.m-footer-table {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background-color: #f8f9fe !important;
+}
+
+.m-footer-table:hover {}
+
+tr.m-footer-table td {
+    max-height: 30px !important;
+    height: 30px !important;
+    border: none !important;
+    border-top: 1px solid #c7c7c7 !important;
+}
+
+tr.m-footer-table td.m-footer-sticky-left {
+    position: sticky;
+    z-index: 5;
+    left: 0;
+    background-color: #f8f9fe !important;
+}
+
+tr.m-footer-table td.m-footer-sticky-right {
+    position: sticky;
+    z-index: 5;
+    right: 0;
+    background-color: #f8f9fe !important;
+}

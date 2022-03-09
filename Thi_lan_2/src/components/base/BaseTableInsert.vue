@@ -5,16 +5,28 @@
             <table border="1" class="m-table-insert">
                 <thead v-if="showField">
                     <tr>
+                        <th  v-if="isColumNumber == true" style="text-align:center">#</th>
                         <th v-for="(field,index) in listFields" :key="index" :style="{ 
                                 width: field.width,
                                 textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':'',
-                            }">{{field.text}}</th>
+                            }"
+                        >
+                            {{field.text}}
+                        </th>
                         <th style="border-right:none;"></th>
-
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(data,index) in listData" :key="index" >
+                        <td  v-if="isColumNumber == true"
+                            :style="{
+                                borderTop:index==0?'1px solid #bbb':'',
+                            }"
+                            style="text-align:center"
+                        >
+                            {{index + 1}}
+                        </td>
+
                         <td v-for="(field,i) in listFields" :key="i" :style="{
                                 width: field.width,
                                 textAlign:field.type =='number'?'right' : '' ,
@@ -88,6 +100,10 @@ export default {
         listFields: Array, //Truyền vào các field
         styleTable: String, //Nếu muốn truyền thêm từ bên ngoài css vào table
         value:Array,//Phải chú ý cái này chính là v-model bên cha
+        isColumNumber:{//Có hiện cột đánh số thứ tự hay không, mặc định là không đánh số thứ tự
+            default:false,
+            type:Boolean
+        }
         
     },
     data() {
@@ -111,6 +127,11 @@ export default {
             let fieldNameFirst= me.listFields[0].name + 0;//Lấy ra tên đầu tiên của ô đầu tiên
             me.focus(fieldNameFirst);
         }
+    },
+    watch:{
+        value(valueNew){
+            this.listData = valueNew;
+        },
     },
     methods: {
         /**
