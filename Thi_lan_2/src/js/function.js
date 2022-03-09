@@ -186,6 +186,17 @@ var MyFunction = {
             }
         }
         return temp;
+    },
+    /**
+     * Tính tổng các trường
+     * CreatedBy: HoaiPT(08/03/2022)
+     */
+    sumFieldNumber(listData, filed) {
+        let sum = 0;
+        for (let i = 0; i < listData.length; i++) {
+            sum += Number(listData[i][filed]);
+        }
+        return Number(sum);
     }
 }
 export default MyFunction

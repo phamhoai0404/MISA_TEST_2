@@ -10,6 +10,7 @@
                 :placeholder="[[placeholder]]"  
                 :value="value" @input="onInput($event.target.value)"
                 :readonly="readOnly"
+                ref="input"
             >
             <div class="m-combobox-icon" style="background-color:#fff;">
                 <div  v-if="isButtonAdd" class="m-button-dropdown" style="border-right:1px solid #bbb;" >
@@ -40,7 +41,8 @@
                     <tr  v-for="(data,index) in listData" :key="index"  class="m-combobox-item-" 
                         :class="[
                            comparisonValue(data[keySearch],propertyCompare)?'m-combobox-active':'',/**Nếu mà bằng với cái ở bên ngoài thì cho màu background */
-                           (propertyCompare==null)&&(index==0)? 'm-combobox-active':''/**Nếu không tồn tại giá trị bằng (nó bằng null) và chỉ số nó bằng 0 thì sẽ cho background nó ở đấy */
+                           (propertyCompare==null)&&(index==0)? 'm-combobox-active':'',/**Nếu không tồn tại giá trị bằng (nó bằng null) và chỉ số nó bằng 0 thì sẽ cho background nó ở đấy */
+                          
                         ]" 
                     >
                         <td v-for="(field,i) in listFields" :key="i"
@@ -144,7 +146,7 @@ export default {
          */
         value(valueNew){
             var me = this;
-            
+            // console.log(valueNew, valueOld);
             if(valueNew != null){
                 if(valueNew.trim() ==""){  //Nếu không tồn nhập dữ liệu gì  thì //bằng toàn toàn bộ dữ liệu
                     me.isShowDataDropdown = true;
@@ -172,9 +174,7 @@ export default {
                         }
                     }
                 }
-            }
-            
-           
+            } 
         },
     },
     methods: {
@@ -206,7 +206,7 @@ export default {
         btnClickItemTable(object){
             this.onInput(object[this.inputText]);
             this.isShowDataDropdown = false; //Đóng data combobox data
-            this.$emit('onChangeValueKeySearch', object[this.keySearch]);//Bắn dữ liệu ra ngoài để thay đổi id 
+            this.$emit('onChangeValueKeySearch', object);//Bắn dữ liệu ra ngoài để thay đổi id 
             
         },
 
@@ -215,6 +215,9 @@ export default {
          */
         hideDataDropDown(){
             this.isShowDataDropdown = false;//Thực hiện đóng dropdown
+        },
+        focus: function () {
+            this.$refs.input.focus()
         },
         comparisonValue:MyFunction.comparisonValue,//import từ file js về
         existValueInArrayObject:MyFunction.existValueInArrayObject,

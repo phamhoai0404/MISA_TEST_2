@@ -249,41 +249,131 @@ var data = {
             width: "130",
         },
     ],
-    listFieldCAPaymentDetail: [{
-            name: "PostedDate",
-            text: "DIỄN GIẢI",
-            width: "431",
+    listFieldDebitAccountComboboxInsert: [{
+            name: "DebitAccountId",
+            text: "Số tài khoản nợ",
+            width: "40%"
         },
         {
-            name: "PostedDate",
-            text: "TK NỢ",
-            title: "Tài khoản nợ",
-            width: "100",
+            name: "DebitAccountName",
+            text: "Tên tài khoản nợ",
+            width: "60%"
+        }
+    ],
+    listFieldCreditAccountComboboxInsert: [{
+            name: "CreditAccountId",
+            text: "Số tài khoản có",
+            width: "40%"
         },
         {
-            name: "PostedDate",
-            text: "TK CÓ",
-            title: "Tài khoản có",
-            width: "100",
+            name: "CreditAccountName",
+            text: "Tên tài khoản có",
+            width: "60%"
+        }
+    ],
+    listFieldAccountObjectComboboxInsert: [{
+            name: "AccountObjectCode",
+            text: "Đối tượng",
+            width: "15%"
         },
         {
-            name: "PostedDate",
-            text: "SỐ TIỀN",
-            width: "100",
+            name: "AccountObjectName",
+            text: "Tên đối tượng",
+            width: "30%"
         },
         {
-            name: "PostedDate",
-            text: "ĐỐI TƯỢNG",
-            width: "100",
+            name: "TaxCode",
+            text: "Mã số thuế",
+            width: "15%"
         },
         {
-            name: "PostedDate",
-            text: "TÊN ĐỐI TƯỢNG",
-            width: "100",
+            name: "Address",
+            text: "Địa chỉ",
+            width: "20%"
+        },
+        {
+            name: "Phone",
+            text: "Điện thoại",
+            width: "20%"
         },
 
     ]
 
+}
+var dataSource = {
+    listDataDebitAccount: [{
+
+            DebitAccountId: '1123',
+            DebitAccountName: 'Nợ thuế tài chính'
+        },
+        {
+            DebitAccountId: '1124',
+            DebitAccountName: 'Mệnh giá trái phiếu'
+        },
+        {
+            DebitAccountId: '1125',
+            DebitAccountName: 'Chiết khấu trái phiếu'
+        },
+        {
+            DebitAccountId: '1126',
+            DebitAccountName: 'Phụ trội trái phiếu'
+        },
+        {
+            DebitAccountId: '1127',
+            DebitAccountName: 'Trái phiếu chuyển đổi'
+        },
+        {
+            DebitAccountId: '1128',
+            DebitAccountName: 'Chi phí dịch vụ mua ngoài'
+        },
+        {
+            DebitAccountId: '1129',
+            DebitAccountName: 'Chi phí bằng tiền khác'
+        },
+        {
+            DebitAccountId: '1130',
+            DebitAccountName: 'Chi phí nhân viên phân xưởng'
+        },
+        {
+            DebitAccountId: '1131',
+            DebitAccountName: 'Chi phí vật liệu'
+        },
+    ],
+    listDataCreditAccount: [{
+            CreditAccountId: '11111',
+            CreditAccountName: 'Doanh thu trợ cấp'
+        },
+        {
+            CreditAccountId: '11112',
+            CreditAccountName: 'Doanh thu trợ giá'
+        },
+        {
+            CreditAccountId: '11113',
+            CreditAccountName: 'Doanh thu kinh doanh'
+        },
+
+        {
+            CreditAccountId: '11114',
+            CreditAccountName: 'Doanh thu bất động sản'
+        },
+        {
+            CreditAccountId: '11115',
+            CreditAccountName: 'Doanh thu hoạt động tài chính'
+        },
+        {
+            CreditAccountId: '11116',
+            CreditAccountName: 'Thu chiết khấu thương mại'
+        },
+
+        {
+            CreditAccountId: '11117',
+            CreditAccountName: 'Doanh thu bán các thành phẩm'
+        },
+        {
+            CreditAccountId: '11118',
+            CreditAccountName: 'Doanh thu trợ cấp trợ giá'
+        }
+    ]
 }
 
 
@@ -1564,6 +1654,52 @@ var dataTest = {
             "AccountObjectCode": "NCC00022",
             "AccountObjectName": "Công ty XGBAA"
         }
+    ],
+    listCAPaymentDetail: [{
+            "CaPaymentDetailId": "116a251e-1dec-7e16-1c01-2997b7e81c24",
+            "CaPaymentId": "1944b789-48b3-5241-f588-479bce9b28fc",
+            "DecriptionDetail": "Chi tiền cho",
+            "DebitAccountId": "1123",
+            "CreditAccountId": "11113",
+            "Amount": 4875.18,
+            "AccountObjectId": "61a45b9e-55c1-3dbb-f917-7000f455f3d5",
+            "CreatedDate": null,
+            "CreatedBy": null,
+            "ModifiedDate": null,
+            "ModifiedBy": null,
+            "AccountObjectCode": "NCC00044",
+            "AccountObjectName": "Công ty MGSEU"
+        },
+        {
+            "CaPaymentDetailId": "11c2ed81-7c9e-40a3-a775-2a7ae1c799c8",
+            "CaPaymentId": "3735267c-70eb-3878-f888-479bce9b28fc",
+            "DecriptionDetail": "Chi tiền cho",
+            "DebitAccountId": "1124",
+            "CreditAccountId": "11111",
+            "Amount": 72899.54,
+            "AccountObjectId": "11f7089b-33e6-371a-f817-7000f455f3d5",
+            "CreatedDate": null,
+            "CreatedBy": null,
+            "ModifiedDate": null,
+            "ModifiedBy": null,
+            "AccountObjectCode": "NCC00021",
+            "AccountObjectName": "Công ty DRNAL"
+        },
+        {
+            "CaPaymentDetailId": "120b17ba-701d-515b-5229-0204eeb736fa",
+            "CaPaymentId": "3735267c-70eb-3878-f888-479bce9b28fc",
+            "DecriptionDetail": "Chi tiền cho",
+            "DebitAccountId": "1127",
+            "CreditAccountId": "11113",
+            "Amount": 67260.57,
+            "AccountObjectId": "46f514e3-3598-177c-6192-08c864661f9c",
+            "CreatedDate": null,
+            "CreatedBy": null,
+            "ModifiedDate": null,
+            "ModifiedBy": null,
+            "AccountObjectCode": "NCC00046",
+            "AccountObjectName": "Công ty MPSQO"
+        },
     ]
 }
 
@@ -1571,5 +1707,6 @@ export {
     resourcs,
     misaEnum,
     data,
-    dataTest
+    dataTest,
+    dataSource
 };

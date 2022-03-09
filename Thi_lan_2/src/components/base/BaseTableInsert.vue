@@ -6,7 +6,8 @@
                 <thead v-if="showField">
                     <tr>
                         <th  v-if="isColumNumber == true" style="text-align:center">#</th>
-                        <th v-for="(field,index) in listFields" :key="index" :style="{ 
+                        <th v-for="(field,index) in listFields" :key="index" 
+                            :style="{ 
                                 width: field.width,
                                 textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':'',
                             }"
@@ -27,25 +28,58 @@
                             {{index + 1}}
                         </td>
 
-                        <td v-for="(field,i) in listFields" :key="i" :style="{
+                        <td v-for="(field,i) in listFields" :key="i" 
+                            :style="{
                                 width: field.width,
-                                textAlign:field.type =='number'?'right' : '' ,
-                                textAlign:field.type =='date'?'center' : '',
                                 borderTop:index==0?'1px solid #bbb':'',
-                                backgroundColor:selectRowNumber==index?'#f5fbf9':'',
+                                backgroundColor:selectRowNumber==index?'#f5fbf9':'',  
                             }"
-                             @click="clickItemRow(index,field.name+index)"
+                            @click="clickItemRow(index,field.name+index,field.typeInsert)"
                         >
-                            <div v-if="selectRowNumber != index">
+                            <div v-if="selectRowNumber != index" 
+                               :style="{
+                                display:field.type=='number'?'flex':'',
+                                justifyContent:field.type=='number'?'flex-end':'',
+                               }"
+                            >
                                 <span v-if="field.type == 'date' ">{{data[field.name] | formatDate }}</span>
                                 <span v-else>{{data[field.name]}}</span>
                             </div>
                             <div v-if="selectRowNumber==index">
-                                <input class="m-input-insert-table" 
-                                    v-model="data[field.name]" 
-                                    :ref="field.name + index"
-                                    :readOnly="readOnly" 
-                                />
+                                <span  v-if="field.typeInsert=='combobox'">
+                                    <BaseComboboxNormal
+                                        v-model="data[field.name]"
+                                        :isComboboxTable="true"
+                                        :listFields="field.listField"
+                                        :datas="field.listData"
+                                        :styleDataCombobox="field.styleCombobox"
+                                        :ref="field.name + index"
+
+                                        :inputText="field.name"
+                                        :propertyCompare="data[field.keySearch]"
+                                        :keySearch="field.keySearch" 
+
+                                        @onChangeValueKeySearch ="changeKeySearchCombobox($event,field.keySearch,index)"
+                                        @input="changeInputCombobox(field.keySearch,index)"
+                                    />
+                                </span>
+                                <span  v-else-if="field.typeInsert=='none'"> 
+                                    <span v-if="field.type == 'date' ">{{data[field.name] | formatDate }}</span>
+                                    <span v-else>{{data[field.name]}}</span>
+                                </span>
+                                <span v-else>
+                                    <input class="m-input-insert-table" 
+                                        v-model="data[field.name]" 
+                                        :ref="field.name + index"
+                                        :readOnly="readOnly"
+                                        :type="field.type=='number'?'number':'input'"
+                                        :style="{
+                                            textAlign:field.type=='number'?'right':''
+                                        }"
+                                        @blur="handleBlur(field.type, field.name, data[field.name],index)"
+                                    />
+                                </span>
+                               
                             </div>
                         </td>
                         <td class="m-table-insert-icon" 
@@ -57,11 +91,24 @@
                             <BaseButtonIcon iconClass="btn-mi-delete" :isSize16="true" @btnClick="deleteItemRow(index)" />
                         </td>
                     </tr>
+                    <tr v-if="hasFooterTable" class="m-footer-table-insert">
+                        <td></td>
+                        <td v-for="(field,index) in listFields" :key="index" 
+                            :style="{ 
+                                minWidth: field.width +'px', 
+                                textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
+                            }" 
+                        >
+                            <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(listData,field.name)}}</span>
+                            <span v-else ></span>
+                        </td>
+                        <td></td>
+                    </tr>
 
                 </tbody>
             </table>
         </div>
-        <div class="m-table-insert-function">
+        <div class="m-table-insert-function" :style="{ marginTop:styleTable ==''?'50px':'',}">
             <div class="m-button-one" @click="addItemRow">Thêm dòng</div>
             <div class="m-button-one" @click="btnRemoveAll">Xóa hết dòng</div>
         </div>
@@ -78,15 +125,16 @@
 <script>
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseMessage from '@/components/base/BaseMessage.vue'
-// import { set } from 'vue/types/umd';
-// import MyFunction from '@/js/function.js'
+import MyFunction from '@/js/function.js'
 import * as mylib  from '@/js/resourcs.js'
+import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 
 
 export default {
     components: {
         BaseButtonIcon,
-        BaseMessage
+        BaseMessage,
+        BaseComboboxNormal
     },
     props: {
         readOnly: {//Xem có chỉ đọc hay không
@@ -98,9 +146,16 @@ export default {
             type: Boolean
         },
         listFields: Array, //Truyền vào các field
-        styleTable: String, //Nếu muốn truyền thêm từ bên ngoài css vào table
+        styleTable: {//Nếu muốn truyền thêm từ bên ngoài css vào table
+            default:"",
+            type:String, 
+        },
         value:Array,//Phải chú ý cái này chính là v-model bên cha
         isColumNumber:{//Có hiện cột đánh số thứ tự hay không, mặc định là không đánh số thứ tự
+            default:false,
+            type:Boolean
+        },
+        hasFooterTable:{//Mặc định là không có chân
             default:false,
             type:Boolean
         }
@@ -134,6 +189,20 @@ export default {
         },
     },
     methods: {
+        handleBlur(fieldType,fieldName, value,index){
+            if(fieldType =='number'){
+                if(value==''){
+                    this.listData[index][fieldName] = 0;
+                }
+            }
+        },
+        changeKeySearchCombobox(object, fieldName, index){
+            // console.log(object);
+            this.$emit('changeSelectItem',{object, fieldName:fieldName, index:index})
+        },
+        changeInputCombobox(fieldName, index){
+           this.$emit('changeInput',{fieldName:fieldName, index:index})
+        },
         /**
          * Thực hiện update bên cha mới nhận được 
          * CreatedBy: HoaiPT(05/03/2022)
@@ -144,24 +213,27 @@ export default {
         },
         /**
          * Thực hiện xóa lựa chọn dòng không lựa chọn dòng nào hết
+         * CÁI NÀY CẦN PHẢI XEM LẠI VÌ NÓ KHÔNG ĂN MẤY
          * CreatedBy: HoaiPT(05/03/2022)
          */
         cancelRow() {
             var me = this;
             if (me.readOnly == false) {
-               me.selectRowNumber = 0;//Không chọn vào dòng nào hết 
+            //    me.selectRowNumber = 0;//Không chọn vào dòng nào hết 
             }
         },
         /**
-         * Thực hiện xóa lựa chọn dòng không lựa chọn dòng nào hết
+         * Thực hiện focus vào ô đang chọn
          * CreatedBy: HoaiPT(05/03/2022)
          */
-        clickItemRow(index, fieldNameSelect) {
+        clickItemRow(index, fieldNameSelect,fieldTypeInsert) {
             var me = this;
             if (me.readOnly == false) {
-                me.selectRowNumber = index;//Lực chọn dòng vừa chọn 
-                me.focus(fieldNameSelect);//Cùng với focus ở ô đang chọn
-                me.updateValue(me.listData);
+                me.selectRowNumber = index;//Lực chọn dòng vừa chọn
+                if(fieldTypeInsert !='none'){
+                    me.focus(fieldNameSelect);// với focus ở ô đang chọn
+                }
+              
             }
         },
         /**
@@ -238,7 +310,9 @@ export default {
             me.$nextTick(() => {
                 me.$refs[fieldName][0].focus();
             })
-        }
+        },
+        sumFieldNumber:MyFunction.sumFieldNumber,
+        
     }
 }
 </script>

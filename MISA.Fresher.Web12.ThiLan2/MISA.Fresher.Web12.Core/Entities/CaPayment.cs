@@ -35,7 +35,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         [PropertyName("Id của nhà cung cấp")]
         public Guid? AccountObjectId { get; set; }
 
-        // <summary>
+        /// <summary>
         /// Người nhận
         /// </summary>
         [PropertyName("Người nhận")]

@@ -21,7 +21,6 @@
 }
 
 .popup-detail .popup-top-header .top-header-left {
-    background-color: gainsboro;
     display: flex;
     align-items: center;
 }
@@ -56,11 +55,23 @@
 /* css content */
 
 .popup-detail .popup-content {
-    background-color: rgb(250, 248, 248);
+    height: 500px;
+    overflow: auto;
+    /* background-color: rgb(250, 248, 248); */
+}
+
+.popup-detail .popup-content::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.popup-detail .popup-content::-webkit-scrollbar-thumb {
+    background-color: rgb(139, 138, 138);
+    width: 5px;
 }
 
 .popup-detail .popup-content .content-master {
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
     padding: 8px 24px 8px;
     display: flex;
     justify-content: space-between;
@@ -111,7 +122,7 @@
 }
 
 .popup-detail .popup-content .content-detail-group {
-    background-color: bisque;
+    background-color: #ffff;
 }
 
 .popup-detail .popup-content .content-detail-group .tab-detail-group {
@@ -137,4 +148,51 @@
     display: flex;
     padding-right: 20px;
     align-items: center;
+}
+
+.popup-detail .popup-content .content-detail-group .content-detail {
+    padding: 0 24px;
+}
+
+.popup-detail .popup-content .content-detail-group .content-detail .content-file {
+    padding-top: 16px;
+    padding-bottom: 26px;
+}
+
+.popup-detail .popup-content .content-detail-group .content-detail .content-file .content-file-title {
+    display: flex;
+}
+
+.popup-detail .popup-content .content-detail-group .content-detail .content-file .content-file-title .title-file {
+    margin-left: 0px;
+    font-family: Notosans-Bold;
+    margin-right: 15px;
+}
+
+.popup-detail .popup-content .content-detail-group .content-detail .content-file .file-payment-detail {
+    height: 49px;
+    width: 338px;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 49px;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.popup-detail .popup-footer {
+    height: 50px;
+    background-color: #38393d;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-detail .popup-footer .group-button-footer {
+    display: flex;
 }

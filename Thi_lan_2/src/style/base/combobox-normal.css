@@ -118,6 +118,11 @@
     font-family: Notosans-Semi-bold;
 }
 
+.m-combobox-group:hover .m-combobox-data .m-combobox-item-.m-combobox-active {
+    background-color: #31B404 !important;
+    color: white;
+}
+
 .m-combobox-group .m-combobox-data .m-combobox-no-item {
     text-align: center;
 }

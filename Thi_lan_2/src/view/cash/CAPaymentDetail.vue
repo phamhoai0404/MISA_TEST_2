@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="left-row-multi">
-                        <div >Tham chiếu</div>
+                        <div>Tham chiếu</div>
                         <div class="cetera">...</div>
                     </div>
                 </div>
@@ -82,13 +82,30 @@
                 </div>
             </div>
             <div class="content-detail">
-                  <BaseTableInsert
-                    v-model ="listAccountObjectShippingAddress"
-                    :listFields="listFieldShippingAddress"
-                    :readOnly="readOnly"
-                    :showField="false"          
-                  />
+                <BaseTableInsert :isColumNumber="true" :hasFooterTable="true" styleTable=" overflow-y: none;"
+                    v-model="listCAPaymentDetail"
+                    :listFields="listFieldCAPaymentDetail"
+
+                    @changeSelectItem="changeItemListCaPaymentDetail"
+                    @changeInput="changeAfterInputListCaPaymentDetail"    
+                 />
+                <div class="content-file">
+                    <div class="content-file-title">
+                        <BaseButtonIcon iconClass="btn-attach-file"/>
+                        <div class="title-file">Đính kèm</div>
+                        <div>Dung lượng tối đa 5MB</div>
+                    </div>
+                   
+                    <div class="file-payment-detail">Kéo/thả tệp vào đây hoặc bấm vào đây</div>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="popup-footer">
+        <BaseButton label="Hủy" styleButton="color:white!important"/>
+        <div class="group-button-footer" >
+            <BaseButton label="Cất và Đóng" styleButton="color:white!important; margin-right:10px;"/>
+            <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true"/>
         </div>
     </div>
 
@@ -99,21 +116,100 @@
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
+import BaseButton from '@/components/base/BaseButton.vue'
+
+import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
+import * as mylib from '../../js/resourcs.js'
 export default {
     components: {
         BaseButtonIcon,
+        BaseButton,
         BaseComboboxNormal,
-        BaseInput
+        BaseInput,
+        BaseTableInsert
     },
     data() {
         return {
             titlePopupDefault: "7. Chi khác",
-            titleMoneyDefault:"VND",
+            titleMoneyDefault: "VND",
 
             tielte: "PC000125", //Cái này test tí xóa đi
             xinh: "2022-02-28T17:36:35",
 
+            listCAPaymentDetail:mylib.dataTest.listCAPaymentDetail,
+            listFieldCAPaymentDetail: [
+                {
+                    name: "DecriptionDetail",
+                    text: "DIỄN GIẢI",
+                    width: "350",
+                },
+                {
+                    name: "DebitAccountId",
+                    text: "TK NỢ",
+                    title: "Tài khoản nợ",
+                    width: "150",
+                    typeInsert:'combobox',
+                    listField:mylib.data.listFieldDebitAccountComboboxInsert,
+                    listData:mylib.dataSource.listDataDebitAccount,
+                    styleCombobox:"width: 370px;",
+                    keySearch:"DebitAccountId",
+                    propertyCompare:"DebitAccountId"
+                },
+                {
+                    name: "CreditAccountId",
+                    text: "TK CÓ",
+                    title: "Tài khoản có",
+                    width: "70",
+                    typeInsert:'combobox',
+                    listField:mylib.data.listFieldCreditAccountComboboxInsert,
+                    styleCombobox:"width: 380px;",
+                    listData:mylib.dataSource.listDataCreditAccount,
+                    keySearch:"CreditAccountId",
+                    propertyCompare:"CreditAccountId"
+                },
+                {
+                    name: "Amount",
+                    text: "SỐ TIỀN",
+                    width: "150",
+                    type:"number"
+                },
+                {
+                    name: "AccountObjectCode",
+                    text: "ĐỐI TƯỢNG",
+                    width: "100",
+                    listField:mylib.data.listFieldAccountObjectComboboxInsert,
+                    typeInsert:'combobox',
+                    styleCombobox:"width: 880px; right: 0",
+                    listData:mylib.dataTest.listAccount,
+                    keySearch:"AccountObjectId",
+                    propertyCompare:"AccountObjectId"
+                   
+                },
+                {
+                    name: "AccountObjectName",
+                    text: "TÊN ĐỐI TƯỢNG",
+                    width: "200",
+                    typeInsert:'none',
+                },
+
+            ]
+
         }
+    },
+    methods: {
+        changeAfterInputListCaPaymentDetail({fieldName,index}){
+            // console.log("đó là", fieldName,index );
+            if(fieldName =="AccountObjectId"){
+                this.listCAPaymentDetail[index].AccountObjectId = null;
+            }
+        },
+        changeItemListCaPaymentDetail({object,fieldName,index}){
+            // console.log("đó là 2: ", idNew, fieldName, index);
+            if(fieldName =="AccountObjectId"){
+                this.listCAPaymentDetail[index].AccountObjectId = object.AccountObjectId;
+                this.listCAPaymentDetail[index].AccountObjectName = object.AccountObjectName;
+            }
+        },
     },
 }
 </script>

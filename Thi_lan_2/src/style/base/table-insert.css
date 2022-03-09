@@ -20,11 +20,12 @@
 
 /* css cho table insert */
 
+
+/* Cái này cho ở ngoài rồi cái nào dùng cố định chiều dài thì mới cần có những cái này thôi
 .m-table-insert-group .m-grid-table-insert {
-    max-height: 150px !important;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+     overflow-x: hidden;
+    overflow-y: auto; 
+*/
 
 .m-table-insert-group table.m-table-insert {
     width: 100%;
@@ -59,6 +60,7 @@
     border: unset;
     border-right: 1px solid #bbb;
     border-bottom: 1px solid #bbb;
+    z-index: 7;
 }
 
 .m-table-insert-group table.m-table-insert tr td {
@@ -71,7 +73,7 @@
 }
 
 .m-table-insert-group table.m-table-insert tr:hover td {
-    background-color: #f5fbf9;
+    /* background-color: #f5fbf9; */
     cursor: pointer;
 }
 
@@ -95,4 +97,13 @@ table.m-table-insert .m-table-insert-icon {
     justify-content: center;
     align-items: center;
     border-right: none !important;
+}
+
+tr.m-footer-table-insert {
+    background-color: #f8f9fe;
+}
+
+tr.m-footer-table-insert td {
+    border: none !important;
+    height: 34px !important;
 }

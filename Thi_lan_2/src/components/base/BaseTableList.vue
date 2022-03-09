@@ -54,7 +54,7 @@
                         textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
                     }" 
                 >
-                    <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(field.name)}}</span>
+                    <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(listData,field.name)}}</span>
                     <span v-else-if="index==0" style="font-family:Notosans-Semi-bold;">Tổng</span>
                     <span v-else ></span>
                 </td>
@@ -121,17 +121,7 @@ export default {
             var me = this;
             me.$emit('btnCheckbox', {id: id});
         },
-        /**
-         * Tính tổng các trường
-         * CreatedBy: HoaiPT(08/03/2022)
-         */
-        sumFieldNumber(filed){
-            let sum = 0;
-            for(let i = 0 ;i<this.listData.length; i++){
-               sum += this.listData[i][filed];
-            }
-           return sum;
-        }
+        sumFieldNumber:MyFunction.sumFieldNumber,
     },
     filters: {
         /**

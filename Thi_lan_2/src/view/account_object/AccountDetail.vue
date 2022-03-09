@@ -161,7 +161,7 @@
                         <span v-if="tabSelected == 1">
                             <div>
                                 <div class="tab-only-one" v-if="isShowPaymentTerm">
-                                    <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px;"
+                                    <BaseComboboxNormal label="Điều khoản thanh toán" styleComboboxNormal="width:204px; margin-right:10px" styleDataCombobox="width:460px; "
                                         :isButtonAdd="true"
                                         v-model="account.PaymentTermName"
                                         :isComboboxTable="true"
@@ -214,7 +214,7 @@
                         </span>
                         <span v-if="tabSelected == 2">
                             <div style="width: 100%">
-                                 <BaseTableInsert
+                                 <BaseTableInsert styleTable="max-height:150px !important; overflow-y: auto;"
                                     v-model ="listAccountObjectBankAccount"
                                     :listFields="listFieldBank"
                                     :readOnly="readOnly"             
@@ -246,11 +246,11 @@
                                     <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" />
                                 </div>
                                 <div class="tab-content-table">
-                                    <BaseTableInsert
+                                    <BaseTableInsert styleTable="max-height:150px !important;  overflow-y: auto;"
                                         v-model ="listAccountObjectShippingAddress"
                                         :listFields="listFieldShippingAddress"
                                         :readOnly="readOnly"
-                                        :showField="false"          
+                                        :showField="false"         
                                     />
                                 </div>
                             </div>
@@ -505,24 +505,24 @@ export default {
             this.account.PayAccountId = null;
         },
 
-        changeIdPayAccount(id){
-             this.account.PayAccountId = id;
+        changeIdPayAccount(object){
+             this.account.PayAccountId = object.PayAccountId;
         },
         changePaymentTermName(){
             this.errorPaymentTerm = false;
             this.titlePaymentTerm ="";
             this.account.PaymentTermId = null;
         },
-        changeIdPaymentTerm(id){
-            this.account.PaymentTermId = id;
+        changeIdPaymentTerm(object){
+            this.account.PaymentTermId = object.PaymentTermId;
         },
         changeFullName(){
             this.errorEmployee = false;
             this.titleEmployee ="";
             this.account.EmployeeId = null;
         },
-        changeIdEmployee(id){
-            this.account.EmployeeId = id;
+        changeIdEmployee(object){
+            this.account.EmployeeId = object.EmployeeId;
         },
         /**
          * Thực hiện chuyển đổi giá trị AccountObjectBankAccount để cho data base nhận được đồng thời xóa bỏ đối tượng rỗng

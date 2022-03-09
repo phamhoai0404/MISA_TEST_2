@@ -37,6 +37,9 @@ namespace MISA.Fresher.Web12.API.Controllers
         {
             try
             {
+                string k = "111";
+                string z = "11" + k;
+
                 var entites = _baseRepository.GetAll();
                 return Ok(entites);
             }
