@@ -172,17 +172,20 @@ var MyFunction = {
      * CreatedBy: HoaiPT(07/03/2022)
      */
     selectFilterObjectInAllField(arraySource, arrayField, value) {
-
         if (value != null) {
             value = value.toLowerCase();
         }
         let temp = [];
         for (let i = 0; i < arraySource.length; i++) {
             for (let j = 0; j < arrayField.length; j++) {
-                if (arraySource[i][arrayField[j].name].toLowerCase().includes(value)) {
-                    temp.push(arraySource[i]);
-                    break;
+                let tempValue = arraySource[i][arrayField[j].name];
+                if (tempValue != null) {
+                    if (tempValue.toLowerCase().includes(value)) {
+                        temp.push(arraySource[i]);
+                        break;
+                    }
                 }
+
             }
         }
         return temp;

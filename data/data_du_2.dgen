@@ -2216,7 +2216,7 @@
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>9</SeedValue>
             <MinValue>0</MinValue>
-            <MaxValue>0</MaxValue>
+            <MaxValue>10000</MaxValue>
             <UseDefault>false</UseDefault>
             <DefaultValue>NULL</DefaultValue>
           </GeneratorOptions>
@@ -2354,6 +2354,27 @@
           <GeneratorCategory>Personal</GeneratorCategory>
           <Length>255</Length>
         </Column>
+        <Column Name="AttachNumber">
+          <Checked>true</Checked>
+          <DataType>INT</DataType>
+          <GeneratorOptions p6:type="MySqlIntegerGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
+            <AllowNulls>false</AllowNulls>
+            <NullProportion>10</NullProportion>
+            <Unique>false</Unique>
+            <IsAlwaysUnique>false</IsAlwaysUnique>
+            <Increment xmlns:q11="http://www.w3.org/2001/XMLSchema" p6:type="q11:int">1</Increment>
+            <ValueDistributionMode>Seed</ValueDistributionMode>
+            <SeedValue>9</SeedValue>
+            <MinValue>1</MinValue>
+            <MaxValue>10</MaxValue>
+            <UseDefault>false</UseDefault>
+            <DefaultValue>NULL</DefaultValue>
+          </GeneratorOptions>
+          <GeneratorType>MySqlIntegerGenerator</GeneratorType>
+          <GeneratorName>int</GeneratorName>
+          <GeneratorDescription>fill with 32-bit signed integer values</GeneratorDescription>
+          <Precision>11</Precision>
+        </Column>
       </Columns>
     </Table>
     <Table Name="CaPaymentDetail">
@@ -2409,7 +2430,7 @@
           <HasForeignKey>true</HasForeignKey>
           <Length>36</Length>
         </Column>
-        <Column Name="Decription">
+        <Column Name="DecriptionDetail">
           <Checked>true</Checked>
           <DataType>VARCHAR</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
@@ -2421,7 +2442,7 @@
             <SeedValue>13</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>Đó</Expression>
+            <Expression>Chi tiền cho</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlStringRegularExpressionGenerator</GeneratorType>
           <GeneratorName>Reg Exp</GeneratorName>
@@ -2430,7 +2451,7 @@
         </Column>
         <Column Name="DebitAccountId">
           <Checked>true</Checked>
-          <DataType>CHAR</DataType>
+          <DataType>VARCHAR</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
             <EmptyStringProportion>10</EmptyStringProportion>
@@ -2440,7 +2461,7 @@
             <SeedValue>14</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>(1123)|(1124)|(1125)|(1126)|(1127)|(1128)|(1129)</Expression>
+            <Expression>(1123)|(1124)|(1125)|(1126)|(1127)|(1123)</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
           <GeneratorName>ID (random)</GeneratorName>
@@ -2450,17 +2471,17 @@
         </Column>
         <Column Name="CreditAccountId">
           <Checked>true</Checked>
-          <DataType>CHAR</DataType>
+          <DataType>VARCHAR</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
-            <EmptyStringProportion>10</EmptyStringProportion>
+            <EmptyStringProportion>1</EmptyStringProportion>
             <AllowNulls>false</AllowNulls>
-            <NullProportion>10</NullProportion>
+            <NullProportion>1</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>15</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>(11111)|(11112)|(11113)|(11111)|(11114)</Expression>
+            <Expression>(11111)|(11112)|(11113)|(11114)|(11115)|(11116)|(11117)|(11111)</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
           <GeneratorName>ID (random)</GeneratorName>
@@ -2476,7 +2497,7 @@
             <NullProportion>10</NullProportion>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Increment xmlns:q11="http://www.w3.org/2001/XMLSchema" p6:type="q11:decimal">1</Increment>
+            <Increment xmlns:q12="http://www.w3.org/2001/XMLSchema" p6:type="q12:decimal">1</Increment>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>13</SeedValue>
             <MinValue>0</MinValue>

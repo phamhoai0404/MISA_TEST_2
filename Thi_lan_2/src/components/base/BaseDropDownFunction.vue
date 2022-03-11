@@ -1,5 +1,6 @@
 <template>
 <div class="m-function-group" :style="{ right: positionRight +'px', top: positionTop +'px' }" v-click-outside="hideFunction">
+    <div class="m-function-item" v-if="unpin" >Bỏ ghim</div>
     <div class="m-function-item" v-if="remove" @click="btnRemove">Xóa</div>
     <div class="m-function-item" v-if="edit" @click="btnEdit">Sửa</div>
     <div class="m-function-item" v-if="duplicate" @click="btnDuplicate">Nhân bản</div>
@@ -10,6 +11,10 @@
 export default {
     props: {
         duplicate: { //Mặc định là không có nút nhân bản
+            default: false,
+            type: Boolean,
+        },
+        unpin:{
             default: false,
             type: Boolean,
         },

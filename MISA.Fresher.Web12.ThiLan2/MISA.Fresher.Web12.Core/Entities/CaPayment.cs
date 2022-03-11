@@ -89,6 +89,12 @@ namespace MISA.Fresher.Web12.Core.Entities
         public string? File { get; set; }
 
 
+        /// <summary>
+        /// Số lượng kèm theo
+        /// </summary>
+        [PropertyName("Số lượng kèm theo")]
+        public int? AttachNumber { get; set; }
+
 
 
         /// <summary>
@@ -117,6 +123,15 @@ namespace MISA.Fresher.Web12.Core.Entities
 
 
         #region NotMap
+        /// <summary>
+        /// Mã nhà cung cấp
+        /// </summary>
+        /// (Propertity bỏ qua khi thực hiện post hay put
+        /// (Vì không có trong cơ sử dữ liệu))
+        /// </summary>
+        [NotMapSQL]
+        [PropertyName("Tên nhân viên")]
+        public string? FullName { get; set; }
         /// <summary>
         /// Mã nhà cung cấp
         /// </summary>

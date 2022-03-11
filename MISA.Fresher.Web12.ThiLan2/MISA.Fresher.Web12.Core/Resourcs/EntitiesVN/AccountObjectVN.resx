@@ -186,6 +186,9 @@
   <data name="TaxCode" xml:space="preserve">
     <value>Mã số thuế</value>
   </data>
+  <data name="TitleExcelExport" xml:space="preserve">
+    <value>DANH SÁCH NHÀ CUNG CẤP</value>
+  </data>
   <data name="WardOrCommune" xml:space="preserve">
     <value>Phường/Xã</value>
   </data>

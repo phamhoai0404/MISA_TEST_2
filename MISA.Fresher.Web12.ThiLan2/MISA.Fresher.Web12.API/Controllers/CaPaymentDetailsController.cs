@@ -14,10 +14,11 @@ namespace MISA.Fresher.Web12.API.Controllers
         {
 
         }
-        [HttpGet("CodeNew")]
-        public string Xinhgai()
+        [HttpPost("CodeNe")]
+        public IActionResult Xinhgai(string hoa, int uu, FilterAccountObject xinhXinh)
         {
-            return "hoa";
+            return Ok();
+           
         }
     }
 }

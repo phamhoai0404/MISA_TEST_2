@@ -16,6 +16,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AccountObjectVN.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resourcs\EntitiesVN\CaPaymentVN.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CaPaymentVN.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resourcs\EntitiesVN\DepartmentVN.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -37,6 +42,10 @@
     <EmbeddedResource Update="Resourcs\EntitiesVN\AccountObjectVN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountObjectVN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resourcs\EntitiesVN\CaPaymentVN.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CaPaymentVN.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resourcs\EntitiesVN\DepartmentVN.resx">
       <Generator>ResXFileCodeGenerator</Generator>

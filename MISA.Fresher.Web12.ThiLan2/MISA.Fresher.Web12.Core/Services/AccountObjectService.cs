@@ -56,6 +56,26 @@ namespace MISA.Fresher.Web12.Core.Services
 
         }
 
+        public object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterAccountObject listText)
+        {
+            //Duyệt tất cả các property của đối tượng
+            var props = typeof(FilterAccountObject).GetProperties();
+            string temp = "";
+            foreach (var prop in props)
+            {
+                //Lấy tên của property
+                var propName = prop.Name;
+                var propValue = prop.GetValue(listText);
+                if (propValue != null)
+                {
+                    temp += temp == "" ? $" vee.{propName} = '{propValue}' " : $" AND vee.{propName}= '{propValue}' ";
+                }
+            }
+            if (temp == "") temp = " 1 = 1 ";
+       
+            return _accountObjectRepository.GetPagingV2(pageIndex, pageSize, searchText, temp);
+        }
+
         protected override void ValidateInsertCustomer(AccountObject accountObject)
         {
             //Kiểm tra đúng định dạng mã hay không

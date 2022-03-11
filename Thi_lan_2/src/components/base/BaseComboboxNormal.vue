@@ -146,7 +146,6 @@ export default {
          */
         value(valueNew){
             var me = this;
-            // console.log(valueNew, valueOld);
             if(valueNew != null){
                 if(valueNew.trim() ==""){  //Nếu không tồn nhập dữ liệu gì  thì //bằng toàn toàn bộ dữ liệu
                     me.isShowDataDropdown = true;

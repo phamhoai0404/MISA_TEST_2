@@ -1,9 +1,9 @@
 <template>
-<div class="popup-detail">
+<div class="popup-detail" >
     <div class="popup-top-header">
         <div class="top-header-left">
             <BaseButtonIcon iconClass="btn-clock" />
-            <div class="title-top-header-left">Phiếu chi {{tielte}}</div>
+            <div class="title-top-header-left">Phiếu chi {{caPayment.CaPaymentNo}}</div>
             <div style="padding-left:24px;">
                 <BaseComboboxNormal v-model="titlePopupDefault" :datas="[]" styleComboboxNormal="width:350px;" />
             </div>
@@ -24,30 +24,53 @@
             </div>
         </div>
     </div>
-    <div class="popup-content">
+    <div class="popup-content" v-if="isShowDetail">
         <div class="content-master">
             <div class="popup-content-left">
                 <div class="master-left-one">
                     <div class="left-row-multi">
                         <div style="width:40%; padding-right: 12px;">
-                            <BaseComboboxNormal :datas="[]" :isButtonAdd="true" label="Đối tượng" />
+                            <BaseComboboxNormal  label="Đối tượng" :isButtonAdd="true" styleDataCombobox="width: 880px;"
+
+                                v-model="caPayment.AccountObjectName"
+                                :isComboboxTable="true"
+                                :readOnly="readOnly"
+
+                                :listFields="lisFieldAccountObject"
+                                :datas="listAccountObject" 
+
+                                inputText="AccountObjectName"
+                                :propertyCompare="caPayment.AccountObjectId"
+                                keySearch="AccountObjectId"
+                            />
                         </div>
                         <div style="width:59%;">
-                            <BaseInput typeInput="input" label="Người nhận" />
+                            <BaseInput typeInput="input" label="Người nhận"  v-model="caPayment.Receiver" />
                         </div>
                     </div>
                     <div class="left-row">
-                        <BaseInput typeInput="input" label="Địa chỉ" />
+                        <BaseInput typeInput="input" label="Địa chỉ" v-model="caPayment.Address" />
                     </div>
                     <div class="left-row">
-                        <BaseInput typeInput="input" label="Lý do" />
+                        <BaseInput typeInput="input" label="Lý do"  v-model="caPayment.Resion" />
                     </div>
                     <div class="left-row-multi">
                         <div style="width:40%; padding-right: 12px;">
-                            <BaseComboboxNormal :datas="[]" :isButtonAdd="true" label="Nhân viên" />
+                            <BaseComboboxNormal :isButtonAdd="true" label="Nhân viên" styleDataCombobox="width: 880px;"
+                                v-model="caPayment.FullName"
+                                :isComboboxTable="true"
+                                :readOnly="readOnly"
+
+                                :listFields="listFieldEmployee" 
+                                :datas="listEmployee"
+            
+                                inputText="FullName"
+                                :propertyCompare="caPayment.EmployeeId"
+                                keySearch="EmployeeId" 
+                            />
                         </div>
                         <div style="width:59%; display: flex;">
-                            <BaseInput typeInput="input" label="Kèm theo" :isNumber="true" placeholder="Số lượng" styleInput="width: 40%;" />
+                            <BaseInput typeInput="input" label="Kèm theo" :isNumber="true" placeholder="Số lượng" styleInput="width: 40%;"  v-model="caPayment.AttachNumber"/>
                             <div style="padding: 28px 6.5px 0;">Chứng từ gốc</div>
                         </div>
                     </div>
@@ -58,13 +81,13 @@
                 </div>
                 <div class="master-left-two" style="width:185px;">
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày hạch toán" v-model="xinh" />
+                        <BaseInput typeInput="date" label="Ngày hạch toán" v-model="caPayment.PostedDate" />
                     </div>
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="xinh" />
+                        <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="caPayment.CaPaymentDate" />
                     </div>
                     <div class="item-left-two" style="padding-bottom: 0px;">
-                        <BaseInput typeInput="input" label="Số phiếu chi" />
+                        <BaseInput typeInput="input" label="Số phiếu chi" v-model="caPayment.CaPaymentNo" />
                     </div>
                 </div>
             </div>
@@ -120,6 +143,7 @@ import BaseButton from '@/components/base/BaseButton.vue'
 
 import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 import * as mylib from '../../js/resourcs.js'
+import axios from 'axios'
 export default {
     components: {
         BaseButtonIcon,
@@ -128,15 +152,31 @@ export default {
         BaseInput,
         BaseTableInsert
     },
+    props:{
+        editMode:{
+            required: true,
+            type:Number
+        },
+        idCaPayment:{//Biến id xem
+            type:String
+        }
+    },
     data() {
         return {
             titlePopupDefault: "7. Chi khác",
             titleMoneyDefault: "VND",
+            isShowDetail:false,//Load xong dữ liệu thì mới mở html
 
-            tielte: "PC000125", //Cái này test tí xóa đi
-            xinh: "2022-02-28T17:36:35",
+            listEmployee:[],//Dùng để lưu trữ listEmployee
+            listAccountObject:[],//Dùng để lưu trữ listAccountObject
+            readOnly:false,//Trạng thái ban đầu của chỉ xem hay là gì
 
-            listCAPaymentDetail:mylib.dataTest.listCAPaymentDetail,
+            caPayment:{},//Dùng để lưu trữ caPayment
+            listCaPaymentDetail:[],//Dùng để lưu trữ listCaPaymentDetail
+
+            lisFieldAccountObject:mylib.data.listFieldAccountObjectComboboxInsert,
+            listFieldEmployee: mylib.data.listFieldEmployeeCaPayment,
+
             listFieldCAPaymentDetail: [
                 {
                     name: "DecriptionDetail",
@@ -196,6 +236,19 @@ export default {
 
         }
     },
+    created(){
+        var me = this;
+        me.getDataDetailCaPayment();
+    },
+    async mounted(){
+        var me = this;
+        me.$parent.isShowLoading = true;
+        await me.getListEmployee();
+        await me.getListAccountObject();
+        me.$parent.isShowLoading = false;
+        me.isShowDetail = true;
+        
+    },
     methods: {
         changeAfterInputListCaPaymentDetail({fieldName,index}){
             // console.log("đó là", fieldName,index );
@@ -208,6 +261,52 @@ export default {
             if(fieldName =="AccountObjectId"){
                 this.listCAPaymentDetail[index].AccountObjectId = object.AccountObjectId;
                 this.listCAPaymentDetail[index].AccountObjectName = object.AccountObjectName;
+            }
+        },
+        async getDataDetailCaPayment() {
+            try {
+                var me = this;
+                me.$parent.isShowLoading = true; //Thực hiện mở Loading
+                await axios.get(`https://localhost:44338/api/v1/ControlCaPayment/${me.idCaPayment}`)
+                    .then(function (res) {
+                        console.log(res);
+                        me.caPayment = res.data.Master;
+                        me.listCAPaymentDetail = res.data.ListDetail;
+                        me.$parent.isShowLoading = false;//Đóng loading
+                    })
+                    .catch(function (res) {
+                        console.log(res);
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        /**
+         * Thực hiện lấy toàn bộ nhân viên
+         */
+        async getListEmployee() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/Employees')
+                    .then(function(res) {
+                        me.listEmployee = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        /**
+         * Thực hiện lấy toàn bộ nhân viên
+         */
+        async getListAccountObject() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/AccountObjects')
+                    .then(function(res) {
+                        me.listAccountObject = res.data;
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
     },

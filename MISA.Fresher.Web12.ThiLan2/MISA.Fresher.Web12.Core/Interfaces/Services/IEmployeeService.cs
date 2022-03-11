@@ -22,7 +22,6 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// <returns></returns>
         /// CreatedBy: HoaiPT(14/02/2022)
         int DeleteManyService(List<string> listEmployeeId);
-
-       
+        
     }
 }

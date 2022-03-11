@@ -375,12 +375,10 @@ export default {
 
             isShowComboboxPayAccount:false,//Trạng thái đầu tiên của combobox
             listPayAccount:null,
-            listPayAccountTemp:[],
             listFieldPayAccount:mylib.data.listFieldPayAccountCombobox,
 
             isShowComboboxPaymentTerm:false,//Trạng thái đầu tiên của combobox
             listPaymentTerm:null,
-            listPaymentTermTemp:[],
             listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
 
             listAccountObjectGroup:[],

@@ -268,6 +268,15 @@ namespace MISA.Fresher.Web12.Core.Resourcs.EntitiesVN {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DANH SÁCH NHÀ CUNG CẤP.
+        /// </summary>
+        public static string TitleExcelExport {
+            get {
+                return ResourceManager.GetString("TitleExcelExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phường/Xã.
         /// </summary>
         public static string WardOrCommune {

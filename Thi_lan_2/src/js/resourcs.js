@@ -4,6 +4,7 @@ var resourcs = {
         titlePage: " bản ghi trên 1 trang",
         fileNameEmployeeExport: "Danh_sach_nhan_vien",
         fileNameAccountObjectExport: "Danh_sach_nha_cung_cap",
+        fileNameCaPaymentExport: "Danh_sach_phieu_chi",
         deleteMulti: "Bạn thực sự có muốn xóa những nhân viên đã chọn không?",
         confirmEdit: "Dữ liệu đã bị thay đổi bạn có muốn cất không?",
         errorFormatCode: "Mã không đúng định dạng!",
@@ -297,6 +298,27 @@ var data = {
             width: "20%"
         },
 
+    ],
+    listFieldEmployeeCaPayment: [{
+            name: "EmployeeCode",
+            text: "Mã nhân viên",
+            width: "20%"
+        }, {
+            name: "FullName",
+            text: "Tên nhân viên",
+            width: "20%"
+        },
+        {
+            name: "DepartmentName",
+            text: "Đơn vị",
+            width: "20%"
+        },
+        {
+            name: "MobilephoneNumber",
+            text: "ĐT di động",
+            title: "Điện thoại di động",
+            width: "20%"
+        },
     ]
 
 }

@@ -60,6 +60,7 @@ export default {
         }
     },
     methods: {
+        
         /**
          * Thực hiện click vào trang muốn theo dõi
          * CreatedBy: HoaiPT(26/02/2022)
