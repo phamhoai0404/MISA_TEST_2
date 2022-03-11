@@ -169,6 +169,7 @@ namespace MISA.Fresher.Web12.API.Controllers
                 {
                     devMsg = ex.Message,
                     userMsg = ex.Message,
+                    errorCode = ex.Source,
                     data = enity,
                 };
                 return StatusCode(400,respo);
@@ -178,7 +179,8 @@ namespace MISA.Fresher.Web12.API.Controllers
                 var response = new
                 {
                     devMsg = ex.Message,
-                    userMsg = Core.Resourcs.ResourceVN.ErrorException
+                    userMsg = Core.Resourcs.ResourceVN.ErrorException,
+                    errorCode = ex.Data,
                 };
 
                 return StatusCode(500, response);

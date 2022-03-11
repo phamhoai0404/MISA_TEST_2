@@ -25,6 +25,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Số phiếu chi
         /// </summary>
         [NotEmpty]
+        [NotDuplicate]
         [PropertyName("Số phiếu chi")]
         public string CaPaymentNo { get; set; }
 

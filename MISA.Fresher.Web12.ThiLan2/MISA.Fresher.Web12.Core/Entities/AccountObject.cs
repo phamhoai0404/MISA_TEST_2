@@ -26,6 +26,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Mã nhà cung cấp
         /// </summary>
         [NotEmpty]
+        [NotDuplicate]
         [PropertyName("Mã nhà cung cấp")]
         public string AccountObjectCode { get; set; }
 

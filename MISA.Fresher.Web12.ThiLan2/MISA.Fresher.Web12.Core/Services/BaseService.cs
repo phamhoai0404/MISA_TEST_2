@@ -120,7 +120,10 @@ namespace MISA.Fresher.Web12.Core.Services
                     //nếu tồn tại thì lấy còn nếu không thì lấy chính cái tên property có sẵn
                     nameDisplay = (nameDisplay != string.Empty) ? nameDisplay : propName;
 
-                    throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.InforNotEmpty, nameDisplay));
+                    throw new MISAValidateException(
+                        String.Format(Core.Resourcs.ResourceVN.InforNotEmpty, nameDisplay),
+                        Core.Resourcs.ErrorCode.Empty
+                     );
                 }
             }
 
@@ -136,7 +139,10 @@ namespace MISA.Fresher.Web12.Core.Services
         {
             if (!_baseRepository.ExistId(entityId))
             {
-                throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.InforNotExistId, className));
+                throw new MISAValidateException(
+                    String.Format(Core.Resourcs.ResourceVN.InforNotExistId, className),
+                    Core.Resourcs.ErrorCode.ExitId
+                );
             }
         }
 
@@ -172,7 +178,10 @@ namespace MISA.Fresher.Web12.Core.Services
                     //nếu tồn tại thì lấy còn nếu không thì lấy chính cái tên property có sẵn
                     nameDisplay = (nameDisplay != string.Empty) ? nameDisplay : propName;
 
-                    throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.InforDuplicate,nameDisplay));
+                    throw new MISAValidateException(
+                        String.Format(Core.Resourcs.ResourceVN.InforDuplicate,nameDisplay),
+                        Core.Resourcs.ErrorCode.Duplicate
+                    );
                 }
             }
         }

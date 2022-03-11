@@ -9,10 +9,12 @@ namespace MISA.Fresher.Web12.Core.Exceptions
     public class MISAValidateException: Exception
     {
         string? MsgErrorValiate = null;
+        string? CodeError = null;
 
-        public MISAValidateException(string msg)
+        public MISAValidateException(string msg, string? codeError)
         {
             this.MsgErrorValiate = msg;
+            this.CodeError = codeError;
         }
 
         public override string Message
@@ -20,6 +22,14 @@ namespace MISA.Fresher.Web12.Core.Exceptions
             get
             {
                 return this.MsgErrorValiate;
+            }
+        }
+
+        public override string Source
+        {
+            get
+            {
+                return this.CodeError;
             }
         }
     }

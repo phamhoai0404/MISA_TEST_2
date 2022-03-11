@@ -52,7 +52,10 @@ namespace MISA.Fresher.Web12.Core.Services
         {
             if (dateTime > DateTime.Now)
             {
-                throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.ErrorDateOfBirth));
+                throw new MISAValidateException(
+                    String.Format(Core.Resourcs.ResourceVN.ErrorDateOfBirth),
+                    Core.Resourcs.ErrorCode.Date
+                );
             }
         }
 
@@ -68,7 +71,11 @@ namespace MISA.Fresher.Web12.Core.Services
             Regex regexCode = new Regex(strRegex);
             if (!regexCode.IsMatch(employeeCode))
             {
-                throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.ErrorFormatCode));
+                throw new MISAValidateException(
+                    String.Format(Core.Resourcs.ResourceVN.ErrorFormatCode),
+                    Core.Resourcs.ErrorCode.NotFormat
+                    
+                );
             }
         }
 

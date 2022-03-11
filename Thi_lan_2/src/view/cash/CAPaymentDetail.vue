@@ -202,59 +202,59 @@ export default {
             
 
             listFieldCAPaymentDetail: [
-                {
-                    name: "DecriptionDetail",
-                    text: "DIỄN GIẢI",
-                    width: "350",
-                },
-                {
-                    name: "DebitAccountId",
-                    text: "TK NỢ",
-                    title: "Tài khoản nợ",
-                    width: "150",
-                    typeInsert:'combobox',
-                    listField:mylib.data.listFieldDebitAccountComboboxInsert,
-                    listData:mylib.dataSource.listDataDebitAccount,
-                    styleCombobox:"width: 370px;",
-                    keySearch:"DebitAccountId",
-                    propertyCompare:"DebitAccountId"
-                },
-                {
-                    name: "CreditAccountId",
-                    text: "TK CÓ",
-                    title: "Tài khoản có",
-                    width: "70",
-                    typeInsert:'combobox',
-                    listField:mylib.data.listFieldCreditAccountComboboxInsert,
-                    styleCombobox:"width: 380px;",
-                    listData:mylib.dataSource.listDataCreditAccount,
-                    keySearch:"CreditAccountId",
-                    propertyCompare:"CreditAccountId"
-                },
-                {
-                    name: "Amount",
-                    text: "SỐ TIỀN",
-                    width: "150",
-                    type:"number"
-                },
-                {
-                    name: "AccountObjectCode",
-                    text: "ĐỐI TƯỢNG",
-                    width: "100",
-                    listField:mylib.data.listFieldAccountObjectComboboxInsert,
-                    typeInsert:'combobox',
-                    styleCombobox:"width: 880px; right: 0",
-                    listData:mylib.dataTest.listAccount,
-                    keySearch:"AccountObjectId",
-                    propertyCompare:"AccountObjectId"
+                // {
+                //     name: "DecriptionDetail",
+                //     text: "DIỄN GIẢI",
+                //     width: "350",
+                // },
+                // {
+                //     name: "DebitAccountId",
+                //     text: "TK NỢ",
+                //     title: "Tài khoản nợ",
+                //     width: "150",
+                //     typeInsert:'combobox',
+                //     listField:mylib.data.listFieldDebitAccountComboboxInsert,
+                //     listData:mylib.dataSource.listDataDebitAccount,
+                //     styleCombobox:"width: 370px;",
+                //     keySearch:"DebitAccountId",
+                //     propertyCompare:"DebitAccountId"
+                // },
+                // {
+                //     name: "CreditAccountId",
+                //     text: "TK CÓ",
+                //     title: "Tài khoản có",
+                //     width: "70",
+                //     typeInsert:'combobox',
+                //     listField:mylib.data.listFieldCreditAccountComboboxInsert,
+                //     styleCombobox:"width: 380px;",
+                //     listData:mylib.dataSource.listDataCreditAccount,
+                //     keySearch:"CreditAccountId",
+                //     propertyCompare:"CreditAccountId"
+                // },
+                // {
+                //     name: "Amount",
+                //     text: "SỐ TIỀN",
+                //     width: "150",
+                //     type:"number"
+                // },
+                // {
+                //     name: "AccountObjectCode",
+                //     text: "ĐỐI TƯỢNG",
+                //     width: "100",
+                //     listField:mylib.data.listFieldAccountObjectComboboxInsert,
+                //     typeInsert:'combobox',
+                //     styleCombobox:"width: 880px; right: 0",
+                //     listData:mylib.dataTest.listAccount,
+                //     keySearch:"AccountObjectId",
+                //     propertyCompare:"AccountObjectId"
                    
-                },
-                {
-                    name: "AccountObjectName",
-                    text: "TÊN ĐỐI TƯỢNG",
-                    width: "200",
-                    typeInsert:'none',
-                },
+                // },
+                // {
+                //     name: "AccountObjectName",
+                //     text: "TÊN ĐỐI TƯỢNG",
+                //     width: "200",
+                //     typeInsert:'none',
+                // },
 
             ]
 
@@ -286,6 +286,62 @@ export default {
         me.$parent.isShowLoading = true;
         await me.getListEmployee();
         await me.getListAccountObject();
+
+        me.listFieldCAPaymentDetail =[
+            {
+                name: "DecriptionDetail",
+                text: "DIỄN GIẢI",
+                width: "350",
+            },
+            {
+                name: "DebitAccountId",
+                text: "TK NỢ",
+                title: "Tài khoản nợ",
+                width: "150",
+                typeInsert:'combobox',
+                listField:mylib.data.listFieldDebitAccountComboboxInsert,
+                listData:mylib.dataSource.listDataDebitAccount,
+                styleCombobox:"width: 370px;",
+                keySearch:"DebitAccountId",
+                propertyCompare:"DebitAccountId"
+            },
+            {
+                name: "CreditAccountId",
+                text: "TK CÓ",
+                title: "Tài khoản có",
+                width: "70",
+                typeInsert:'combobox',
+                listField:mylib.data.listFieldCreditAccountComboboxInsert,
+                styleCombobox:"width: 380px;",
+                listData:mylib.dataSource.listDataCreditAccount,
+                keySearch:"CreditAccountId",
+                propertyCompare:"CreditAccountId"
+            },
+            {
+                name: "Amount",
+                text: "SỐ TIỀN",
+                width: "150",
+                type:"number"
+            },
+            {
+                name: "AccountObjectCode",
+                text: "ĐỐI TƯỢNG",
+                width: "100",
+                listField:mylib.data.listFieldAccountObjectComboboxInsert,
+                typeInsert:'combobox',
+                styleCombobox:"width: 880px; right: 0",
+                listData:me.listAccountObject,
+                keySearch:"AccountObjectId",
+                propertyCompare:"AccountObjectId"
+                
+            },
+            {
+                name: "AccountObjectName",
+                text: "TÊN ĐỐI TƯỢNG",
+                width: "200",
+                typeInsert:'none',
+            },
+        ]
         me.$parent.isShowLoading = false;
         me.isShowDetail = true;
         if(me.editMode != mylib.misaEnum.editMode.View){//CÁI NÀY CẦN ĐI HỎI CÁC ANH
@@ -298,13 +354,20 @@ export default {
             alert("vào xóa tất cả");
         },
         addItemCaPaymentDetail(){
-            let objectLast = MyFunction.sameObject(this.listCAPaymentDetail[this.listCAPaymentDetail.length - 1]);
+            let objectNew = {};
+            if(this.listCAPaymentDetail.length > 0 ){//Nếu nó có đối tượng thì sẽ dữ liệu sẽ bằng đối tượng cuối cùng
+                objectNew= MyFunction.sameObject(this.listCAPaymentDetail[this.listCAPaymentDetail.length - 1]);
+            }
+            else{//Nếu mà không có đối tượng nào hết
+                objectNew = this.objectCaPaymentDetailNew();
+            }
+            
 
-            this.listCAPaymentDetail.push(objectLast);
+            this.listCAPaymentDetail.push(objectNew);
             
         },
         deleteItemCaPaymentDetail(index){
-            alert("vào xóa Item", index);
+             this.listCAPaymentDetail.splice(index,1);
         },
         /**
          * Thực hiện khi thay đổi ô input đối tượng của TableInset thì gán cho Id bằng null
@@ -313,6 +376,7 @@ export default {
         changeAfterInputListCaPaymentDetail({fieldName,index}){
             if(fieldName =="AccountObjectId"){
                 this.listCAPaymentDetail[index].AccountObjectId = null;
+                this.listCAPaymentDetail[index].AccountObjectName = ''
             }
         },
         /**
@@ -357,13 +421,21 @@ export default {
             me.caPayment.CaPaymentDate = new Date();
             await me.getCaPaymentNoNew(); 
 
-            let caPaymentDetailNew ={};
-            caPaymentDetailNew.Amount = 0;
-            caPaymentDetailNew.CreditAccountId = "11111";
-            caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";
+            let caPaymentDetailNew = me.objectCaPaymentDetailNew();
 
             me.listCAPaymentDetail.push(caPaymentDetailNew);
 
+        },
+        /**
+         * Thực hiện thêm Object mới (đầu tiên cho CaPaymentDetail)
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        objectCaPaymentDetailNew(){
+             let caPaymentDetailNew ={};
+            caPaymentDetailNew.Amount = 0;
+            caPaymentDetailNew.CreditAccountId = "11111";
+            caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";
+            return caPaymentDetailNew;
         },
            
 

@@ -589,7 +589,8 @@ export default {
                             .then(function () {
                                 me.checkAction(value);
                             })
-                            .catch(function () {
+                            .catch(function (res) {
+                                console.log(res);
                                 me.openWarning();
                             })
                         break;
@@ -598,7 +599,8 @@ export default {
                             .then(function () {
                                 me.checkAction(value);
                             })
-                            .catch(function () {
+                            .catch(function (res) {
+                                console.log(res);
                                 me.openWarning();
                             })
                         break;

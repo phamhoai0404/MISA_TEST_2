@@ -100,7 +100,10 @@ namespace MISA.Fresher.Web12.Core.Services
             Regex regexCode = new Regex(strRegex);
             if (!regexCode.IsMatch(accountObjectCode))
             {
-                throw new MISAValidateException(String.Format(Core.Resourcs.ResourceVN.ErrorFormatCode));
+                throw new MISAValidateException(
+                    String.Format(Core.Resourcs.ResourceVN.ErrorFormatCode),
+                    Core.Resourcs.ErrorCode.NotFormat
+                );
             }
         }
         #endregion
