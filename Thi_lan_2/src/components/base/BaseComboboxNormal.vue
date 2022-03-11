@@ -12,7 +12,7 @@
                 :readonly="readOnly"
                 ref="input"
             >
-            <div class="m-combobox-icon" style="background-color:#fff;">
+            <div class="m-combobox-icon" style="background-color:#fff;" :class="[  readOnly?'m-combobox-readOnly':'' ]">
                 <div  v-if="isButtonAdd" class="m-button-dropdown" style="border-right:1px solid #bbb;" >
                     <BaseButton iconClass="btn-plus-success" :isSize16="true"/>
                 </div>
@@ -203,7 +203,7 @@ export default {
             this.isShowDataDropdown = false; //Đóng data combobox data
         },
         btnClickItemTable(object){
-            this.onInput(object[this.inputText]);
+            this.onInput(object[this.inputText]);//Thực hiện gián giá trị vào ô Input
             this.isShowDataDropdown = false; //Đóng data combobox data
             this.$emit('onChangeValueKeySearch', object);//Bắn dữ liệu ra ngoài để thay đổi id 
             

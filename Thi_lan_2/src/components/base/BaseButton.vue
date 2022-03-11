@@ -23,7 +23,11 @@ export default {
             default: false,
             type: Boolean
         },
-        shortKey:String //Phím tắt
+        shortKey:String,//Phím tắt,
+        readOnly:{
+            default:false,
+            type:Boolean,
+        },
     },
     methods: {
         /**
@@ -31,7 +35,10 @@ export default {
          * CreatedBy: HoaiPT(26/02/2022)
          */
         btnClickButtonBase() {
-            this.$emit('btnClick', null);
+            if(!this.readOnly){
+                this.$emit('btnClick', null);
+            }
+            
         }
     },
 }

@@ -5,7 +5,7 @@
             <BaseButtonIcon iconClass="btn-clock" />
             <div class="title-top-header-left">Phiếu chi {{caPayment.CaPaymentNo}}</div>
             <div style="padding-left:24px;">
-                <BaseComboboxNormal v-model="titlePopupDefault" :datas="[]" styleComboboxNormal="width:350px;" />
+                <BaseComboboxNormal v-model="titlePopupDefault" :datas="[]" styleComboboxNormal="width:350px;" :readOnly="readOnly" />
             </div>
         </div>
         <div class="top-header-right">
@@ -20,7 +20,7 @@
                 <BaseButtonIcon iconClass="btn-icon-help" />
             </div>
             <div class="item-button">
-                <BaseButtonIcon iconClass="btn-icon-close" />
+                <BaseButtonIcon iconClass="btn-icon-close" @btnClick="btnCloseToolTip"/>
             </div>
         </div>
     </div>
@@ -42,17 +42,18 @@
                                 inputText="AccountObjectName"
                                 :propertyCompare="caPayment.AccountObjectId"
                                 keySearch="AccountObjectId"
+                                ref="AccountObject"
                             />
                         </div>
                         <div style="width:59%;">
-                            <BaseInput typeInput="input" label="Người nhận"  v-model="caPayment.Receiver" />
+                            <BaseInput typeInput="input" label="Người nhận"  v-model="caPayment.Receiver" :readOnly="readOnly" />
                         </div>
                     </div>
                     <div class="left-row">
-                        <BaseInput typeInput="input" label="Địa chỉ" v-model="caPayment.Address" />
+                        <BaseInput typeInput="input" label="Địa chỉ" v-model="caPayment.Address" :readOnly="readOnly" />
                     </div>
                     <div class="left-row">
-                        <BaseInput typeInput="input" label="Lý do"  v-model="caPayment.Resion" />
+                        <BaseInput typeInput="input" label="Lý do"  v-model="caPayment.Resion" :readOnly="readOnly" />
                     </div>
                     <div class="left-row-multi">
                         <div style="width:40%; padding-right: 12px;">
@@ -70,7 +71,7 @@
                             />
                         </div>
                         <div style="width:59%; display: flex;">
-                            <BaseInput typeInput="input" label="Kèm theo" :isNumber="true" placeholder="Số lượng" styleInput="width: 40%;"  v-model="caPayment.AttachNumber"/>
+                            <BaseInput typeInput="input" label="Kèm theo" :isNumber="true" placeholder="Số lượng" styleInput="width: 40%;"  v-model="caPayment.AttachNumber" :readOnly="readOnly"/>
                             <div style="padding: 28px 6.5px 0;">Chứng từ gốc</div>
                         </div>
                     </div>
@@ -81,19 +82,19 @@
                 </div>
                 <div class="master-left-two" style="width:185px;">
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày hạch toán" v-model="caPayment.PostedDate" />
+                        <BaseInput typeInput="date" label="Ngày hạch toán" v-model="caPayment.PostedDate" :readOnly="readOnly" />
                     </div>
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="caPayment.CaPaymentDate" />
+                        <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="caPayment.CaPaymentDate" :readOnly="readOnly" />
                     </div>
                     <div class="item-left-two" style="padding-bottom: 0px;">
-                        <BaseInput typeInput="input" label="Số phiếu chi" v-model="caPayment.CaPaymentNo" />
+                        <BaseInput typeInput="input" label="Số phiếu chi" v-model.lazy="caPayment.CaPaymentNo" :readOnly="readOnly" />
                     </div>
                 </div>
             </div>
             <div class="popup-content-right">
                 <div style="text-align:right;">Tổng tiền</div>
-                <div class="popup-sum-money">0000</div>
+                <div class="popup-sum-money">{{temTotalMoney}}</div>
             </div>
         </div>
         <div class="content-detail-group">
@@ -101,16 +102,22 @@
                 <div class="tab-label">Hạch toán</div>
                 <div class="tab-content">
                     <div style="padding-right: 10px;">Loại tiền</div>
-                    <BaseComboboxNormal v-model="titleMoneyDefault" :datas="[]" styleComboboxNormal="width:100px;" />
+                    <BaseComboboxNormal v-model="titleMoneyDefault" :datas="[]" styleComboboxNormal="width:100px;" :readOnly="readOnly" />
                 </div>
             </div>
             <div class="content-detail">
                 <BaseTableInsert :isColumNumber="true" :hasFooterTable="true" styleTable=" overflow-y: none;"
                     v-model="listCAPaymentDetail"
+                    :complexTable="true"
+
                     :listFields="listFieldCAPaymentDetail"
+                    :readOnly="readOnly" 
 
                     @changeSelectItem="changeItemListCaPaymentDetail"
-                    @changeInput="changeAfterInputListCaPaymentDetail"    
+                    @changeInput="changeAfterInputListCaPaymentDetail"
+                    @deleteItemRow="deleteItemCaPaymentDetail"
+                    @addItemRow ="addItemCaPaymentDetail"
+                    @btnRemoveAll="btnRemoveAllCaPaymentDetail"
                  />
                 <div class="content-file">
                     <div class="content-file-title">
@@ -125,10 +132,10 @@
         </div>
     </div>
     <div class="popup-footer">
-        <BaseButton label="Hủy" styleButton="color:white!important"/>
+        <BaseButton label="Hủy" styleButton="color:white!important" @btnClick="btnCloseForm"/>
         <div class="group-button-footer" >
-            <BaseButton label="Cất và Đóng" styleButton="color:white!important; margin-right:10px;"/>
-            <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true"/>
+            <BaseButton label="Cất và Đóng" styleButton="color:white!important; margin-right:10px;" :readOnly="readOnly" @btnClick="btnSave(1)"/>
+            <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true" :readOnly="readOnly" @btnClick="btnSave(2)"/>
         </div>
     </div>
 
@@ -143,6 +150,7 @@ import BaseButton from '@/components/base/BaseButton.vue'
 
 import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 import * as mylib from '../../js/resourcs.js'
+import MyFunction from '@/js/function.js'
 import axios from 'axios'
 export default {
     components: {
@@ -161,6 +169,19 @@ export default {
             type:String
         }
     },
+    computed:{
+        temTotalMoney(){
+            let temp = 0;
+            for(let i = 0 ; i <this.listCAPaymentDetail.length; i++){
+                temp += Number(this.listCAPaymentDetail[i].Amount);
+            }
+            return MyFunction.formatNumber(temp);
+        },
+        
+    },
+    watch:{
+        
+    },
     data() {
         return {
             titlePopupDefault: "7. Chi khác",
@@ -171,11 +192,14 @@ export default {
             listAccountObject:[],//Dùng để lưu trữ listAccountObject
             readOnly:false,//Trạng thái ban đầu của chỉ xem hay là gì
 
-            caPayment:{},//Dùng để lưu trữ caPayment
-            listCaPaymentDetail:[],//Dùng để lưu trữ listCaPaymentDetail
+            caPayment:{}, //Dùng để lưu trữ caPayment
+              
+            listCAPaymentDetail:new Array(),//Dùng để lưu trữ listCaPaymentDetail,
+            
 
             lisFieldAccountObject:mylib.data.listFieldAccountObjectComboboxInsert,
             listFieldEmployee: mylib.data.listFieldEmployeeCaPayment,
+            
 
             listFieldCAPaymentDetail: [
                 {
@@ -236,9 +260,26 @@ export default {
 
         }
     },
-    created(){
+    async created(){
         var me = this;
-        me.getDataDetailCaPayment();
+        switch (me.editMode) {
+            case  mylib.misaEnum.editMode.View:
+                me.readOnly = true;
+                await me.getDataDetailCaPayment();
+                break;
+            case mylib.misaEnum.editMode.Add:
+                me.$parent.isShowLoading = true;//Thực hiện loading
+                await me.resetFormDetail();//Thực hiện thêm mới
+               
+                break;
+            case mylib.misaEnum.editMode.Duplicate:
+                await me.getDataDetailCaPayment();
+                await me.getCaPaymentNoNew();
+                break;
+            default:
+                break;
+        }
+       
     },
     async mounted(){
         var me = this;
@@ -247,22 +288,89 @@ export default {
         await me.getListAccountObject();
         me.$parent.isShowLoading = false;
         me.isShowDetail = true;
-        
+        if(me.editMode != mylib.misaEnum.editMode.View){//CÁI NÀY CẦN ĐI HỎI CÁC ANH
+            console.log(" đó là ", me.$refs)//Tập trung vào ô mã đầu tiên
+            console.log("đó là 2", me.$refs.AccountObject);
+        } 
     },
     methods: {
+        btnRemoveAllCaPaymentDetail(){
+            alert("vào xóa tất cả");
+        },
+        addItemCaPaymentDetail(){
+            let objectLast = MyFunction.sameObject(this.listCAPaymentDetail[this.listCAPaymentDetail.length - 1]);
+
+            this.listCAPaymentDetail.push(objectLast);
+            
+        },
+        deleteItemCaPaymentDetail(index){
+            alert("vào xóa Item", index);
+        },
+        /**
+         * Thực hiện khi thay đổi ô input đối tượng của TableInset thì gán cho Id bằng null
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         changeAfterInputListCaPaymentDetail({fieldName,index}){
-            // console.log("đó là", fieldName,index );
             if(fieldName =="AccountObjectId"){
                 this.listCAPaymentDetail[index].AccountObjectId = null;
             }
         },
+        /**
+         * Thực hiện khi thay đổi của id khi lựa chọn vào dòng tương ứng khi thay đổi AccountObject vì có lưu trữ Id
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         changeItemListCaPaymentDetail({object,fieldName,index}){
-            // console.log("đó là 2: ", idNew, fieldName, index);
             if(fieldName =="AccountObjectId"){
                 this.listCAPaymentDetail[index].AccountObjectId = object.AccountObjectId;
                 this.listCAPaymentDetail[index].AccountObjectName = object.AccountObjectName;
             }
         },
+        btnSave(value){
+            alert(value);
+        },
+         /**
+         * Thực hiện khi click dấu đóng
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        btnCloseToolTip(){
+            if(this.editMode == mylib.misaEnum.editMode.View){
+                this.$parent.isShowDetailCaPayment = false;
+            }
+        },
+         /**
+         * Thực hiện khi click nút hủy
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        btnCloseForm(){
+            this.$parent.isShowDetailCaPayment = false;
+        },
+        /**
+         * Thực hiện làm mới form detail
+         */
+        async resetFormDetail(){
+            var me = this;
+    
+            me.caPayment = {};
+            me.caPayment.CaPaymentNo = '';//Không biết sao cái này bị bind delay
+            me.caPayment.Resion = "Chi tiền cho";
+            me.caPayment.PostedDate = new Date();
+            me.caPayment.CaPaymentDate = new Date();
+            await me.getCaPaymentNoNew(); 
+
+            let caPaymentDetailNew ={};
+            caPaymentDetailNew.Amount = 0;
+            caPaymentDetailNew.CreditAccountId = "11111";
+            caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";
+
+            me.listCAPaymentDetail.push(caPaymentDetailNew);
+
+        },
+           
+
+        /**
+         * Thực hiện lấy dữ liệu khi xem
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         async getDataDetailCaPayment() {
             try {
                 var me = this;
@@ -272,7 +380,26 @@ export default {
                         console.log(res);
                         me.caPayment = res.data.Master;
                         me.listCAPaymentDetail = res.data.ListDetail;
-                        me.$parent.isShowLoading = false;//Đóng loading
+                    })
+                    .catch(function (res) {
+                        console.log(res);
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        /**
+         * Thực hiện lấy mã CaPaymentNo max
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+         async getCaPaymentNoNew() {
+            try {
+                var me = this;
+                await axios.get(`https://localhost:44338/api/v1/CaPayments/CodeNew`)
+                    .then(function (res) {
+                        // console.log(res);
+                        me.caPayment.CaPaymentNo = res.data;
+                        console.log( me.caPayment.CaPaymentNo);
                     })
                     .catch(function (res) {
                         console.log(res);
@@ -283,6 +410,7 @@ export default {
         },
         /**
          * Thực hiện lấy toàn bộ nhân viên
+         * CreatedBy: HoaiPT(11/03/2022)
          */
         async getListEmployee() {
             try {
@@ -297,6 +425,7 @@ export default {
         },
         /**
          * Thực hiện lấy toàn bộ nhân viên
+         * CreatedBy: HoaiPT(11/03/2022)
          */
         async getListAccountObject() {
             try {

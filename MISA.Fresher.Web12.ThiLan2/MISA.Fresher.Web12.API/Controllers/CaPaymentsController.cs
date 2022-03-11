@@ -28,6 +28,27 @@ namespace MISA.Fresher.Web12.API.Controllers
 
 
         #region Methods
+
+        /// <summary>
+        /// Lấy ra mã thêm mới tiếp theo
+        /// </summary>
+        /// <returns></returns>
+        /// Created: HoaiPT(11/02/2022)
+        [HttpGet("CodeNew")]
+        public IActionResult GetCodeNew()
+        {
+            try
+            {
+                var res = _caPaymentService.getCodeNewService();
+                return StatusCode(200, res);
+            }
+            catch (Exception ex)
+            {
+                return this.AllException(ex, null);
+            }
+
+        }
+
         [HttpPost("GetPageV2")]
         public IActionResult GetPagingV2(string? searchText, int pageIndex, int pageSize, FilterCaPayment objectSearch)
         {

@@ -434,6 +434,7 @@ export default {
         
     },
     async mounted() {
+        console.log(this.$refs);
         this.$refs.TaxCode.focus() //Tập trung vào ô mã đầu tiên
         
         await this.getListPayAccount()//Thực hiện gán dữ liệu cho listPayAccount phục vụ cho combobox

@@ -24,6 +24,12 @@ namespace MISA.Fresher.Web12.API.Controllers
         #endregion
 
 
+        /// <summary>
+        /// Thực hiện lấy dữ liệu theo cha
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Created: HoaiPT(11/03/2022)
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
@@ -36,7 +42,26 @@ namespace MISA.Fresher.Web12.API.Controllers
             {
                 return this.AllException(ex, null);
             }
+        }
 
+        /// <summary>
+        /// Thực hiện xóa theo id của master theo mã
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Created: HoaiPT(11/03/2022)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                var res = _controlCaPaymentRepository.DeleteByCaPaymentId(id);
+                return StatusCode(200, res);
+            }
+            catch (Exception ex)
+            {
+                return this.AllException(ex, null);
+            }
 
         }
 

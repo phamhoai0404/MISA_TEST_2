@@ -5,7 +5,7 @@
     left: 0;
     right: 0;
     background-color: rgba(240, 233, 233, 0.383);
-    z-index: 100;
+    z-index: 1000;
 }
 
 .m-loading .m-loader {

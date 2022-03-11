@@ -25,13 +25,15 @@
         ref="input"
         style="resize: none;"
     />
-    <div v-if="typeInput == 'date'">
+    <div v-if="typeInput == 'date'"
+       
+    >
         <v-date-picker :value="value" color="green" :max-date='new Date()' :masks="masks">
             <template v-slot="{ inputValue, inputEvents ,togglePopover }">
-                <div class="m-form-date">
-                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents">
+                <div class="m-form-date"  :class="[readOnly?'m-input-readOnly':'']">
+                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly">
                     <div class="m-icon-date">
-                        <BaseButtonIcon iconClass="btn-calendar" :isSize16="true" @btnClick="togglePopover()" />
+                        <BaseButtonIcon iconClass="btn-calendar" :isSize16="true" @btnClick="togglePopover()"  :readOnly="readOnly"/>
                     </div>
                 </div>
             </template>
@@ -57,7 +59,7 @@ export default {
             default: false,
             type: Boolean
         },
-        value: [String,Number], //Mặc định nó là như vậy thay bằng tên là gì cũng được VD:(giatri, valusessssss ) ,  nó sẽ :value sẽ map với v-model ở bên ngoài
+        value: [String,Number,Date], //Mặc định nó là như vậy thay bằng tên là gì cũng được VD:(giatri, valusessssss ) ,  nó sẽ :value sẽ map với v-model ở bên ngoài
         hasIcon: { //Mặc định không có icon 
             default: false,
             type: Boolean

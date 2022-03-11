@@ -9,6 +9,12 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
 {
     public interface ICaPaymentRepository : IBaseRepository<CaPayment>
     {
-
+        /// <summary>
+        /// Thực hiện lấy ra mã CaPaymentNo mã
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        /// Created: HoaiPT(14/02/2022)
+        string getCaPaymentNoMax();
     }
 }

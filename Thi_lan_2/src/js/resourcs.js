@@ -51,7 +51,8 @@ var misaEnum = {
         NoAction: 0, //Không thực hiện gì cả
         Add: 1, //Thực hiện thêm mới
         Edit: 2, //Thực hiện sửa
-        View: 3 //Thực hiện xem
+        View: 3, //Thực hiện xem
+        Duplicate: 4,
     },
     actionDelete: {
         NoAction: 0, //Không xóa

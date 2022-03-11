@@ -24,5 +24,34 @@ namespace MISA.Fresher.Web12.Core.Services
             string k = "1 = 1";//Cái này cần đi hỏi lại các anh
             return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, k);
         }
+
+
+        public string getCodeNewService()
+        {
+            //Thực hiện lấy ra chỉ là số mà thôi bỏ đi phần chữ và số 0 thừa
+            int codeMax = int.Parse(_caPaymentRepository.getCaPaymentNoMax().Substring(2)) + 1;
+
+            //Mã code mới sinh ra sẽ bằng giá trị lớn nhất hiện tại cộng thêm 1
+            var codeNew = codeMax + "";
+            switch (codeNew.Length)
+            {
+                case 1:
+                    codeNew = "PC0000" + codeNew;
+                    break;
+                case 2:
+                    codeNew = "PC000" + codeNew;
+                    break;
+                case 3:
+                    codeNew = "PC00" + codeNew;
+                    break;
+                case 4:
+                    codeNew = "PC0" + codeNew;
+                    break;
+                default:
+                    codeNew = "PC" + codeNew;
+                    break;
+            }
+            return codeNew;
+        }
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MISA.Fresher.Web12.Infrastructure.Repository
 {
-    public class BaseRepository<MISAEntity>: IBaseRepository<MISAEntity>
+    public class BaseRepository<MISAEntity> : IBaseRepository<MISAEntity>
     {
         #region Property
         //1.Khai báo thông tin của CSDL
@@ -39,6 +39,7 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
             {
                 //Thực hiện truy vấn dữ liệu trong database
                 var enities = SqlConnection.Query<MISAEntity>($"SELECT * FROM View_All{className};");
+
                 return enities;
             }
         }
@@ -275,7 +276,7 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
             }
         }
 
-            public string GetCodeMax()
+        public string GetCodeMax()
         {
             //Thực hiện khởi tạo kết nối và sau khi làm xong là nó tự ngắt kết nối luôn
             using (SqlConnection = new MySqlConnection(ConnectionString))
@@ -360,7 +361,7 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
         #endregion
 
 
-       
+
         #endregion
 
     }

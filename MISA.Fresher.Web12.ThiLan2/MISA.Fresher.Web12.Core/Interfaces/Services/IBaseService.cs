@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MISA.Fresher.Web12.Core.Interfaces.Services
 {
-    public interface IBaseService<MISAEnity>
+
+    public interface IBaseService<MISAEnity> 
     {
 
         /// <summary>

@@ -8,7 +8,7 @@
                         <BaseButtonIcon iconClass="btn-tour" />
                         <div class="title-tour">Hướng dẫn</div>
                     </div>
-                    <BaseButtonFunction label="Thêm chi tiền" :hasBackground="true"  />
+                    <BaseButtonFunction label="Thêm chi tiền" :hasBackground="true" @btnClick="btnAddCaPayment" />
                 </div>
             </div>
         </div>
@@ -62,12 +62,20 @@
 <BaseLoading v-if="isShowLoading"/>
 <BaseDropDownFunction v-if="isShowFunction"
     :unpin="true"
+    :remove="true"
     :duplicate="true"
     :positionRight="67"
     :positionTop ="positionTopFunction"
     
     @hideFunction ="isShowFunction = false"
     @btnDuplicate="btnDuplicateCaPayment"
+    @btnRemove="btnRemoveCaPayment"
+/>
+<BaseMessageRemove  v-if="isShowMessRemove" 
+    typeMessage="warningAndQuestion" 
+    :titleForm="titleMessRemove"
+    @btnNo="isShowMessRemove = false"
+    @btnYes="btnConfirmRemove"
 />
 <CAPaymentDetail v-if="isShowDetailCaPayment" :editMode="editModeTable" :idCaPayment="idCaPaymentSelected"/>
 </div>
@@ -86,6 +94,8 @@ import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 
 import CAPaymentDetail from '@/view/cash/CAPaymentDetail.vue'
 
+import BaseMessageRemove from '@/components/base/BaseMessage.vue'
+
 import * as mylib from '../../js/resourcs.js'
 import axios from 'axios'
 export default {
@@ -98,7 +108,8 @@ export default {
         BaseTablePaging,
         BaseLoading,
         BaseDropDownFunction,
-        CAPaymentDetail
+        CAPaymentDetail,
+        BaseMessageRemove
     },
     data() {
         return {
@@ -123,7 +134,11 @@ export default {
             positionTopFunction:0,//Vị trí của của dropdown Function
 
             isShowDetailCaPayment:false,//Biến đóng mở của detail
-            idCaPaymentSelected:"",//Nơi lưu trữ id
+            idCaPaymentSelected:"",//Nơi lưu trữ id,
+            objectCaPayment:{},//Nơi lưu trữ object
+
+            isShowMessRemove:false,//Trạng thái của form xóa
+            titleMessRemove:"",//title hiện thị mong muốn
         }
     },
     watch:{
@@ -144,7 +159,48 @@ export default {
         me.getData();//Trạng thái ban đầu
     },
     methods: {
-        btnDuplicateCaPayment(){},
+        btnAddCaPayment(){
+            var me =this; 
+            me.editModeTable = mylib.misaEnum.editMode.Add;//Thực hiện thêm mới
+            me.isShowDetailCaPayment = true;
+        },
+        /**
+         * Thực hiện khi click vào nút xác nhận xóa
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        btnConfirmRemove(){
+             try {
+                var me = this;
+                 axios.delete(`https://localhost:44338/api/v1/ControlCaPayment/${this.idCaPaymentSelected}`)
+                .then(function () {          
+                    //Đóng form
+                    me.isShowMessRemove = false;//Đóng form xóa
+                    me.getData();//Thực hiện load lại dữ liệu
+                })
+                .catch(function () {
+                    console.log(mylib.resourcs["VI"].errorMsg);
+                })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        /**
+         * Thực hiện khi click vào nút xóa trong dropdown function
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        btnRemoveCaPayment(){
+            var me = this;
+            me.isShowFunction = false;//Đóng dropdown function
+            me.titleMessRemove = `Bạn có muốn xóa chứng từ <${me.objectCaPayment.CaPaymentNo}> không?`;
+            me.isShowMessRemove = true;//Thực hiện mở form remove
+        },
+        btnDuplicateCaPayment(){
+            var me = this;
+            me.isShowFunction = false;//Đóng dropdown function
+            me.editModeTable = mylib.misaEnum.editMode.Duplicate;//Thực hiện nhân bản
+
+            me.isShowDetailCaPayment = true;
+        },
         /**
          * Thực hiện khi click vào nút xem
          * CreatedBy: HoaiPT(11/03/2022)
@@ -163,7 +219,9 @@ export default {
         btnDropDown({eve, object, index }){
             var me = this;
             console.log(index);
-            me.accountSelected = object;//Gián giá trị đối tượng dòng đang chọn vào đối tượng đang chờ để thực hiện thao tác
+
+            me.objectCaPayment = object;
+            me.idCaPaymentSelected = object.CaPaymentId;
 
             //Thực hiện truyền tọa độ thích hợp cho dropdown 
             me.positionTopFunction = eve.clientY < 500 ? (eve.clientY + 14) : (eve.clientY - 105);

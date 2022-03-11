@@ -26,7 +26,12 @@ export default {
             default:false,
             type:Boolean
         },
-        styleButtonIcon:String//Thực hiện truyền vào nếu muốn thêm css
+        readOnly:{
+            default:false,
+            type:Boolean,
+        },
+        styleButtonIcon:String//Thực hiện truyền vào nếu muốn thêm css,
+        
     },
     methods: {
          /**
@@ -34,7 +39,10 @@ export default {
          * CreatedBy: HoaiPT(25/02/2022)
          */
         btnClickButtonIcon(){
-            this.$emit('btnClick', null);
+            if(!this.readOnly){
+                this.$emit('btnClick', null);
+            }
+            
         }
     },
 }

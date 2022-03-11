@@ -19,5 +19,12 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// <returns></returns>
         /// CreatedBy: HoaiPT(10/03/2022)
         object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment listText);
+
+        /// <summary>
+        /// Thực hiện lấy ra mã CaPaymentNo mới tự tăng
+        /// </summary>
+        /// <returns></returns>
+        /// Created: HoaiPT(01/03/2022)
+        string getCodeNewService();
     }
 }

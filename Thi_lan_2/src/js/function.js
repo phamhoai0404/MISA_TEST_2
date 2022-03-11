@@ -21,6 +21,12 @@ var MyFunction = {
 
         return value;
     },
+    /** 
+     * Thực hiện formatNumber
+     */
+    formatNumber: function(value) {
+        return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
     /**
      * Thực hiện tìm kiếm những giá trị trong dãy thỏa mãn dữ kiện đầu vào là và dãy ban đầu là arrayList value
      * .toLowerCase(): Thực hiện chuyển về chữ thường để so sánh cho được nhiều nhất

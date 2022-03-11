@@ -18,8 +18,24 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
         //2.Khởi tạo kết nối
         protected MySqlConnection SqlConnection;
 
+        public int DeleteByCaPaymentId(Guid id)
+        {
+            //Thực hiện khởi tạo kết nối và sau khi làm xong là nó tự ngắt kết nối luôn
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                //Thực hiện xóa CaPaymentDetail trước
+                var sqlcommand = $"DELETE FROM CaPaymentDetail WHERE  CaPaymentId= @Id ";
+                var res = SqlConnection.Execute(sqlcommand, param: new { Id = id });
 
-      
+                //Thực hiện xóa CaPayment
+                var sqlcommand2 = $"DELETE FROM CaPayment WHERE  CaPaymentId= @Id ";
+                var res2 = SqlConnection.Execute(sqlcommand2, param: new { Id = id });
+
+                var resTotal = res + res2;
+
+                return resTotal;
+            }
+        }
 
         public object GetByCaPaymentId(Guid caPaymentId)
         {

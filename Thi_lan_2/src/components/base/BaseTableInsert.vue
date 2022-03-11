@@ -1,5 +1,5 @@
 <template>
-<div style="background-color: #ffff;" v-click-outside="cancelRow" >
+<div style="background-color: #ffff;" >
     <div class="m-table-insert-group">
         <div class="m-grid-table-insert" :style="styleTable">
             <table border="1" class="m-table-insert">
@@ -43,6 +43,7 @@
                                }"
                             >
                                 <span v-if="field.type == 'date' ">{{data[field.name] | formatDate }}</span>
+                                <span v-else-if="field.type == 'number' ">{{ formatNumber(data[field.name])}}</span>
                                 <span v-else>{{data[field.name]}}</span>
                             </div>
                             <div v-if="selectRowNumber==index">
@@ -99,7 +100,7 @@
                                 textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
                             }" 
                         >
-                            <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(listData,field.name)}}</span>
+                            <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(listData,field.name) | formatNumberSum}}</span>
                             <span v-else ></span>
                         </td>
                         <td></td>
@@ -158,6 +159,10 @@ export default {
         hasFooterTable:{//Mặc định là không có chân
             default:false,
             type:Boolean
+        },
+        complexTable:{//Xem có phải table phức tạp hay không
+            default:false,//Mặc định là table đơn giản
+            type:Boolean
         }
         
     },
@@ -173,14 +178,19 @@ export default {
     created(){
         var me = this;
         if(me.readOnly == false){//Nếu mà chỉ đọc thì không lựa chọn dòng nào hết
-            me.selectRowNumber = 0;//Còn nếu mà sửa hoặc .. hành động khác thì cho trỏ  vào dòng đầu tiên
+            if( ! me.complexTable){
+                me.selectRowNumber = 0;//Còn nếu mà sửa hoặc .. hành động khác thì cho trỏ  vào dòng đầu tiên
+            }
         }
     },
     mounted(){
         var me = this;
         if(me.readOnly == false){
-            let fieldNameFirst= me.listFields[0].name + 0;//Lấy ra tên đầu tiên của ô đầu tiên
-            me.focus(fieldNameFirst);
+            if( ! me.complexTable){//Table đơn giản mới tập trung ở ô đầu tiên khi mounted
+                let fieldNameFirst= me.listFields[0].name + 0;//Lấy ra tên đầu tiên của ô đầu tiên
+                me.focus(fieldNameFirst);
+            }
+            
         }
     },
     watch:{
@@ -196,10 +206,18 @@ export default {
                 }
             }
         },
+        /**
+         * Thực hiện khi thay đổi giá trị khi lựa chọn item bất kì 
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         changeKeySearchCombobox(object, fieldName, index){
             // console.log(object);
             this.$emit('changeSelectItem',{object, fieldName:fieldName, index:index})
         },
+        /**
+         * Thực hiện khi thay đổi giá trị của ô input
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         changeInputCombobox(fieldName, index){
            this.$emit('changeInput',{fieldName:fieldName, index:index})
         },
@@ -212,17 +230,6 @@ export default {
             me.$emit('input',data);
         },
         /**
-         * Thực hiện xóa lựa chọn dòng không lựa chọn dòng nào hết
-         * CÁI NÀY CẦN PHẢI XEM LẠI VÌ NÓ KHÔNG ĂN MẤY
-         * CreatedBy: HoaiPT(05/03/2022)
-         */
-        cancelRow() {
-            var me = this;
-            if (me.readOnly == false) {
-            //    me.selectRowNumber = 0;//Không chọn vào dòng nào hết 
-            }
-        },
-        /**
          * Thực hiện focus vào ô đang chọn
          * CreatedBy: HoaiPT(05/03/2022)
          */
@@ -230,7 +237,7 @@ export default {
             var me = this;
             if (me.readOnly == false) {
                 me.selectRowNumber = index;//Lực chọn dòng vừa chọn
-                if(fieldTypeInsert !='none'){
+                if(fieldTypeInsert !='none'){//Dòng không thuộc loại none thì mới focus được 
                     me.focus(fieldNameSelect);// với focus ở ô đang chọn
                 }
               
@@ -243,12 +250,16 @@ export default {
         deleteItemRow(index) {
             var me = this;
             if (me.readOnly == false) {
-               me.listData.splice(index,1);//Xóa item đang chọn với vị trí index
-               if(me.listData.length == 0){
-                    me.listData.push({});//Thêm đối tượng rỗng vào cuối
-               }
-
-               me.updateValue(me.listData);//Thực hiện update bên cha
+                if( !me.complexTable ){ // Với trường hợp bảng insert Bình thường thì thực hiện luôn trong base
+                    me.listData.splice(index,1);//Xóa item đang chọn với vị trí index
+                    if(me.listData.length == 0){
+                            me.listData.push({});//Thêm đối tượng rỗng vào cuối
+                    }
+                    me.updateValue(me.listData);//Thực hiện update bên cha
+                }else{//Trường hợp bảng phức tạp thì thực hiện ở bên ngoài 
+                    me.$emit('deleteItemRow', index);
+                }
+              
             }
         },
         /**
@@ -258,14 +269,18 @@ export default {
         addItemRow() {
             var me = this;
             if (me.readOnly == false) {//Nếu không phải là chỉ đọc
+                if( !me.complexTable ){ // Với trường hợp bảng insert Bình thường thì thực hiện luôn trong base
+                    me.listData.push({});//Thêm đối tượng rỗng vào cuối
+                    me.selectRowNumber = me.listData.length-1;//Lựa chọn focus dòng vừa mới tạo
 
-                me.listData.push({});//Thêm đối tượng rỗng vào cuối
-                me.selectRowNumber = me.listData.length-1;//Lựa chọn focus dòng vừa mới tạo
-
-                let fieldNameFocusLast = me.listFields[0].name+me.selectRowNumber;//Lấy ra tên đầu tiên ở dòng cuối cùng để focus
-                me.focus(fieldNameFocusLast);
-                
-                me.updateValue(me.listData);//Thực hiện update bên cha thì mới hiểu được
+                    let fieldNameFocusLast = me.listFields[0].name+me.selectRowNumber;//Lấy ra tên đầu tiên ở dòng cuối cùng để focus
+                    me.focus(fieldNameFocusLast);
+                    
+                    me.updateValue(me.listData);//Thực hiện update bên cha thì mới hiểu được
+                }else{//Trường hợp bảng phức tạp thì thực hiện ở bên ngoài
+                    me.selectRowNumber = -1;
+                    me.$emit('addItemRow');
+                }
             }
         },
         /**
@@ -275,8 +290,12 @@ export default {
         btnRemoveAll(){
             var me = this;
             if (me.readOnly == false) {
-                me.selectRowNumber = -1;//Không chọn dòng nào hết
-                me.isShowWarningAndQuestion = true;
+                if( !me.complexTable ){ // Với trường hợp bảng insert Bình thường thì thực hiện luôn trong base
+                    me.selectRowNumber = -1;//Không chọn dòng nào hết
+                    me.isShowWarningAndQuestion = true;
+                }else{//Trường hợp phức tạp thì thực hiện ở bên ngoài
+                    me.$emit('btnRemoveAll');
+                }
             }
         },
         /**
@@ -311,7 +330,31 @@ export default {
                 me.$refs[fieldName][0].focus();
             })
         },
+        /**
+         * Biến đổi về kiểu Number và format hợp lý
+         * CreadBy: HoaiPT(11/03/2022)
+         * 
+         */
+        formatNumber(value){
+            value = Number(value);
+            value = MyFunction.formatNumber(value);
+            return value;
+        },
         sumFieldNumber:MyFunction.sumFieldNumber,
+        
+    },
+    filters: {
+        /**
+         * Thực hiện định dạng lại ngày
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
+        formatDate:MyFunction.formatDate,
+        /**
+         * Thực hiện dịnh dạng số
+         * CreateBy: HoaiPT(11/03/2022)
+         */
+        formatNumberSum:MyFunction.formatNumber,
+        
         
     }
 }
