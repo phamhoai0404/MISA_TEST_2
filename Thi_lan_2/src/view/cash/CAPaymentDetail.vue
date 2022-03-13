@@ -138,7 +138,13 @@
             <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true" :readOnly="readOnly" @btnClick="btnSave(2)"/>
         </div>
     </div>
-
+<BaseMess  v-if="isShowMessQuestion"
+    typeMessage="question" 
+    :titleForm="titleMessQuestion"
+    @btnCancel="isShowMessQuestion = false"
+    @btnYes="btnYesQuestion" 
+    @btnNo="btnCloseForm"
+/>
 </div>
 </template>
 
@@ -147,6 +153,7 @@ import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
+import BaseMess from '@/components/base/BaseMessage.vue'
 
 import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 import * as mylib from '../../js/resourcs.js'
@@ -158,7 +165,8 @@ export default {
         BaseButton,
         BaseComboboxNormal,
         BaseInput,
-        BaseTableInsert
+        BaseTableInsert,
+        BaseMess
     },
     props:{
         editMode:{
@@ -195,69 +203,13 @@ export default {
             caPayment:{}, //Dùng để lưu trữ caPayment
               
             listCAPaymentDetail:new Array(),//Dùng để lưu trữ listCaPaymentDetail,
-            
+            listFieldCAPaymentDetail: [],//Lưu trữ list detail
 
             lisFieldAccountObject:mylib.data.listFieldAccountObjectComboboxInsert,
             listFieldEmployee: mylib.data.listFieldEmployeeCaPayment,
             
-
-            listFieldCAPaymentDetail: [
-                // {
-                //     name: "DecriptionDetail",
-                //     text: "DIỄN GIẢI",
-                //     width: "350",
-                // },
-                // {
-                //     name: "DebitAccountId",
-                //     text: "TK NỢ",
-                //     title: "Tài khoản nợ",
-                //     width: "150",
-                //     typeInsert:'combobox',
-                //     listField:mylib.data.listFieldDebitAccountComboboxInsert,
-                //     listData:mylib.dataSource.listDataDebitAccount,
-                //     styleCombobox:"width: 370px;",
-                //     keySearch:"DebitAccountId",
-                //     propertyCompare:"DebitAccountId"
-                // },
-                // {
-                //     name: "CreditAccountId",
-                //     text: "TK CÓ",
-                //     title: "Tài khoản có",
-                //     width: "70",
-                //     typeInsert:'combobox',
-                //     listField:mylib.data.listFieldCreditAccountComboboxInsert,
-                //     styleCombobox:"width: 380px;",
-                //     listData:mylib.dataSource.listDataCreditAccount,
-                //     keySearch:"CreditAccountId",
-                //     propertyCompare:"CreditAccountId"
-                // },
-                // {
-                //     name: "Amount",
-                //     text: "SỐ TIỀN",
-                //     width: "150",
-                //     type:"number"
-                // },
-                // {
-                //     name: "AccountObjectCode",
-                //     text: "ĐỐI TƯỢNG",
-                //     width: "100",
-                //     listField:mylib.data.listFieldAccountObjectComboboxInsert,
-                //     typeInsert:'combobox',
-                //     styleCombobox:"width: 880px; right: 0",
-                //     listData:mylib.dataTest.listAccount,
-                //     keySearch:"AccountObjectId",
-                //     propertyCompare:"AccountObjectId"
-                   
-                // },
-                // {
-                //     name: "AccountObjectName",
-                //     text: "TÊN ĐỐI TƯỢNG",
-                //     width: "200",
-                //     typeInsert:'none',
-                // },
-
-            ]
-
+            isShowMessQuestion:false,//Trạng thái đóng mở của form question
+            titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
         }
     },
     async created(){
@@ -364,11 +316,12 @@ export default {
             else{//Nếu mà không có đối tượng nào hết
                 objectNew = this.objectCaPaymentDetailNew();
             }
-            
-
-            this.listCAPaymentDetail.push(objectNew);
-            
+            this.listCAPaymentDetail.push(objectNew);        
         },
+        /**
+         * Thực hiện khi click vào nút xóa của từng dòng trong bảng detail
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         deleteItemCaPaymentDetail(index){
              this.listCAPaymentDetail.splice(index,1);
         },
@@ -392,8 +345,45 @@ export default {
                 this.listCAPaymentDetail[index].AccountObjectName = object.AccountObjectName;
             }
         },
-        btnSave(value){
-            alert(value);
+        async btnSave(value){
+            try {
+                var me = this;
+                let objectControl ={};
+                objectControl.CaPayment  = me.caPayment;
+                objectControl.ListCaPaymentDetail = me.listCAPaymentDetail;
+                await axios.post('https://localhost:44338/api/v1/ControlCaPayment', objectControl)
+                .then(function (res) {
+                    if(!res.data.errorCode){ //Không có lỗi thì sẽ vào đây
+                        me.checkActionSave(value);
+                    }else{//Có lỗi thì sẽ vào đây
+                        me.openWarning(res);
+                    }  
+                })
+            } catch (error) {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+           
+        },
+        /**
+         * Kiểm tra xem thuộc trường hợp là cất và thêm hay là cất và đóng để cho phù hợp
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        async checkActionSave(value){
+            var me = this;
+            switch (value) {
+                case 1://Thực hiện cất và đóng
+                    me.$parent.isShowDetailCaPayment = false;//Thực hiện đóng form
+                    me.$parent.showData();//Load lại dữ liệu
+                    break;
+                case 2://Thực hiện cất và thêm mới
+                    await me.$parent.showData();//Load lại dữ liệu ở listTable
+                    me.$parent.isShowLoading = true;
+                    await me.resetFormDetail();
+                    me.$parent.isShowLoading = false;
+                    break;
+                default:
+                    break;
+            }
         },
          /**
          * Thực hiện khi click dấu đóng
@@ -402,7 +392,19 @@ export default {
         btnCloseToolTip(){
             if(this.editMode == mylib.misaEnum.editMode.View){
                 this.$parent.isShowDetailCaPayment = false;
+            }else{
+                this.isShowMessQuestion = true;//Thực hiện mở form mess hỏi xem có muốn cất không
             }
+        },
+        /**
+         * Thực hiện hành động khi click vào nút có của form hỏi bạn có muốn đóng không
+         * CreatedBy: HoaiPT(13/03/2022)
+         */
+        btnYesQuestion(){
+            var me =this;
+            me.isShowMessQuestion = false;//Đóng form question
+
+            me.btnSave(1);//Thực hiện hành động Cất 
         },
          /**
          * Thực hiện khi click nút hủy
@@ -424,8 +426,8 @@ export default {
             me.caPayment.CaPaymentDate = new Date();
             await me.getCaPaymentNoNew(); 
 
+            me.listCAPaymentDetail =[];//Làm rỗng mới
             let caPaymentDetailNew = me.objectCaPaymentDetailNew();
-
             me.listCAPaymentDetail.push(caPaymentDetailNew);
 
         },
@@ -434,7 +436,7 @@ export default {
          * CreatedBy: HoaiPT(11/03/2022)
          */
         objectCaPaymentDetailNew(){
-             let caPaymentDetailNew ={};
+            let caPaymentDetailNew ={};
             caPaymentDetailNew.Amount = 0;
             caPaymentDetailNew.CreditAccountId = "11111";
             caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";

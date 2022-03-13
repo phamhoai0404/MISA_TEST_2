@@ -86,7 +86,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// </summary>
         [NotMapSQL]
         [PropertyName("Mã nhà cung cấp")]
-        public string AccountObjectCode { get; set; }
+        public string? AccountObjectCode { get; set; }
 
         /// <summary>
         /// Tên nhà cung cấp

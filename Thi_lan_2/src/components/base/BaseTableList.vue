@@ -29,6 +29,7 @@
                     :style="field.type =='number'?'text-align:right' : '' || field.type =='date'?'text-align:center' : ''"
                 >
                     <span v-if="field.type == 'date' " >{{data[field.name] | formatDate }}</span>
+                    <span v-else-if="field.type == 'number' " >{{formatNumber(data[field.name]) }}</span>
                     <span v-else >{{data[field.name]}}</span>
                     
                 </td>
@@ -54,7 +55,7 @@
                         textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
                     }" 
                 >
-                    <span v-if="field.type=='number'" style="text-align:right !important;">{{sumFieldNumber(listData,field.name)}}</span>
+                    <span v-if="field.type=='number'" style="text-align:right !important;">{{formatNumber(sumFieldNumber(listData,field.name))}}</span>
                     <span v-else-if="index==0" style="font-family:Notosans-Semi-bold;">Tổng</span>
                     <span v-else ></span>
                 </td>
@@ -120,6 +121,16 @@ export default {
         btnCheckbox({id}){
             var me = this;
             me.$emit('btnCheckbox', {id: id});
+        },
+         /**
+         * Biến đổi về kiểu Number và format hợp lý
+         * CreadBy: HoaiPT(11/03/2022)
+         * 
+         */
+        formatNumber(value){
+            value = Number(value);
+            value = MyFunction.formatNumber(value);
+            return value;
         },
         sumFieldNumber:MyFunction.sumFieldNumber,
     },

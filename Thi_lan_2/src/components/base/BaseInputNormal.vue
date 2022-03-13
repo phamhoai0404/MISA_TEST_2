@@ -25,10 +25,8 @@
         ref="input"
         style="resize: none;"
     />
-    <div v-if="typeInput == 'date'"
-       
-    >
-        <v-date-picker :value="value" color="green" :max-date='new Date()' :masks="masks">
+    <div v-if="typeInput == 'date'">
+        <v-date-picker :value="value" color="green" :max-date='maxDate' :masks="masks">
             <template v-slot="{ inputValue, inputEvents ,togglePopover }">
                 <div class="m-form-date"  :class="[readOnly?'m-input-readOnly':'']">
                     <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly">
@@ -87,6 +85,10 @@ export default {
         styleTextArea:{//Muốn thay đổi độ cao của textarea
             default:'',
             type:String
+        },
+        maxDate:{//Nếu kiểu ngày muốn truyền vào ngày lớn nhất có thể có
+            default:null,
+            type:[Date,String]
         }
     },
     data() {

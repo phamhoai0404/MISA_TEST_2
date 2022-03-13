@@ -48,10 +48,6 @@ namespace MISA.Fresher.Web12.Core.Services
                    );
             }
 
-          
-
-           
-
             return _controlCaPaymentRepository.InsertControlCaPayment(entity);
         }
     }
