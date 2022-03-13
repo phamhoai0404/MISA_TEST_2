@@ -214,7 +214,7 @@
                         </span>
                         <span v-if="tabSelected == 2">
                             <div style="width: 100%">
-                                 <BaseTableInsert styleTable="max-height:150px !important; overflow-y: auto;"
+                                 <BaseTableInsert styleTable="max-height:145px !important; overflow-y: auto;"
                                     v-model ="listAccountObjectBankAccount"
                                     :listFields="listFieldBank"
                                     :readOnly="readOnly"             
@@ -243,10 +243,10 @@
                             <div class="tab-right">
                                 <div class="tab-group-title">
                                    <div class="tab-title-child">Địa chỉ giao hàng</div>
-                                    <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" />
+                                    <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" @clickCheckbox="btnCheckboxAddressShip" />
                                 </div>
                                 <div class="tab-content-table">
-                                    <BaseTableInsert styleTable="max-height:150px !important;  overflow-y: auto;"
+                                    <BaseTableInsert styleTable="max-height:120px !important;  overflow-y: auto;"
                                         v-model ="listAccountObjectShippingAddress"
                                         :listFields="listFieldShippingAddress"
                                         :readOnly="readOnly"
@@ -491,35 +491,82 @@ export default {
         
     },
     methods: {
+        btnCheckboxAddressShip({id}){
+            var me = this;
+            const item = document.getElementById(id);
+            if(item.checked == true){//Nếu đang chọn
+                if(me.account.Address !=null ){//Nếu địa chỉ tồn tại
+                    let tempValue = me.account.Address.trim();
+                    if(tempValue !=""){//Nếu địa chỉ khác ""
+                        if( !MyFunction.valueInArray(me.listAccountObjectShippingAddress, "AddressShipName",tempValue)){//Giá trị này chưa tồn tại trong list shipping Address
+                            let tempObject ={};
+                            tempObject.AddressShipName = tempValue;
+                            me.listAccountObjectShippingAddress.unshift(tempObject);//Thì add lên đầu tiên của list shipping address
+                        }
+                    }
+                }
+            }
+        },
+        /**
+         * Thực hiện xóa bỏ viền đỏ, title bằng "" khi mà có lỗi khi nhập dòng chữ ở ô input trong group
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeSearchTextAccountGroup(){
             this.errorAccountObjectGroup = false;
             this.titleAccountObjectGroup ="";
         },
+        /**
+         * Upload lại dữ liệu từ con bắn về cho cha
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeListAccountGroupSelected(data){
             this.listAccountGroupSelected = data;
         },
+        /**
+         * Thực hiện thay đổi xóa bỏ lỗi viền đỏ, xóa bỏ title, gán id = null
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changePayAccountName(){
             this.errorPayAccount = false;
             this.titlePayAccount ="";
             this.account.PayAccountId = null;
         },
-
+        /**
+         * Thực hiện gán giá trị mới cho Id của PayAccountId khi select item mới
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeIdPayAccount(object){
              this.account.PayAccountId = object.PayAccountId;
         },
+        /**
+         * Thực hiện xóa bỏ lỗi viền đỏ, xóa bỏ title, gán id bằng null khi mà thay  đổi giá trị input tìm kiếm trong combobox
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changePaymentTermName(){
             this.errorPaymentTerm = false;
             this.titlePaymentTerm ="";
             this.account.PaymentTermId = null;
         },
+        /**
+         * Thực hiện khi thay đổi select gán lại giá trị id mới cho paymentTerm
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeIdPaymentTerm(object){
             this.account.PaymentTermId = object.PaymentTermId;
         },
+        /**
+         * Thực hiện khi thay đổi trong dòng input của FullName thì xóa bỏ lỗi viền đỏ, xóa bỏ title lỗi, gián id bằng null
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeFullName(){
             this.errorEmployee = false;
             this.titleEmployee ="";
             this.account.EmployeeId = null;
         },
+        /**
+         * Thực hiện gián Id mới cho nhân viên được chọn
+         * CreatedBy: HoaiPT(05/03/2022) 
+         */
         changeIdEmployee(object){
             this.account.EmployeeId = object.EmployeeId;
         },

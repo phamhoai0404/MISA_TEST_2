@@ -206,6 +206,20 @@ var MyFunction = {
             sum += Number(listData[i][filed]);
         }
         return Number(sum);
+    },
+    /**
+     * Có giá trị giống hoàn toàn với giá trị ở trong array
+     * True: Giá trị có nằm trong mảng
+     * False: Giá trị không nằm trong mảng
+     * CreatedBy: HoaiPT(13/03/2022)
+     */
+    valueInArray(array, propName, value) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i][propName] == value) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 export default MyFunction
