@@ -23,9 +23,9 @@
             </div>
         </div>
         <!-- Dùng cho combobox có dữ liệu là table -->
-        <div class="m-combobox-data table-combo" v-if="isShowDataDropdown && isComboboxTable" :style="styleDataCombobox">
+        <div class="m-combobox-data table-combo" v-if="isShowDataDropdown && isComboboxTable" :style="styleDataCombobox" :class="[ showField == false? 'm-min-height-table':'']">
             <table border="1" class="m-table-combobox">
-                <thead>
+                <thead v-if="showField">
                     <tr>
                         <th v-for="(field,index) in listFields" :key="index"
                             :style="{ 
@@ -46,7 +46,10 @@
                         ]" 
                     >
                         <td v-for="(field,i) in listFields" :key="i"
-                            :style="field.type =='number'?'text-align:right' : '' || field.type =='date'?'text-align:center' : ''"
+                            :style="{ 
+                                width: field.width,
+                                textAlign: field.type =='number'? 'right':''|| field.type =='date'? 'center':''
+                            }"
                             @click="btnClickItemTable(data)"
                         >
                             <span v-if="field.type == 'date' " >{{data[field.name] | formatDate }}</span>
@@ -130,6 +133,13 @@ export default {
         searchAllField:{//Có tìm kiếm theo tất cả các trường có trong fied không
             default:true,// có tìm kiếm tất cả nếu là false thì chỉ tìm kiếm theo giá trị inputText
             type:Boolean
+        },
+        showField:{//Mặc định nếu là combobox table thì là show field 
+            default:true,
+            type:Boolean
+        },
+        isShowData:{//Có thể truyền từ ngoài vào
+            type:Boolean,
         }
     },
     data(){
@@ -149,6 +159,7 @@ export default {
             if(valueNew != null){
                 if(valueNew.trim() ==""){  //Nếu không tồn nhập dữ liệu gì  thì //bằng toàn toàn bộ dữ liệu
                     me.isShowDataDropdown = true;
+                    me.updateStatus(true);
                     me.listData = me.listDataSource;
                 }else{
                     //Đây là trường hợp tìm kiếm bình thường mà thôi không phải là combobox table
@@ -164,6 +175,7 @@ export default {
                         if(valueNew && me.listDataSource){//Nếu hai đối tượng này tồn tại
                             if(!me.existValueInArrayObject(me.listDataSource,me.inputText, valueNew)){
                                 me.isShowDataDropdown = true;//Mở data
+                                me.updateStatus(true);
                                 if(me.searchAllField == false){//Trường hợp là chỉ tìm theo field inputText
                                     me.listData = me.selectFilterObject(me.listDataSource, me.inputText, valueNew);
                                 }else{//Trường hợp duyệt theo tất cả các trường
@@ -175,6 +187,12 @@ export default {
                 }
             } 
         },
+        datas(valueNew){
+            this.listDataSource = valueNew;
+        },
+        isShowData(valueNew){
+            this.isShowDataDropdown = valueNew;
+        }
     },
     methods: {
         /**
@@ -192,6 +210,7 @@ export default {
             if(!this.readOnly){//Nếu mà không có lệnh chỉ đọc thì mới được thực hiện ở bên trong
                 this.listData = this.listDataSource;
                 this.isShowDataDropdown = !this.isShowDataDropdown;//Đóng lại hoặc mở ra
+                this.updateStatus(this.isShowDataDropdown);
             }  
         },
         /**
@@ -201,10 +220,14 @@ export default {
         btnClickItem(object){
             this.onInput(object);//Thực hiện gán lại dữ liệu và bắn ra ngoài cho cha nhận được
             this.isShowDataDropdown = false; //Đóng data combobox data
+            this.updateStatus(false);
         },
         btnClickItemTable(object){
             this.onInput(object[this.inputText]);//Thực hiện gián giá trị vào ô Input
+            
             this.isShowDataDropdown = false; //Đóng data combobox data
+            this.updateStatus(false);
+            console.log("vào đây");
             this.$emit('onChangeValueKeySearch', object);//Bắn dữ liệu ra ngoài để thay đổi id 
             
         },
@@ -214,9 +237,13 @@ export default {
          */
         hideDataDropDown(){
             this.isShowDataDropdown = false;//Thực hiện đóng dropdown
+            this.updateStatus(false);
         },
         focus: function () {
             this.$refs.input.focus()
+        },
+        updateStatus(status){
+            this.$emit('updateIsShowData', status);
         },
         comparisonValue:MyFunction.comparisonValue,//import từ file js về
         existValueInArrayObject:MyFunction.existValueInArrayObject,

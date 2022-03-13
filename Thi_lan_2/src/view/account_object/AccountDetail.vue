@@ -190,7 +190,7 @@
                                     />
                                 </div>
                                 <div class="tab-only-one">
-                                     <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
+                                    <BaseComboboxNormal label="Tài khoản công nợ phải trả" styleComboboxNormal="margin-top: 10px; width:204px" styleDataCombobox="width:360px;"
                                         v-model="account.PayAccountName"
                                         :isComboboxTable="true"
                                         :readOnly="readOnly"
@@ -225,18 +225,89 @@
                             <div class="tab-left">
                                 <div class="tab-two-row">
                                     <div class="tab-two-left" style="width:48%">
-                                        <BaseInput typeInput="input" label="Vị trí địa lý" placeholder="Việt Nam" />
+                                        <BaseComboboxNormal label="Vị trí địa lý" placeholder="Quốc gia"
+                                            v-model="account.Country" :showField ="false"
+                                            :isComboboxTable="true"
+                                            :readOnly="readOnly"
+                                            :errorCombobox="errorCountry"
+                                            :title="titleCountry"
+                                            
+
+                                            :listFields="listFieldCountry"
+                                            :datas="listCountrySource"
+
+                                            inputText="LocationName"
+                                            :propertyCompare="countryIdTemp"
+                                            keySearch="LocationId"
+
+                                            @onChangeValueKeySearch ="changeIdCountry"
+                                            @input="changeInputCountry"
+                                        />
                                     </div>
                                     <div class="tab-two-right" style="width:48%">
-                                        <BaseInput typeInput="input" placeholder="Tỉnh/Thành phố" />
+                                        <BaseComboboxNormal placeholder="Tỉnh/Thành phố"
+                                            v-model="account.ProvinceOrCity"
+                                            :isComboboxTable="true" :showField ="false"
+                                            :readOnly="readOnly"
+                                            :errorCombobox="errorProvinceOrCity"
+                                            :title="titleProvinceOrCity"
+                                            :isShowData="isShowDataProvinceOrCity"
+
+                                            :listFields="listFieldProvinceOrCity"
+                                            :datas="listProvinceOrCityTemp"
+
+                                            inputText="LocationName"
+                                            :propertyCompare="provinceOrCityIdTemp"
+                                            keySearch="LocationId"
+
+                                            @onChangeValueKeySearch ="changeIdProvinceOrCity"
+                                            @input="changeInputProvinceOrCity"
+                                            @updateIsShowData ="updateIsShowProvinceOrCity"
+                                        />
                                     </div>
                                 </div>
                                 <div class="tab-two-row">
-                                    <div class="tab-two-right" style="width:48%">
-                                        <BaseInput typeInput="input" placeholder="Quận/Huyện" />
+                                    <div class="tab-two-right" style="width:48%">   
+                                        <BaseComboboxNormal placeholder="Quận/Huyện"
+                                            v-model="account.District"
+                                            :isComboboxTable="true" :showField ="false"
+                                            :readOnly="readOnly"
+                                            :errorCombobox="errorDistrict"
+                                            :title="titleDistrict"
+                                            :isShowData="isShowDataDistrict"
+
+                                            :listFields="listFieldDistrict"
+                                            :datas="listDistrictTemp"
+
+                                            inputText="LocationName"
+                                            :propertyCompare="districtIdTemp"
+                                            keySearch="LocationId"
+
+                                            @onChangeValueKeySearch ="changeIdDistrict"
+                                            @input="changeInputDistrict"
+                                            @updateIsShowData ="updateIsShowDistrict"
+                                        />
                                     </div>
                                     <div class="tab-two-right" style="width:48%">
-                                        <BaseInput typeInput="input" placeholder="Xã/Phường" />
+                                        <BaseComboboxNormal placeholder="Xã/Phường"
+                                            v-model="account.WardOrCommune"
+                                            :isComboboxTable="true" :showField ="false"
+                                            :readOnly="readOnly"
+                                            :errorCombobox="errorWardOrCommune"
+                                            :title="titleWardOrCommune"
+                                            :isShowData ="isShowDataWardOrCommune"
+
+                                            :listFields="listFieldWardOrCommune"
+                                            :datas="listWardOrCommuneTemp"
+
+                                            inputText="LocationName"
+                                            :propertyCompare="wardOrCommuneIdTemp"
+                                            keySearch="LocationId"
+
+                                            @onChangeValueKeySearch ="changeIdWardOrCommune"
+                                            @input="changeInputWardOrCommune"
+                                            @updateIsShowData ="updateIsShowWardOrCommune"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -316,7 +387,7 @@ import BaseComboboxGroup from '@/components/base/BaseComboboxGroup.vue'
 import BaseTableInsert from '@/components/base/BaseTableInsert.vue'
 
 
-
+import * as location from '@/js/location.js'
 import * as mylib from '@/js/resourcs.js'
 import MyFunction from '@/js/function.js'
 import axios from 'axios'
@@ -350,14 +421,9 @@ export default {
             // listDataPrefixTemp:[],//Tạm thời là rỗng
             
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch  
-                EmployeeId:null,
-
-                PayAccountId:null,
-                PayAccountName:null,
-                
                 AccountObjectCode:null,
-                AccountObjectName:null
-
+                AccountObjectName:null,
+                Address:null
             },
 
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
@@ -416,7 +482,35 @@ export default {
             isShowPaymentTerm:false,
             isShowPayAccount:false,
             isShowDropDownAccountObjectGroup:false,
+
+            listCountrySource:location.resourcs.countries,
+            listProvinceOrCitySource:location.resourcs.cities,//Nguồn chính của thành phố
+            listProvinceOrCityTemp:[],//Thực sự truyền vào mỗi khi thay đổi giá trị của cha
+            listDistrictSource:location.resourcs.district,//Nguồn chính của Quận huyện
+            listDistrictTemp:[],//Thực sự truyền vào mỗi khi thay đổi giá trị của cha
+            listWardOrCommuneSource:location.resourcs.wardOrCommune,//Nguồn chính của xã phường
+            listWardOrCommuneTemp:[],//Thực sự truyền vào mỗi khi thay đổi giá trị của cha
+            listFieldProvinceOrCity: mylib.data.listFieldProvinceOrCity,//Field của thành phố
+            listFieldCountry: mylib.data.listFieldCountry,//Field của quốc gia
+            listFieldDistrict: mylib.data.listFieldDistrict,//Field của quận huyện
+            listFieldWardOrCommune: mylib.data.listFieldWardOrCommune,//Field của xã phường
             
+            countryIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+            provinceOrCityIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+            districtIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+            wardOrCommuneIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+
+            errorCountry:false,
+            titleCountry:"",
+            errorProvinceOrCity:false,
+            titleProvinceOrCity:"",
+            errorDistrict:false,
+            titleDistrict:"",
+            errorWardOrCommune:false,
+            titleWardOrCommune:"",
+            isShowDataWardOrCommune:false,
+            isShowDataDistrict:false,
+            isShowDataProvinceOrCity:false,
         }
     },
     async created(){
@@ -451,7 +545,6 @@ export default {
         //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
         this.listAccountGroupSelected = this.cutStrings(this.account.AccountObjectGroupListId);
         this.isShowDropDownAccountObjectGroup = true;
-
         this.$parent.isShowLoading = false;
     },
     
@@ -487,10 +580,109 @@ export default {
                     me.titleName = "";
                 }
             }
+        },
+        countryIdTemp(valueNew){
+            this.listProvinceOrCityTemp = this.listProvinceOrCitySource.filter(item=> item.ParentId == valueNew);
+        },
+        provinceOrCityIdTemp(valueNew){
+            this.listDistrictTemp = this.listDistrictSource.filter(item => item.ParentId == valueNew);
+        },
+        districtIdTemp(valueNew){
+            this.listWardOrCommuneTemp = this.listWardOrCommuneSource.filter(item => item.ParentId == valueNew);
+        },
+        'account.Address'(valueNew, valueOld){
+            if(document.getElementById('address-same')){
+                const item = document.getElementById('address-same');
+                if(item.checked == true){
+                if(this.listAccountObjectShippingAddress[0].AddressShipName == valueOld)
+                {
+                    this.listAccountObjectShippingAddress[0].AddressShipName = valueNew;
+                }
+            }
+            }
+            
         }
-        
     },
     methods: {
+       
+        updateIsShowWardOrCommune(status){
+            this.isShowDataWardOrCommune = status;
+        },
+        updateIsShowDistrict(status){
+            this.isShowDataDistrict = status;
+        },
+        updateIsShowProvinceOrCity(status){
+            this.isShowDataProvinceOrCity = status;
+        },
+        changeInputWardOrCommune(){
+            this.wardOrCommuneIdTemp = null;
+            this.errorWardOrCommune = false;//Nếu có viền đỏ thì bỏ
+            this.titleWardOrCommune = "";//Và title cũng bỏ
+        },
+        changeIdWardOrCommune(object){
+            this.wardOrCommuneIdTemp = object.LocationId;
+        },
+        changeInputDistrict(){
+            this.districtIdTemp = null;
+            this.errorDistrict = false;//Nếu có viền đỏ thì bỏ
+            this.titleDistrict = "";//Và title cũng bỏ
+            this.listWardOrCommuneTemp =[];
+
+            this.account.WardOrCommune ="";
+            this.isShowDataWardOrCommune = false;
+
+            this.wardOrCommuneIdTemp = null;
+        },
+        changeIdDistrict(object){
+            this.districtIdTemp = object.LocationId;
+        },
+        changeInputProvinceOrCity(){
+            this.provinceOrCityIdTemp = null;
+            this.errorProvinceOrCity = false;//Nếu có viền đỏ thì bỏ
+            this.titleProvinceOrCity = "";//Và title cũng bỏ
+            this.listDistrictTemp =[];
+            this.listWardOrCommuneTemp =[];
+
+            this.account.District="";
+            this.isShowDataDistrict = false;
+            this.account.WardOrCommune ="";
+            this.isShowDataWardOrCommune = false;
+            
+            this.districtIdTemp = null;
+            this.wardOrCommuneIdTemp = null;
+            
+        },
+        changeIdProvinceOrCity(object){
+            this.provinceOrCityIdTemp = object.LocationId;
+        },
+        changeInputCountry(a, b){
+            console.log(a,b);
+            this.countryIdTemp = null;
+            this.errorCountry = false;//Nếu có viền đỏ thì bỏ viền đỏ
+            this.titleCountry = "";//Có title  thì bỏ title
+
+            this.listProvinceOrCityTemp =[];
+            this.listDistrictTemp =[];
+            this.listWardOrCommuneTemp =[];
+            
+            this.account.ProvinceOrCity="";
+            this.isShowDataProvinceOrCity = false;
+            this.account.District="";
+            this.isShowDataDistrict = false;
+            this.account.WardOrCommune ="";
+            this.isShowDataWardOrCommune = false;
+            
+            this.provinceOrCityIdTemp = null;
+            this.districtIdTemp = null;
+            this.wardOrCommuneIdTemp = null;
+        },
+        changeIdCountry(object){
+            this.countryIdTemp = object.LocationId;
+        },
+        /**
+         * Thực hiện khi click vào checkbox giống địa chỉ của nhà cung cấp
+         * CreatedBy: HoaiPT(13/03/2022)  
+         */
         btnCheckboxAddressShip({id}){
             var me = this;
             const item = document.getElementById(id);

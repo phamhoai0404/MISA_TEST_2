@@ -58,7 +58,9 @@ var MyFunction = {
     existValueInArray(arrayList, value) {
         if (value != null) { //Nếu giá trị tồn tại
             value = value.toLowerCase(); //Thực hiện chuyển value về toàn bộ là chữ thường
-            let arrayListTemp = arrayList.filter(itemValue => itemValue.toLowerCase() == value);
+            let arrayListTemp = arrayList.filter(
+                itemValue => itemValue != null && itemValue.toLowerCase() == value
+            );
             if (arrayListTemp.length > 0)
                 return true;
         }
@@ -79,7 +81,9 @@ var MyFunction = {
     existValueInArrayObject(arrayList, nameProperty, value) {
         if (value != null) { //Nếu giá trị tồn tại
             value = value.toLowerCase(); //Thực hiện chuyển value về toàn bộ là chữ thường
-            let arrayListTemp = arrayList.filter(itemValue => itemValue[nameProperty].toLowerCase() == value);
+            let arrayListTemp = arrayList.filter(
+                itemValue => (itemValue[nameProperty] != null) && (itemValue[nameProperty].toLowerCase() == value)
+            );
             if (arrayListTemp.length > 0)
                 return true;
         }

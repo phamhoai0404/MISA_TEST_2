@@ -24,7 +24,13 @@ var resourcs = {
 
         noActionEvery: "Không thể thực hiện vì bạn đang xem!",
 
-        questionRemoveAll: "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?"
+        questionRemoveAll: "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
+
+        notCountry: "Dữ liệu <Quốc gia> không có trong danh mục!",
+        notProvinceOrCity: "Dữ liệu <Tỉnh/Thành phố> không có trong danh mục!",
+        notDistrict: "Dữ liệu <Quận/Huyện> không có trong danh mục!",
+        notWardOrCommune: "Dữ liệu <Xã/Phường> không có trong danh mục!",
+
     }
 }
 var misaEnum = {
@@ -327,7 +333,28 @@ var data = {
             title: "Điện thoại di động",
             width: "20%"
         },
-    ]
+    ],
+
+    listFieldProvinceOrCity: [{
+        name: "LocationName",
+        text: "Tên thành phố", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
+        width: "80%"
+    }],
+    listFieldCountry: [{
+        name: "LocationName",
+        text: "Tên đất nước", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
+        width: "95%"
+    }],
+    listFieldDistrict: [{
+        name: "LocationName",
+        text: "Tên quận huyện", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
+        width: "100%"
+    }],
+    listFieldWardOrCommune: [{
+        name: "LocationName",
+        text: "Tên xã phường", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
+        width: "100%"
+    }],
 
 }
 var dataSource = {
