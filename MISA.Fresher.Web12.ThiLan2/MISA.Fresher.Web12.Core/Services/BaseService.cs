@@ -88,14 +88,14 @@ namespace MISA.Fresher.Web12.Core.Services
 
         #endregion
 
-        #region Methods Private
+        #region Methods 
         /// <summary>
         /// Thực hiện kiểm tra dữ liệu không được để trống 
         /// </summary>
         /// <param name="entity">Cả đối tượng truyền vào</param>
         /// <exception cref="MISAValidateException"></exception>
         /// CreatedBy: HoaiPT(07/02/2022)
-        private void ValidateNotEmpty(MISAEntity entity)
+        public void ValidateNotEmpty(MISAEntity entity)
         {
             //Lấy ra tất cả các porperty được đánh dấu là NotEmpty không được để trống 
             var propNotEmpties = entity.GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(NotEmpty)));

@@ -2215,8 +2215,8 @@
             <Increment xmlns:q10="http://www.w3.org/2001/XMLSchema" p6:type="q10:float">1</Increment>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>9</SeedValue>
-            <MinValue>0</MinValue>
-            <MaxValue>10000</MaxValue>
+            <MinValue>1000000</MinValue>
+            <MaxValue>9999999</MaxValue>
             <UseDefault>false</UseDefault>
             <DefaultValue>NULL</DefaultValue>
           </GeneratorOptions>

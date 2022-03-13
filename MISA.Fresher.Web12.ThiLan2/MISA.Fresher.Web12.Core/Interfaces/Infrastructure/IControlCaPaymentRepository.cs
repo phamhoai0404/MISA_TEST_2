@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.Fresher.Web12.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,13 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         /// <returns></returns>
         /// CreatedBy: HoaiPT(11/03/2022)
         public int DeleteByCaPaymentId(Guid id);
+
+        /// <summary>
+        /// Thực hiện thêm vào data base caPayment và list caPaymentDetail
+        /// </summary>
+        /// <param name="entity">Cả entity Control</param>
+        /// <returns></returns>
+        /// CreatedBy: HoaiPT(13/03/2022)
+        public int InsertControlCaPayment(ControlCaPayment entity);
     }
 }

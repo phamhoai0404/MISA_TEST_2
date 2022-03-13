@@ -586,22 +586,22 @@ export default {
                 switch (me.editMode) {
                     case mylib.misaEnum.editMode.Add: //Thực hiện thêm mới
                         await axios.post('https://localhost:44338/api/v1/AccountObjects', me.account)
-                            .then(function () {
-                                me.checkAction(value);
-                            })
-                            .catch(function (res) {
-                                console.log(res);
-                                me.openWarning();
+                            .then(function (res) {
+                                if( !res.data.errorCode){ //Không có lỗi thì sẽ vào đây
+                                    me.checkAction(value);
+                                }else{//Có lỗi thì sẽ vào đây
+                                    me.openWarning(res);
+                                }  
                             })
                         break;
                     case mylib.misaEnum.editMode.Edit: //Thực hiện sửa
                         await axios.put(`https://localhost:44338/api/v1/AccountObjects/${me.account.AccountObjectId}`, me.account)
-                            .then(function () {
-                                me.checkAction(value);
-                            })
-                            .catch(function (res) {
-                                console.log(res);
-                                me.openWarning();
+                            .then(function (res) {
+                                if( !res.data.errorCode){ //Không có lỗi thì sẽ vào đây
+                                    me.checkAction(value);
+                                }else{//Có lỗi thì sẽ vào đây
+                                    me.openWarning(res);
+                                }  
                             })
                         break;
                     case mylib.misaEnum.editMode.View: //Thực hiện xem
@@ -727,12 +727,31 @@ export default {
          * Mở form cảnh báo khi có lỗi
          *CreatedBy: HoaiPT(03/03/2022)
          */
-        openWarning(){
+        openWarning(res){
+            console.log(res);
             var me = this;
-            me.titleMessWarning =  `Mã  nhân viên <${me.account.AccountObjectCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`;
+            let tempTitleMessWarning ='';
+            switch (res.data.errorCode) {
+                case mylib.misaEnum.errorCode.Duplicate:
+                    tempTitleMessWarning = `Mã  nhà cung cấp <${me.account.AccountObjectCode}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`;
+                    me.errorCode = true;//Thể hiện viền đỏ của ô Code,
+                    me.titleCode = "Mã đã tồn tại!";
+                    break;
+                case mylib.misaEnum.errorCode.NotFormat:
+                    tempTitleMessWarning = `Mã  nhà cung cấp <${me.account.AccountObjectCode}> không đúng định dạng, vui lòng kiểm tra lại.`;
+                    me.errorCode = true;//Thể hiện viền đỏ của ô Code,
+                    me.titleCode = "Mã không đúng định dạng!";
+                    break;
+                case mylib.misaEnum.errorCode.Empty:
+                    tempTitleMessWarning ='Trường dữ liệu không được để trống!';
+                    break;
+                default:
+                    tempTitleMessWarning ="Đã có lỗi xảy ra!";
+                    break;
+            }
+            me.titleMessWarning = tempTitleMessWarning;
             me.isShowMessWarning = true;
-            me.errorCode = true;//Thể hiện viền đỏ của ô Code,
-            me.titleCode = "Mã đã tồn tại!";
+           
         },
         /**
          * Thực hiện kiểm tra xem là hành động (Cất) | (Cất và Thêm) để thực hiện phù hợp

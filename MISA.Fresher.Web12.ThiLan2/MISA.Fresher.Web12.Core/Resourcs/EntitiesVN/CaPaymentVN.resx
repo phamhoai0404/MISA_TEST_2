@@ -132,6 +132,9 @@
   <data name="PostedDate" xml:space="preserve">
     <value>Ngày hạch toán</value>
   </data>
+  <data name="RegexCaPaymentCode" xml:space="preserve">
+    <value>^PC[0-9]{5}$</value>
+  </data>
   <data name="Resion" xml:space="preserve">
     <value>Diễn giải</value>
   </data>

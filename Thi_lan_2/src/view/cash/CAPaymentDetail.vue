@@ -351,7 +351,10 @@ export default {
     },
     methods: {
         btnRemoveAllCaPaymentDetail(){
-            alert("vào xóa tất cả");
+            this.listCAPaymentDetail = [];
+            let objectNew = this.objectCaPaymentDetailNew();
+            this.listCAPaymentDetail.push(objectNew);
+
         },
         addItemCaPaymentDetail(){
             let objectNew = {};

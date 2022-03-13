@@ -48,5 +48,14 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// CreatedBy: HoaiPT(17/02/2022)
         /// UpdateBy: HoaiPT(01/03/2022)
         object GetPagingService(string searchText, int pageSize, int pageIndex);
+
+
+        /// <summary>
+        /// Thực hiện kiểm tra dữ liệu không được để trống 
+        /// </summary>
+        /// <param name="entity">Cả đối tượng truyền vào</param>
+        /// <exception cref="MISAValidateException"></exception>
+        /// CreatedBy: HoaiPT(07/02/2022)
+        public void ValidateNotEmpty(MISAEnity entity);
     }
 }

@@ -26,5 +26,11 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// <returns></returns>
         /// Created: HoaiPT(01/03/2022)
         string getCodeNewService();
+
+        /// <summary>
+        /// Thực hiện check mã lỗi
+        /// </summary>
+        /// <param name="code"></param>
+        void ValidateCode(string code);
     }
 }

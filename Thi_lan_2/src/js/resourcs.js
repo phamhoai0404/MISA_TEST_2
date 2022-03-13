@@ -58,6 +58,13 @@ var misaEnum = {
         NoAction: 0, //Không xóa
         One: 1, //Xóa một 
         Multi: 2, //Xóa nhiều
+    },
+    errorCode: {
+        Duplicate: "1",
+        Date: "4",
+        Empty: "3",
+        ExistId: "2",
+        NotFormat: "5",
     }
 }
 var data = {

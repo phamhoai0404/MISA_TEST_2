@@ -32,7 +32,6 @@ namespace MISA.Fresher.Web12.Core.Entities
         // <summary>
         /// Id của nhà cung cấp
         /// </summary>
-        [Primarykey]
         [PropertyName("Id của nhà cung cấp")]
         public Guid? AccountObjectId { get; set; }
 
@@ -55,9 +54,9 @@ namespace MISA.Fresher.Web12.Core.Entities
         public string? Resion { get; set; }
 
         // <summary>
-        /// Mã nhà cung cấp
+        /// Mã nhân vi
         /// </summary>
-        [Primarykey]
+
         [PropertyName("Id của nhân viên")]
         public Guid? EmployeeId { get; set; }
 
@@ -114,7 +113,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Ngày cập nhật
         /// </summary>
         [PropertyName("Ngày cập nhật")]
-        public string? ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         /// <summary>
         /// Người cập nhật

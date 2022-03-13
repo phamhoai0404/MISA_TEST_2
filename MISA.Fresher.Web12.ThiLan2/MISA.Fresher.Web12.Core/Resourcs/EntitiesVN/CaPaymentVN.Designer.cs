@@ -106,6 +106,15 @@ namespace MISA.Fresher.Web12.Core.Resourcs.EntitiesVN {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ^PC[0-9]{5}$.
+        /// </summary>
+        public static string RegexCaPaymentCode {
+            get {
+                return ResourceManager.GetString("RegexCaPaymentCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diễn giải.
         /// </summary>
         public static string Resion {

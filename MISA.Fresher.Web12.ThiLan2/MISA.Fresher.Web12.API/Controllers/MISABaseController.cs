@@ -172,7 +172,7 @@ namespace MISA.Fresher.Web12.API.Controllers
                     errorCode = ex.Source,
                     data = enity,
                 };
-                return StatusCode(400,respo);
+                return StatusCode(200,respo);
             }
             else
             {

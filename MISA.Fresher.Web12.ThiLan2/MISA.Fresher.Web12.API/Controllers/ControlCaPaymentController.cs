@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MISA.Fresher.Web12.Core.Entities;
 using MISA.Fresher.Web12.Core.Exceptions;
 using MISA.Fresher.Web12.Core.Interfaces.Infrastructure;
 using MISA.Fresher.Web12.Core.Interfaces.Services;
@@ -65,6 +66,27 @@ namespace MISA.Fresher.Web12.API.Controllers
 
         }
 
+        /// <summary>
+        /// Thực hiện thêm mới của control
+        /// </summary>
+        /// <param name="enity"></param>
+        /// <returns></returns>
+        /// Created: HoaiPT(07/02/2022)
+        [HttpPost]
+        public IActionResult Post(ControlCaPayment enity)
+        {
+            try
+            {
+                //Validate dữ liệu
+                var res = _controlCaPaymentService.InsertControlService(enity);
+                return StatusCode(201, res);
+            }
+            catch (Exception ex)
+            {
+                return this.AllException(ex, null);
+            }
+        }
+
         #region Methods Exception
 
         /// <summary>
@@ -81,7 +103,9 @@ namespace MISA.Fresher.Web12.API.Controllers
                 {
                     devMsg = ex.Message,
                     userMsg = ex.Message,
+                    errorCode = ex.Source,
                     data = enity,
+                    
                 };
                 return StatusCode(400, respo);
             }

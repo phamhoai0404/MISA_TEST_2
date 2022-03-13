@@ -219,6 +219,7 @@ namespace MISA.Fresher.Web12.API.Controllers
                 {
                     devMsg = ex.Message,
                     userMsg = ex.Message,
+                    errorCode = ex.Source,
                     data = enity,
                 };
                 return StatusCode(400, respo);
