@@ -74,9 +74,10 @@
 
 .ac-list-bottom .ac-list-function .function-left {
     display: flex;
-    justify-content: space-between;
-    min-width: 300px;
     align-items: center;
+    flex-grow: 1!important;
+    /* flex-wrap: wrap; */
+    position: relative;
 }
 
 .ac-list-bottom .ac-list-function .function-left .icon-check {
@@ -93,4 +94,24 @@
 
 .ac-list-bottom .ac-list-table {
     padding: 0 16px;
+}
+
+
+/* css filter */
+
+.group-filter {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.group-filter .item-filter {
+    display: flex;
+}
+
+.dropdown-filter {
+    position: absolute;
+    background-color: red;
+    margin-top: 100px;
+    z-index: 9;
+    width: 300px;
 }

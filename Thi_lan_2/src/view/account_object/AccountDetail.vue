@@ -545,6 +545,10 @@ export default {
         //Thực hiện cắt chuỗi trong accountgrouplist để lấy ra gán vào mảng list để dễ thực hiện làm việc
         this.listAccountGroupSelected = this.cutStrings(this.account.AccountObjectGroupListId);
         this.isShowDropDownAccountObjectGroup = true;
+
+        //Thực hiện lấy dữ liệu cho địa chỉ phù hợp
+        await this.getDataAddress();
+
         this.$parent.isShowLoading = false;
     },
     
@@ -591,14 +595,17 @@ export default {
             this.listWardOrCommuneTemp = this.listWardOrCommuneSource.filter(item => item.ParentId == valueNew);
         },
         'account.Address'(valueNew, valueOld){
+            // console.log("vào đây 1");
             if(document.getElementById('address-same')){
                 const item = document.getElementById('address-same');
                 if(item.checked == true){
-                if(this.listAccountObjectShippingAddress[0].AddressShipName == valueOld)
-                {
-                    this.listAccountObjectShippingAddress[0].AddressShipName = valueNew;
+                    // console.log("vào đây 2");
+                    if(this.listAccountObjectShippingAddress[0].AddressShipName == valueOld)
+                    {
+                        // console.log("vào đây 3");
+                        this.listAccountObjectShippingAddress[0].AddressShipName = valueNew;
+                    }
                 }
-            }
             }
             
         }
@@ -655,8 +662,7 @@ export default {
         changeIdProvinceOrCity(object){
             this.provinceOrCityIdTemp = object.LocationId;
         },
-        changeInputCountry(a, b){
-            console.log(a,b);
+        changeInputCountry(){
             this.countryIdTemp = null;
             this.errorCountry = false;//Nếu có viền đỏ thì bỏ viền đỏ
             this.titleCountry = "";//Có title  thì bỏ title
@@ -1047,36 +1053,6 @@ export default {
             }
         },
         /**
-         * Thực hiện khi click vào nút đóng nhỏ của mỗi item AccountObjectGroup ở trong ô
-         * Đó là thực hiện xóa nó đi khỏi mảng
-         * CreatedBy: HoaiPT(02/03/2022)
-         */
-        // removeOneAccountObjectGroup({index}){
-        //     this.listAccountGroupSelected.splice(index, 1);
-        // },
-        // /**
-        //  * Thực hiện khi click vào nút dropdow và dữ liệu bằng đúng dữ liệu tất cả 
-        //  * CreatedBy: HoaiPT(02/03/2022)
-        //  */
-        // btnClickDropdownAccountObjectGroup(){
-        //     this.listAccountObjectGroupTemp = this.listAccountObjectGroup;
-        //     this.isShowDropDownAccountObjectGroup = !this.isShowDropDownAccountObjectGroup;
-        // },
-        /**
-         * Thực hiện khi click item bất kì trong dữ liệu data có thể thực hiện xóa hoặc là add thêm vào
-         * CreatedBy: HoaiPT(02/03/2022)
-         */
-        // btnSelectItemAccountObjectGroup({object}){
-        //     console.log('object:', object);
-        //     var me = this;
-        //     if(me.existValueInArray2(me.listAccountGroupSelected,object.AccountObjectGroupCode)){
-        //         me.listAccountGroupSelected = me.removeValueInArray(me.listAccountGroupSelected,object.AccountObjectGroupCode);
-        //     }else{
-        //         me.listAccountGroupSelected.push(object.AccountObjectGroupCode);
-        //     }
-        // },
-        
-        /**
          * Thực hiện khi click vào nút nhân ở bên góc phải trên cùng màn hình
          * CreatedBy: HoaiPT(02/03/2021)
          */
@@ -1159,6 +1135,65 @@ export default {
             }
         },
         /**
+         * Thực hiện lấy giá trị địa chỉ phù hợp từ backend lên và gán
+         * CreadBy: HoaiPT(17/03/2022)
+         */
+        getDataAddress(){
+            var me = this;
+
+            //Lấy country
+            if(me.account.Country != null){
+                for(let i = 0 ; i< me.listCountrySource.length; i++){
+                    if(me.account.Country == me.listCountrySource[i].LocationName){
+                        me.countryIdTemp = me.listCountrySource[i].LocationId;//Lấy giá trị Id Country css nếu mà nó có
+                        break;
+                    }
+                }
+            }else{
+                me.countryIdTemp = null;//Nếu nó không có giá trị thì nó bằng null,
+            }
+
+            //Lấy ProvinceOrCity
+            if(me.account.ProvinceOrCity != null){
+                for(let i = 0 ; i< me.listProvinceOrCitySource.length; i++){
+                    if(me.account.ProvinceOrCity == me.listProvinceOrCitySource[i].LocationName){
+                        me.provinceOrCityIdTemp = me.listProvinceOrCitySource[i].LocationId;//Lấy giá trị Id Country css nếu mà nó có
+                        break;
+                    }
+                }
+            }else{
+                me.provinceOrCityIdTemp = null;//Nếu nó không có giá trị thì nó bằng null,
+            }
+
+            //Lấy District
+            if(me.account.District != null){
+                for(let i = 0 ; i< me.listDistrictSource.length; i++){
+                    if(me.account.District == me.listDistrictSource[i].LocationName){
+                        me.districtIdTemp = me.listDistrictSource[i].LocationId;//Lấy giá trị Id Country css nếu mà nó có
+                        break;
+                    }
+                }
+            }else{
+                me.districtIdTemp = null;//Nếu nó không có giá trị thì nó bằng null,
+            }
+
+            //Lấy WardOrCommune
+             if(me.account.WardOrCommune != null){
+                for(let i = 0 ; i< me.listWardOrCommuneSource.length; i++){
+                    if(me.account.WardOrCommune == me.listWardOrCommuneSource[i].LocationName){
+                        me.wardOrCommuneIdTemp = me.listWardOrCommuneSource[i].LocationId;//Lấy giá trị Id Country css nếu mà nó có
+                        break;
+                    }
+                }
+            }else{
+                me.wardOrCommuneIdTemp = null;//Nếu nó không có giá trị thì nó bằng null,
+            }
+
+
+        },
+        
+        
+        /**
          * Thực hiện lấy những cái này từ file js
          * CreatedBy:HoaiPT(02/03/2022)
          */
@@ -1169,6 +1204,8 @@ export default {
         removeValueInArray:MyFunction.removeValueInArray,
         formatJsonToArray:MyFunction.formatJsonToArray,
         formatArrayToJson: MyFunction.formatArrayToJson,
+    
+    
     }
 }
 </script>

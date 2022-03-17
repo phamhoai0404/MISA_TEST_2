@@ -227,7 +227,6 @@ export default {
             
             this.isShowDataDropdown = false; //Đóng data combobox data
             this.updateStatus(false);
-            console.log("vào đây");
             this.$emit('onChangeValueKeySearch', object);//Bắn dữ liệu ra ngoài để thay đổi id 
             
         },

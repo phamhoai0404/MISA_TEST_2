@@ -1,5 +1,5 @@
 <template>
-<div>
+<div :style="styleButton">
     <div class="m-button-group" 
         :class="{'m-btn-function': hasBackground}" 
         :style="{ width: width, backgroundColor: backgroundColor }" 
@@ -29,6 +29,10 @@ export default {
             default:false,
             type:Boolean,
         },
+        styleButton:{
+            default:'',
+            type:String,
+        }
     },
     methods: {
         /**

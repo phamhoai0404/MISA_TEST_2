@@ -1740,7 +1740,7 @@
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
             <EmptyStringProportion>10</EmptyStringProportion>
-            <AllowNulls>true</AllowNulls>
+            <AllowNulls>false</AllowNulls>
             <NullProportion>10</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>1</SeedValue>
@@ -1798,14 +1798,14 @@
           <DataType>VARCHAR</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
-            <EmptyStringProportion>10</EmptyStringProportion>
+            <EmptyStringProportion>0</EmptyStringProportion>
             <AllowNulls>true</AllowNulls>
-            <NullProportion>10</NullProportion>
+            <NullProportion>100</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>1</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>($"VNTinh.txt")</Expression>
+            <Expression>()</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
           <GeneratorName>DE First Name (any gender)</GeneratorName>

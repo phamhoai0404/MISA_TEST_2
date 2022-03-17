@@ -21,8 +21,8 @@
                     <div class="icon-check">
                         <BaseButtonIcon iconClass="btn-arrow-check-all" />
                     </div>
-                    <BaseButtonFunction label="Thực hiện hàng loạt" />
-                    <BaseButtonFunction label="Lọc" />
+                    <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important "/>
+                    <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;'/>
                 </div>
                 <div class="function-right">
                     <BaseInput typeInput="input" :hasIcon="true" placeholder="Nhập từ khóa tìm kiếm" v-model="keywordSearch" />
