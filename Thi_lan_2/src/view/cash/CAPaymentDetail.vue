@@ -715,7 +715,11 @@ export default {
         async resetFormDetail(){
             var me = this;
     
-            me.caPayment = {};
+            me.caPayment  = {//Phải viết rõ ra như này thì nó mới ăn binding  nếu không nó binding rất chậm
+                CaPaymentNo: null,
+                CaPaymentDate:null,
+                PostedDate:null,
+            };
             me.caPayment.CaPaymentNo = '';//Không biết sao cái này bị bind delay
             me.caPayment.Resion = "Chi tiền cho";
             me.caPayment.PostedDate = new Date();
