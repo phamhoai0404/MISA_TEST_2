@@ -5,7 +5,7 @@
             <BaseButtonIcon iconClass="btn-clock" />
             <div class="title-top-header-left">Phiếu chi {{caPayment.CaPaymentNo}}</div>
             <div style="padding-left:24px;">
-                <BaseComboboxNormal v-model="titlePopupDefault" :datas="[]" styleComboboxNormal="width:350px;" :readOnly="readOnly" />
+                <BaseComboboxNormal v-model="titlePopupDefault" :datas="[]" styleComboboxNormal="width:350px;" :readOnly="readOnly"  ref="titlePopupDefault"/>
             </div>
         </div>
         <div class="top-header-right">
@@ -34,6 +34,8 @@
 
                                 v-model="caPayment.AccountObjectName"
                                 :isComboboxTable="true"
+                                :errorCombobox="errorAccountObject"
+                                :title="titleAccountObject"
                                 :readOnly="readOnly"
 
                                 :listFields="lisFieldAccountObject"
@@ -88,7 +90,14 @@
                         <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="caPayment.CaPaymentDate" :readOnly="readOnly" />
                     </div>
                     <div class="item-left-two" style="padding-bottom: 0px;">
-                        <BaseInput typeInput="input" label="Số phiếu chi" v-model.lazy="caPayment.CaPaymentNo" :readOnly="readOnly" />
+                        <BaseInput typeInput="input" label="Số phiếu chi" 
+                            v-model="caPayment.CaPaymentNo" 
+                            :readOnly="readOnly"
+                            :errorInput="errorNo"
+                            :title="titleNo"
+
+                            @input="changeInputCaPaymentNo"
+                        />
                     </div>
                 </div>
             </div>
@@ -145,7 +154,18 @@
     @btnYes="btnYesQuestion" 
     @btnNo="btnCloseForm"
 />
+
+<BaseMess  v-if="isShowMessWarning"
+    typeMessage="warning" 
+    :titleForm="titleMessWarning"
+    @btnYes="isShowMessWarning = false"
+    
+/>
+
+
 </div>
+
+
 </template>
 
 <script>
@@ -188,7 +208,6 @@ export default {
         
     },
     watch:{
-        
     },
     data() {
         return {
@@ -200,7 +219,8 @@ export default {
             listAccountObject:[],//Dùng để lưu trữ listAccountObject
             readOnly:false,//Trạng thái ban đầu của chỉ xem hay là gì
 
-            caPayment:{}, //Dùng để lưu trữ caPayment
+            caPayment:{
+            }, //Dùng để lưu trữ caPayment
               
             listCAPaymentDetail:new Array(),//Dùng để lưu trữ listCaPaymentDetail,
             listFieldCAPaymentDetail: [],//Lưu trữ list detail
@@ -210,6 +230,15 @@ export default {
             
             isShowMessQuestion:false,//Trạng thái đóng mở của form question
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
+
+            isShowMessWarning:false,
+            titleMessWarning:"",
+
+            errorNo:false,//Viền đỏ hay không của CaPaymentNo
+            titleNo:"",//Title của input CaPaymentNo,
+
+            titleAccountObject:"",//Title của combobox Đối tượng
+            errorAccountObject:false,//Viền đỏ hay không AccountObject
         }
     },
     async created(){
@@ -296,18 +325,41 @@ export default {
         ]
         me.$parent.isShowLoading = false;
         me.isShowDetail = true;
-        if(me.editMode != mylib.misaEnum.editMode.View){//CÁI NÀY CẦN ĐI HỎI CÁC ANH
-            console.log(" đó là ", me.$refs)//Tập trung vào ô mã đầu tiên
-            console.log("đó là 2", me.$refs.AccountObject);
+        if(me.editMode != mylib.misaEnum.editMode.View){
+            me.$refs.titlePopupDefault.focus();
         } 
     },
     methods: {
+        /**
+         * Thực hiện khi thay đổi giá trị của ô input CaPaymentNo
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputCaPaymentNo(valueNew){
+            var me = this;
+            if(valueNew !=null){
+                if(valueNew.trim()==""){//Nếu mà nó để trống thì báo lỗi
+                    me.errorNo = true;
+                    me.titleNo = mylib.resourcs["VI"].notNullNo;
+                }else{//Còn nếu mà không trống thì không báo lỗi gì cả
+                    me.errorNo = false;
+                    me.titleNo = "";
+                }
+            }  
+        },
+        /**
+         * Thực hiện khi click vào nút Xác nhận xóa tất cả Detail
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         btnRemoveAllCaPaymentDetail(){
             this.listCAPaymentDetail = [];
             let objectNew = this.objectCaPaymentDetailNew();
             this.listCAPaymentDetail.push(objectNew);
 
         },
+        /**
+         * Thực hiện khi click vào nút thêm dòng ở Detail
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         addItemCaPaymentDetail(){
             let objectNew = {};
             if(this.listCAPaymentDetail.length > 0 ){//Nếu nó có đối tượng thì sẽ dữ liệu sẽ bằng đối tượng cuối cùng
@@ -385,6 +437,34 @@ export default {
                     break;
             }
         },
+        /**
+         * Thực hiện kiểm tra xem mã lỗi là gì để trả về lỗi tương ứng
+         * CreadBy: HoaiPT(17/03/2022)
+         */
+        openWarning(res){
+            var me = this;
+            let tempTitleMessWarning ='';
+            switch (res.data.errorCode) {
+                case mylib.misaEnum.errorCode.Duplicate:
+                    me.errorNo = true;
+                    me.titleNo = `Số phiếu chi <${me.caPayment.CaPaymentNo}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`;
+                    tempTitleMessWarning = `Số phiếu chi <${me.caPayment.CaPaymentNo}> đã tồn tại trong hệ thống, vui lòng kiểm tra lại.`;
+                    break;
+                case mylib.misaEnum.errorCode.NotFormat:
+                    me.errorNo = true;
+                    me.titleNo = `Số phiếu chi <${me.caPayment.CaPaymentNo}> không đúng định dạng, vui lòng kiểm tra lại.`;
+                    tempTitleMessWarning = `Số phiếu chi <${me.caPayment.CaPaymentNo}> không đúng định dạng, vui lòng kiểm tra lại.`;
+                    break;
+                case mylib.misaEnum.errorCode.Empty:
+                    tempTitleMessWarning ='Trường dữ liệu không được để trống!';
+                    break;
+                default:
+                    tempTitleMessWarning ="Đã có lỗi xảy ra!";
+                    break;
+            }
+            me.titleMessWarning = tempTitleMessWarning;
+            me.isShowMessWarning = true;
+        },
          /**
          * Thực hiện khi click dấu đóng
          * CreatedBy: HoaiPT(11/03/2022)
@@ -441,9 +521,7 @@ export default {
             caPaymentDetailNew.CreditAccountId = "11111";
             caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";
             return caPaymentDetailNew;
-        },
-           
-
+        },  
         /**
          * Thực hiện lấy dữ liệu khi xem
          * CreatedBy: HoaiPT(11/03/2022)
@@ -454,7 +532,6 @@ export default {
                 me.$parent.isShowLoading = true; //Thực hiện mở Loading
                 await axios.get(`https://localhost:44338/api/v1/ControlCaPayment/${me.idCaPayment}`)
                     .then(function (res) {
-                        console.log(res);
                         me.caPayment = res.data.Master;
                         me.listCAPaymentDetail = res.data.ListDetail;
                     })
@@ -474,9 +551,7 @@ export default {
                 var me = this;
                 await axios.get(`https://localhost:44338/api/v1/CaPayments/CodeNew`)
                     .then(function (res) {
-                        // console.log(res);
                         me.caPayment.CaPaymentNo = res.data;
-                        console.log( me.caPayment.CaPaymentNo);
                     })
                     .catch(function (res) {
                         console.log(res);

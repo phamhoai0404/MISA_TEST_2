@@ -611,24 +611,47 @@ export default {
         }
     },
     methods: {
-       
+        /**
+         * Thực hiện cập nhật tình trạng dropdown data vào WardOrCommune là đóng hay mở
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         updateIsShowWardOrCommune(status){
             this.isShowDataWardOrCommune = status;
         },
+        /**
+         * Thực hiện cập nhật tình trạng dropdown data vào District là đóng hay mở
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         updateIsShowDistrict(status){
             this.isShowDataDistrict = status;
         },
+        /**
+         * Thực hiện cập nhật tình trạng dropdown data vào ProvinceOrCity là đóng hay mở 
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         updateIsShowProvinceOrCity(status){
             this.isShowDataProvinceOrCity = status;
         },
+        /**
+         * Thực hiện khi thay đổi giá trị input WardOrCommune
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeInputWardOrCommune(){
             this.wardOrCommuneIdTemp = null;
             this.errorWardOrCommune = false;//Nếu có viền đỏ thì bỏ
             this.titleWardOrCommune = "";//Và title cũng bỏ
         },
+        /**
+         * Thực hiện thay đổi giá trị Id khi select WardOrCommune
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeIdWardOrCommune(object){
             this.wardOrCommuneIdTemp = object.LocationId;
         },
+        /**
+         * Thực hiện khi thay đổi giá trị input District
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeInputDistrict(){
             this.districtIdTemp = null;
             this.errorDistrict = false;//Nếu có viền đỏ thì bỏ
@@ -640,9 +663,17 @@ export default {
 
             this.wardOrCommuneIdTemp = null;
         },
+        /**
+         * Thực hiện thay đổi giá trị Id khi select District
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeIdDistrict(object){
             this.districtIdTemp = object.LocationId;
         },
+        /**
+         * Thực hiện khi thay đổi giá trị input ProvinceOrCity
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeInputProvinceOrCity(){
             this.provinceOrCityIdTemp = null;
             this.errorProvinceOrCity = false;//Nếu có viền đỏ thì bỏ
@@ -659,9 +690,17 @@ export default {
             this.wardOrCommuneIdTemp = null;
             
         },
+        /**
+         * Thực hiện thay đổi giá trị Id khi select ProvinceOrCity
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeIdProvinceOrCity(object){
             this.provinceOrCityIdTemp = object.LocationId;
         },
+        /**
+         * Thực hiện khi thay đổi giá trị input Country
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeInputCountry(){
             this.countryIdTemp = null;
             this.errorCountry = false;//Nếu có viền đỏ thì bỏ viền đỏ
@@ -682,6 +721,10 @@ export default {
             this.districtIdTemp = null;
             this.wardOrCommuneIdTemp = null;
         },
+        /**
+         * Thực hiện thay đổi giá trị Id khi select Country
+         * CreadBy: HoaiPT(17/03/2022)
+         */
         changeIdCountry(object){
             this.countryIdTemp = object.LocationId;
         },
@@ -823,7 +866,7 @@ export default {
                 if(!me.validatePayAccount()){//Kiểm tra mã tài khoản công nợ
                     return;
                 }
-                if( ! me.validateAddress()){//Kiểm tra validate Address
+                if( !me.validateAddress()){//Kiểm tra validate Address
                     return;
                 }
 
@@ -1027,7 +1070,6 @@ export default {
          *CreatedBy: HoaiPT(03/03/2022)
          */
         openWarning(res){
-            console.log(res);
             var me = this;
             let tempTitleMessWarning ='';
             switch (res.data.errorCode) {

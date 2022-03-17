@@ -13,6 +13,8 @@ var resourcs = {
         notNullAll: " không được phép để trống!",
         inputSearch: "Nhập từ khóa tìm kiếm",
 
+        notNullNo: "Số phiếu chi không được phép để trống!",
+
         titleErrorRemoveAccountObject: "Xóa không thành công, Mã đã có phát sinh !",
 
         notNullName: "Tên không được để trống!",
