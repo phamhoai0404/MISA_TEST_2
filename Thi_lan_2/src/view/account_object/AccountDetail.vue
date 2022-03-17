@@ -368,8 +368,7 @@
 <BaseMess  v-if="isShowMessInfo"
     typeMessage="info" 
     :titleForm="titleMessInfo"
-    @btnClose="isShowMessInfo = false"
-    
+    @btnClose="isShowMessInfo = false"  
 />
 
 </div>

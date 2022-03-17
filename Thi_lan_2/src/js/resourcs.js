@@ -14,6 +14,7 @@ var resourcs = {
         inputSearch: "Nhập từ khóa tìm kiếm",
 
         notNullNo: "Số phiếu chi không được phép để trống!",
+        errorFormatCaPaymentNo: "Số phiếu chi không đúng định dạng!",
 
         titleErrorRemoveAccountObject: "Xóa không thành công, Mã đã có phát sinh !",
 
@@ -23,6 +24,7 @@ var resourcs = {
         notExistPayAccountId: "Không tồn tại mã tài khoản công nợ!",
         notExistPaymentTermId: "Không tồn tại mã tài điều khoản!",
         notExistAccountObjectGroupId: "Không tồn tại nhóm mã nhà cung cấp!",
+        notExistAccountObjectId: "Không tồn tại mã nhà cung cấp!",
 
         noActionEvery: "Không thể thực hiện vì bạn đang xem!",
 
@@ -32,6 +34,9 @@ var resourcs = {
         notProvinceOrCity: "Dữ liệu <Tỉnh/Thành phố> không có trong danh mục!",
         notDistrict: "Dữ liệu <Quận/Huyện> không có trong danh mục!",
         notWardOrCommune: "Dữ liệu <Xã/Phường> không có trong danh mục!",
+
+        notNullPostedDate: "Ngày hạch toán không được để trống!",
+        notNullCaPaymentDate: "Ngày phiếu chi không được để trống!",
 
     }
 }

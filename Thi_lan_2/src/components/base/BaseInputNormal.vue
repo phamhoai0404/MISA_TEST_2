@@ -26,10 +26,15 @@
         style="resize: none;"
     />
     <div v-if="typeInput == 'date'">
-        <v-date-picker :value="value" color="green" :max-date='maxDate' :masks="masks">
+        <v-date-picker :value="value" color="green" :max-date='maxDate' :masks="masks" @input="onInputDate">
             <template v-slot="{ inputValue, inputEvents ,togglePopover }">
-                <div class="m-form-date"  :class="[readOnly?'m-input-readOnly':'']">
-                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly">
+                <div class="m-form-date"  
+                    :class="[
+                        readOnly?'m-input-readOnly':'',
+                        errorInput? 'm-border-red':'',
+                    ]"
+                >
+                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly" @input="changeInputDate">
                     <div class="m-icon-date">
                         <BaseButtonIcon iconClass="btn-calendar" :isSize16="true" @btnClick="togglePopover()"  :readOnly="readOnly"/>
                     </div>
@@ -98,7 +103,11 @@ export default {
             },
         }
     },
-    
+    watch:{
+        value(valueNew, valueOld){
+            this.$emit("changInputDate", valueNew, valueOld);
+        },
+    },
     methods: {
         /**
          * Thực hiện khi thay đổi giá trị trong ô Input
@@ -108,6 +117,24 @@ export default {
         onInput(event) {
             this.$emit('input', event.target.value) //Mặc định phải tên là 'input' thì nó mới map được với model ở bên ngoài không là nó không map được đâu
         },
+        /**
+         * Thực hiện thay đổi giá trị ô Input cập nhật giá trị ấy
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        onInputDate(event){
+            this.$emit('input', event )
+        },
+        /**
+         * Thực hiện khi chỉ cần ấn vào input date
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputDate(){
+             this.$emit('inputChange');
+        },
+        /**
+         * Thực hiện khi focus
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         focus: function () {
             this.$refs.input.focus()
         }

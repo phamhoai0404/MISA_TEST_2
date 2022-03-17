@@ -31,7 +31,6 @@
                     <div class="left-row-multi">
                         <div style="width:40%; padding-right: 12px;">
                             <BaseComboboxNormal  label="Đối tượng" :isButtonAdd="true" styleDataCombobox="width: 880px;"
-
                                 v-model="caPayment.AccountObjectName"
                                 :isComboboxTable="true"
                                 :errorCombobox="errorAccountObject"
@@ -45,6 +44,9 @@
                                 :propertyCompare="caPayment.AccountObjectId"
                                 keySearch="AccountObjectId"
                                 ref="AccountObject"
+
+                                @onChangeValueKeySearch="changeIdAccountObject"
+                                @input="changeInputAccountObject"
                             />
                         </div>
                         <div style="width:59%;">
@@ -63,13 +65,18 @@
                                 v-model="caPayment.FullName"
                                 :isComboboxTable="true"
                                 :readOnly="readOnly"
+                                :errorCombobox="errorFullName"
+                                :title="titleFullName"
 
                                 :listFields="listFieldEmployee" 
                                 :datas="listEmployee"
             
                                 inputText="FullName"
                                 :propertyCompare="caPayment.EmployeeId"
-                                keySearch="EmployeeId" 
+                                keySearch="EmployeeId"
+
+                                @onChangeValueKeySearch="changeIdEmployee"
+                                @input="changeInputFullName" 
                             />
                         </div>
                         <div style="width:59%; display: flex;">
@@ -84,10 +91,22 @@
                 </div>
                 <div class="master-left-two" style="width:185px;">
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày hạch toán" v-model="caPayment.PostedDate" :readOnly="readOnly" />
+                        <BaseInput typeInput="date" label="Ngày hạch toán" 
+                            v-model="caPayment.PostedDate" :readOnly="readOnly"
+                            :errorInput="errorPostedDate"
+                            :title="titlePostedDate"
+                            @inputChange="changeInputPostedDate"
+                            @changInputDate="changeValuePostedDate"
+                        />
                     </div>
                     <div class="item-left-two">
-                        <BaseInput typeInput="date" label="Ngày phiếu chi" v-model="caPayment.CaPaymentDate" :readOnly="readOnly" />
+                        <BaseInput typeInput="date" label="Ngày phiếu chi" 
+                            v-model="caPayment.CaPaymentDate" :readOnly="readOnly"
+                            :errorInput="errorCaPaymentDate"
+                            :title="titleCaPaymentDate"
+                            @inputChange="changeInputCaPaymentDate"
+                            @input="changeInputCaPaymentDate"
+                        />
                     </div>
                     <div class="item-left-two" style="padding-bottom: 0px;">
                         <BaseInput typeInput="input" label="Số phiếu chi" 
@@ -97,6 +116,7 @@
                             :title="titleNo"
 
                             @input="changeInputCaPaymentNo"
+                            ref="CaPaymentNo"
                         />
                     </div>
                 </div>
@@ -162,6 +182,11 @@
     
 />
 
+<BaseMess  v-if="isShowMessInfo"
+    typeMessage="info" 
+    :titleForm="titleMessInfo"
+    @btnClose="isShowMessInfo = false"  
+/>
 
 </div>
 
@@ -231,14 +256,24 @@ export default {
             isShowMessQuestion:false,//Trạng thái đóng mở của form question
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
 
-            isShowMessWarning:false,
+            isShowMessWarning:false,//Trạng thái của message cảnh báo
             titleMessWarning:"",
+            isShowMessInfo:false,//Trạng thái của message lỗi thông tin
+            titleMessInfo:"",
 
             errorNo:false,//Viền đỏ hay không của CaPaymentNo
             titleNo:"",//Title của input CaPaymentNo,
 
             titleAccountObject:"",//Title của combobox Đối tượng
             errorAccountObject:false,//Viền đỏ hay không AccountObject
+            errorFullName:false,//Viền đỏ hay không của Nhân viên
+            titleFullName:"",//Title của combobox Nhân viên
+
+            errorPostedDate:false,//Viền đỏ hay không của PostedDate
+            titlePostedDate:"",//Title của PostedDate
+            errorCaPaymentDate:false,//Viền đỏ hay không của CaPaymentDate,
+            titleCaPaymentDate:"",//title của CaPaymentDate
+
         }
     },
     async created(){
@@ -331,6 +366,69 @@ export default {
     },
     methods: {
         /**
+         * Thực hiện khi thay đổi giá trị của PostedDate
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeValuePostedDate(valueNew, valueOld){
+            this.changeInputPostedDate();//Thực hiện xóa bỏ viền đỏ nếu có
+            if(valueNew !=null){
+                let valueOldTemp = MyFunction.formatDate(valueOld);
+                let valueCaPaymentDate = MyFunction.formatDate(this.caPayment.CaPaymentDate);
+                if(valueOldTemp == valueCaPaymentDate){
+                    this.caPayment.CaPaymentDate = valueNew;
+                }
+                
+            }
+        },
+        /**
+         * Thực hiện khi ấn phím bất kì trong ô input CaPaymentDate
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputCaPaymentDate(){
+            this.errorCaPaymentDate = false;//Xóa viền đỏ
+            this.titleCaPaymentDate ="";//Làm rỗng title
+        },
+        /**
+         * Thực hiện khi ấn phím bất kì trong ô input PostedDate
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputPostedDate(){
+            this.errorPostedDate = false;//Xóa viền đỏ
+            this.titlePostedDate ="";//Làm rỗng title
+        },
+        /**
+         * Thực hiện khi thay đổi giá trị Input của FullName (Tên nhân viên)
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputFullName(){
+            this.errorFullName = false;//Xóa bỏ viền đỏ nếu có lỗi
+            this.titleFullName = "";//Xóa bỏ title nếu có lỗi
+            this.caPayment.EmployeeId = null;//Set Id bằng null
+        },
+        /**
+         * Thực hiện khi thay đổi select Id của EmployeeId
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeIdEmployee(object){
+            this.caPayment.EmployeeId = object.EmployeeId;
+        },
+        /**
+         * Thực hiện khi thay đổi giá trị Input của AccountObject
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeInputAccountObject(){
+            this.errorAccountObject = false;//Xóa bỏ viền đỏ nếu có lỗi
+            this.titleAccountObject = "";//Xóa bỏ title nếu có lỗi
+            this.caPayment.AccountObjectId = null;//Set Id bằng null
+        },
+        /**
+         * Thực hiện khi thay đổi Id của AccountObject
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        changeIdAccountObject(object){
+            this.caPayment.AccountObjectId = object.AccountObjectId;
+        },
+        /**
          * Thực hiện khi thay đổi giá trị của ô input CaPaymentNo
          * CreatedBy: HoaiPT(17/03/2022)
          */
@@ -400,6 +498,23 @@ export default {
         async btnSave(value){
             try {
                 var me = this;
+                if( !me.validateCaPayemntNoNotNull()){//Thực hiện validate ô CaPaymentNo không được để trống
+                    return;
+                }
+                if( !me.validateFormatCaPaymentNo()){//Thực hiện validate đúng định dạng ô CaPaymentNo
+                    return;
+                }
+                if( !me.validateEmployeeId()){//Thực hiện validate EmployeeId nếu mà nó có chữ chứa của input mà Id nó bằng null thì thực hiện thông báo lỗi
+                    return;
+                }
+                if( !me.validateAccountObjectId()){//Thực hiện validate AccountObjectId nếu mà nó có chữ chứa của input mà Id nó bằng null thì thực hiện thông báo lỗi
+                    return;
+                }
+                if( !me.validateDate()){//Thực hiện validate Ngày tháng của ngày hạch toán và ngày phiếu chi
+                    return;
+                }
+
+
                 let objectControl ={};
                 objectControl.CaPayment  = me.caPayment;
                 objectControl.ListCaPaymentDetail = me.listCAPaymentDetail;
@@ -415,6 +530,107 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
            
+        },
+        /**
+         *Thực hiện validate của ngày hạch toán và ngày phiếu chi
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        validateDate(){
+            var me = this;
+            if(me.caPayment.PostedDate == null || me.caPayment.CaPaymentDate == null){//
+                me.titleMessInfo ="";
+                if(me.caPayment.PostedDate == null){//
+                    me.titlePostedDate = mylib.resourcs["VI"].notNullPostedDate;
+                    me.errorPostedDate = true;
+
+                    me.titleMessInfo += "Ngày hạch toán";
+
+                }
+                if(me.caPayment.CaPaymentDate == null){
+                    me.titleCaPaymentDate = mylib.resourcs["VI"].notNullCaPaymentDate;
+                    me.errorCaPaymentDate = true;
+
+                    me.titleMessInfo += me.titleMessInfo ==""?"Ngày phiếu chi": ", Ngày phiếu chi ";
+                    
+                }
+
+                me.titleMessInfo +=" không được để trống";
+                me.isShowMessInfo = true;
+                return false;
+            }
+
+            return true;//Thực hiện thông qua
+        },
+        /**
+         * Validate nhân viên là AccountObjectId có chứa Id hay không 
+         * Nếu mà không chứa Id mà ô input có giá trị thì thực hiện thông báo lỗi
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        validateAccountObjectId(){
+             var me = this;
+            if(me.caPayment.AccountObjectId == null && me.caPayment.AccountObjectName != null){//Nếu mà không tồn tại mã    
+                if(me.caPayment.AccountObjectName.trim() !=""){//Nếu mà AccountObjectName bằng rỗng thì cũng cho qua
+                    me.errorAccountObject = true;
+                    me.titleAccountObject = mylib.resourcs["VI"].notExistAccountObjectId;
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notExistAccountObjectId;
+                    me.isShowMessInfo = true;
+                    return false;//Nếu mà tồn tại giá trị thì không cho qua
+                } 
+            }
+            return true;//Cho qua
+        },
+        /**
+         * Validate nhân viên là EmployeeId có chứa Id hay không 
+         * Nếu mà không chứa Id mà ô input có giá trị thì thực hiện thông báo lỗi
+         * CreatedBy: HoaiPT(17/03/2022)
+         */
+        validateEmployeeId(){
+            var me = this;
+            if(me.caPayment.EmployeeId == null && me.caPayment.FullName != null){//Nếu mà không tồn tại mã    
+                if(me.caPayment.FullName.trim() != ""){//Nếu mà FullName bằng rỗng thì cũng cho qua
+                    me.errorFullName = true;
+                    me.titleFullName = mylib.resourcs["VI"].notExistEmployeeId;
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notExistEmployeeId;
+                    me.isShowMessInfo = true;
+                    return false;//Nếu mà tồn tại giá trị thì không cho qua
+                } 
+            }
+            return true;//Cho qua
+        },
+        /**
+         * Kiểm tra xem trường dữ liệu CaPayemntNo phải đúng định dạng
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        validateFormatCaPaymentNo(){
+            var me = this;
+            let temp = /^PC[0-9]{5}$/.test(me.caPayment.CaPaymentNo);
+            if (temp == true)return true;
+            else{
+                me.errorNo = true;//Thể hiện viền đỏ của CaPaymentNo
+                me.titleNo = mylib.resourcs["VI"].errorFormatCaPaymentNo;
+
+                me.titleMessInfo = mylib.resourcs["VI"].errorFormatCaPaymentNo;
+                me.isShowMessInfo = true;//Hiện Message thông báo lỗi 
+
+                return false;
+            } 
+        },
+         /**
+         * Kiểm tra xem trường dữ liệu CaPayemntNo không được để trống
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
+        validateCaPayemntNoNotNull(){
+            if(this.caPayment.CaPaymentNo.trim() ==""){//nếu nó khác rỗng
+                this.errorNo = true;//Hiện viền đỏ
+                this.titleNo = mylib.resourcs["VI"].notNullNo;
+
+                this.titleMessInfo = mylib.resourcs["VI"].notNullNo;
+                this.isShowMessInfo = true;//Hiển thị form Info lỗi số phiếu chi không được phép để trống
+                return false;
+            } 
+            return true;//có giá trị thì đúng ấy => thì cho qua
         },
         /**
          * Kiểm tra xem thuộc trường hợp là cất và thêm hay là cất và đóng để cho phù hợp
@@ -576,7 +792,7 @@ export default {
             }
         },
         /**
-         * Thực hiện lấy toàn bộ nhân viên
+         * Thực hiện lấy toàn bộ nhà cung cấp
          * CreatedBy: HoaiPT(11/03/2022)
          */
         async getListAccountObject() {
