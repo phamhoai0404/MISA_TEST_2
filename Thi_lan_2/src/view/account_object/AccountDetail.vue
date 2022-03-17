@@ -823,6 +823,10 @@ export default {
                 if(!me.validatePayAccount()){//Kiểm tra mã tài khoản công nợ
                     return;
                 }
+                if( ! me.validateAddress()){//Kiểm tra validate Address
+                    return;
+                }
+
                 let temp= me.listAccountGroupSelected.join(",");
                 me.account.AccountObjectGroupListId = temp;
                 
@@ -860,6 +864,56 @@ export default {
             } catch {
                 console.error(mylib.resourcs["VI"].errorMsg);
             }
+        },
+        /**
+         * Thực hiện Validate Address
+         * CreadBy: HoaiPT(17/03/2022)
+         */
+        validateAddress(){
+            var me = this;
+            if(me.account.Country != null){//Nếu mà nó có tồn tại
+                if(me.account.Country !="" && me.countryIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleCountry = mylib.resourcs["VI"].notCountry;
+                    me.errorCountry = true;//Thể hiện viền đỏ ở ô country
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notCountry;
+                    me.isShowMessInfo = true;//Hiện message thông báo lỗi
+                    return false;
+                }
+            }
+            if(me.account.ProvinceOrCity != null){//Nếu mà nó có tồn tại
+                if(me.account.ProvinceOrCity !="" && me.provinceOrCityIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleProvinceOrCity = mylib.resourcs["VI"].notProvinceOrCity;
+                    me.errorProvinceOrCity = true;
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notProvinceOrCity;
+                    me.isShowMessInfo = true;//Hiện message thông báo lỗi
+                    return false;
+                }
+            }
+
+            if(me.account.District != null){//Nếu mà nó có tồn tại
+                if(me.account.District !="" && me.districtIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleDistrict = mylib.resourcs["VI"].notDistrict;
+                    me.errorDistrict = true;
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notDistrict;
+                    me.isShowMessInfo = true;//Hiện message thông báo lỗi
+                    return false;
+                }
+            }
+
+            if(me.account.WardOrCommune != null){//Nếu mà nó có tồn tại
+                if(me.account.WardOrCommune !="" && me.wardOrCommuneIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleWardOrCommune = mylib.resourcs["VI"].notWardOrCommune;
+                    me.errorWardOrCommune = true;
+
+                    me.titleMessInfo = mylib.resourcs["VI"].notWardOrCommune;
+                    me.isShowMessInfo = true;//Hiện message thông báo lỗi
+                    return false;
+                }
+            }
+            return true;
         },
         /**
          * Thực hiện kiểm tra ô input nhóm nhà cung cấp
