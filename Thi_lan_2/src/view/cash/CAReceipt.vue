@@ -22,7 +22,74 @@
                         <BaseButtonIcon iconClass="btn-arrow-check-all" />
                     </div>
                     <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important "/>
-                    <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;'/>
+                    <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;' @btnClick="btnClickFilterList"/>
+                    <div class="group-filter">
+                        <div v-if="exitObjectFilter()" class="item-filter" >
+                            <span>
+                                <div class="item-title" >{{formatDate(objectFilter.StartTime)}} - {{formatDate(objectFilter.EndTime)}} </div>
+                                <BaseButtonIcon iconClass="btn-close-small" :isSize16="true" styleButtonIcon="margin-left:3px;" @btnClick="btnRemoveAllFilter"/>
+                            </span>
+                        </div>
+                        <div  v-if="exitObjectFilter()" class="item-filter" >
+                            <span>
+                                <div class="item-title" @click="btnRemoveAllFilter" >Xóa bộ lọc</div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dropdown-filter" style="margin-top: 333px; width: 454px !important;" v-if="isShowFilterCaPayment" >
+                        <div class="row-one">
+                            <BaseComboboxNormal v-model="objectFilterTemp.Type" label="Lý do thu, chi" :datas="[]" title="Lý do thu, chi"/>
+                        </div>
+                        <div class="row-one" style="padding-top: 10px;">
+                            <BaseComboboxNormal v-model="objectFilterTemp.Type" label="Trạng thái ghi sổ" :datas="[]" title="Trạng thái ghi sổ"/>
+                        </div>
+                        <div class="row-two" style="padding-top: 10px;">
+                            <div style="width: 32%">
+                                <BaseComboboxNormal  label="Thời gian" styleDataCombobox="max-height:90px !important;"
+                                    :isComboboxTable = "true"
+                                    :showField="false"
+                                    v-model="objectFilterTemp.DateTimeName"
+                                    :errorCombobox="errorDateTime"
+                                    :title="titleDateTime"
+
+                                    :listFields="listFieldDataTime"
+                                    :datas="listDataTimeSource"
+
+                                    inputText="DateTimeName"
+                                    :propertyCompare="objectFilterTemp.DateTimeId"
+                                    keySearch="DateTimeId"
+
+                                    @onChangeValueKeySearch ="changeIdDateTime"
+                                    @input="changeInputDateTime"
+                                />
+                            </div>
+                             <div style="width: 32%">
+                                <BaseInput typeInput="date" label="Từ ngày" 
+                                    v-model="objectFilterTemp.StartTime"
+                                    :errorInput="errorStartTime"
+                                    :title="titleStartTime"
+                                    @inputChange="changeInputStartTime"
+                                    @input="changeInputStartTime"
+                                    ref="StartTime"
+                                />
+                            </div>
+                            <div style="width: 32%">
+                                <BaseInput typeInput="date" label="Đến ngày" 
+                                    v-model="objectFilterTemp.EndTime"
+                                    :errorInput="errorEndTime"
+                                    :title="titleEndTime"
+                                    @inputChange="changeInputEndTime"
+                                    @input="changeInputEndTime"
+                                    ref="EndTime"
+                                />
+                            </div>
+                        </div>
+                        <div class="line-dropdown-filter"></div>
+                        <div class="row-two">
+                            <BaseButton label="Đặt lại" @btnClick="btnClickResetFilter"/>
+                            <BaseButton label="Lọc" :hasBackground="true" @btnClick="btnClickFilterInDropdown"/>
+                        </div>    
+                    </div>
                 </div>
                 <div class="function-right">
                     <BaseInput typeInput="input" :hasIcon="true" placeholder="Nhập từ khóa tìm kiếm" v-model="keywordSearch" />
@@ -88,16 +155,18 @@ import BaseOverview from '@/components/base/BaseOverview.vue'
 import BaseInput from '@/components/base/BaseInputNormal.vue'
 import BaseLoading from '@/components/base/BaseLoading.vue'
 import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
-
+import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseTableList from '@/components/base/BaseTableList.vue'
 import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
-
+import BaseButton from '@/components/base/BaseButton.vue'
 import CAPaymentDetail from '@/view/cash/CAPaymentDetail.vue'
 
 import BaseMessageRemove from '@/components/base/BaseMessage.vue'
 
 import * as mylib from '../../js/resourcs.js'
 import axios from 'axios'
+import MyFunction from '@/js/function.js'
+
 export default {
     components:{
         BaseButtonFunction,
@@ -109,7 +178,9 @@ export default {
         BaseLoading,
         BaseDropDownFunction,
         CAPaymentDetail,
-        BaseMessageRemove
+        BaseMessageRemove,
+        BaseButton,
+        BaseComboboxNormal
     },
     data() {
         return {
@@ -126,7 +197,6 @@ export default {
             selectTextPage: 20,//Mặc định ban đầu kích thước là 20 bản ghi trên một trang
 
             keywordSearch:"",//Từ khóa tìm kiếm,
-            objectSearch:{},
             isShowFunction:false,//Đóng mở function dropdown
 
             editModeTable:mylib.misaEnum.editMode.NoAction,//Mặc định đầu tiên là chưa làm gì cả
@@ -139,6 +209,28 @@ export default {
 
             isShowMessRemove:false,//Trạng thái của form xóa
             titleMessRemove:"",//title hiện thị mong muốn
+
+            isShowFilterCaPayment:false,
+            objectFilterTemp:{
+                Type:"Tất cả",
+                DateTimeId:"0",
+                DateTimeName:"Tùy chọn",
+                StartTime: null,
+                EndTime:null,
+            },
+            objectFilter:{
+                StartTime: null,
+                EndTime:null,
+            },//bộ lọc thật sự
+
+            errorStartTime:false,//Có lỗi hay không của ngày bắt đầu
+            titleStartTime:"",//Title hiển thị khi có báo lỗi
+            errorEndTime:false,//Có lỗi hay không của ngày kết thúc
+            titleEndTime:"",//Title hiển thị khi có báo lỗi
+            listDataTimeSource:mylib.dataSource.listDateTimeFilter,//Nguồn của DataTime
+            listFieldDataTime:mylib.data.listFieldDateTimeFilter,//File data hiển thị của DataTime
+            errorDateTime:false,//Có lỗi hay không của ô thời gian
+            titleDateTime:"",//Title có hiển thị khi lỗi DateTime hay không
         }
     },
     watch:{
@@ -159,6 +251,176 @@ export default {
         me.getData();//Trạng thái ban đầu
     },
     methods: {
+        /**
+         * Thực hiện khi thay đổi giá trị input nhập vào ấy
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        changeInputDateTime(){
+            this.objectFilterTemp.DateTimeId = null;
+        },
+        /*
+         * Thực hiện khi thay đổi giá trị input nhập vào ấy
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        changeIdDateTime(object){
+            this.objectFilterTemp.DateTimeId = object.DateTimeId;
+            switch (object.DateTimeId) {
+                case "0"://1 ở tùy chọn thì không phải làm gì hết
+                    break;
+                case "1"://Tuần này
+                    var curr = new Date();
+                    var first = curr.getDate() - curr.getDay() + 1; 
+                    var last = first + 6;
+                    var firstday = new Date(curr.setDate(first)).toUTCString();
+                    var lastday = new Date(curr.setDate(last)).toUTCString();
+                    this.objectFilterTemp.StartTime = firstday;
+                    this.objectFilterTemp.EndTime = lastday;
+
+                    break;
+                case "2"://Tháng này
+                    var date = new Date();
+                    var firstDay2 = new Date(date.getFullYear(), date.getMonth(), 1);
+                    var lastDay2 = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                    this.objectFilterTemp.StartTime = firstDay2;
+                    this.objectFilterTemp.EndTime = lastDay2;
+
+                    break;
+                case "3"://Tháng 4
+                    var date4 = new Date();
+                    var firstDay4 = new Date(date4.getFullYear(), 3, 1);
+                    var lastDay4 = new Date(date4.getFullYear(), 3 + 1, 0);
+                    this.objectFilterTemp.StartTime = firstDay4;
+                    this.objectFilterTemp.EndTime = lastDay4;
+                    break;
+                default:
+                    break;
+            }
+
+            //Nếu có viền đỏ thì thực hiện xóa viền đỏ của StartTime and EndTime
+            this.errorEndTime=false;
+            this.titleEndTime="";
+            this.errorStartTime = false;
+            this.titleEndTime ="";
+        },
+        /**
+         * Thực hiện khi click vào xóa bộ lọc của filter CaPayment
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        async btnRemoveAllFilter(){
+            let objectTemp= {};//Thực hiện gián tất cả bằng null 
+            this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, objectTemp);//làm ở function ấy
+            
+            await this.showData();//Load lại dữ liệu
+        },
+        /**
+         * Thực hiện kiểm tra xem có bộ lọc hay không nếu không tồn tại thì không có chữ hiện thị
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        exitObjectFilter(){
+            if(this.objectFilter.EndTime !=null)//Chỉ cần kiểm tra một cái thôi còn cái kia nó dính với cái này
+                return true;
+            return false;
+        },
+        btnClickResetFilter(){
+            console.log("vào đây");
+            this.objectFilterTemp.DateTimeId = "0";
+            this.objectFilterTemp.DateTimeName="Tùy chọn";
+            this.objectFilterTemp.EndTime = null;
+            this.objectFilterTemp.StartTime = null;
+
+            //Nếu có viền đỏ thì thực hiện xóa viền đỏ của StartTime and EndTime
+            this.errorEndTime=false;
+            this.titleEndTime="";
+            this.errorStartTime = false;
+            this.titleEndTime ="";
+        },
+        /**
+         * Thực hiện khi bắt đầu click vào nút lọc của dropdown Filter
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        async btnClickFilterInDropdown(){
+            var me = this;
+            if( !me.validateStartTimeAndEndTime()){
+                return;
+            }
+            this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, this.objectFilterTemp);
+            this.isShowFilterCaPayment = false;//Thực hiện đóng lọc
+
+            await me.showData();
+        },
+         /**
+         * Thực hiện valiate StartTime and EndTime
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        validateStartTimeAndEndTime(){
+            var me = this;
+            if(me.objectFilterTemp.StartTime == null){
+                me.errorStartTime = true;
+                me.titleStartTime = mylib.resourcs["VI"].notNullStartTime;
+                me.$refs.StartTime.focus();
+
+                return false;
+            }
+
+            if(me.objectFilterTemp.EndTime == null){
+                me.errorEndTime = true;
+                me.titleEndTime = mylib.resourcs["VI"].notNullEndTime;
+                me.$refs.EndTime.focus();
+
+                return false;
+            }
+
+            //EndTime >= StartTime
+            let tempEndTime = new Date(me.objectFilterTemp.EndTime);
+            let tempStartTime = new Date(me.objectFilterTemp.StartTime);
+            if(tempEndTime < tempStartTime){
+                me.titleEndTime = mylib.resourcs['VI'].errorEndTimeLessStartTime;
+                me.errorEndTime = true;//Xuất hiện viền đỏ của đến ngày
+                
+                me.$refs.EndTime.focus();
+
+                return false;
+            }
+
+            return true;//Thông qua
+        },
+        /**
+         * Nếu có viền đỏ khi thay đổi input thì viền đỏ biến mất
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        changeInputEndTime(){
+            var me = this;
+            me.errorEndTime = false;
+            me.titleEndTime ="";
+
+            //Chỉ cần thực hiện thay đổi input là đưa về tùy chọn
+            me.objectFilterTemp.DateTimeName="Tùy chọn";
+            me.objectFilterTemp.DateTimeId ="0";
+        },
+         /**
+         * Nếu có viền đỏ khi thay đổi input thì viền đỏ biến mất
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        changeInputStartTime(){
+            var me = this;
+            me.errorStartTime = false;
+            me.titleStartTime ="";
+            
+            //Chỉ cần thực hiện thay đổi input là đưa về tùy chọn
+            me.objectFilterTemp.DateTimeName="Tùy chọn";
+            me.objectFilterTemp.DateTimeId ="0";
+        },
+        /**
+         * Thực hiện khi bắt đầu click vào nút lọc của table list
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        btnClickFilterList(){
+            this.isShowFilterCaPayment = !this.isShowFilterCaPayment;//Nếu đóng thì mở nếu mở thì đóng khi click vào chữ lọc ở list
+        },
+        /**
+         * Thực hiện khi click vào nút thêm chi tiết phiếu chi
+         * CreatedBy: HoaiPT(11/03/2022)
+         */
         btnAddCaPayment(){
             var me =this; 
             me.editModeTable = mylib.misaEnum.editMode.Add;//Thực hiện thêm mới
@@ -278,7 +540,7 @@ export default {
             try {
                 var me = this;
                 me.isShowLoading = true; //Thực hiện mở Loading
-                await axios.post(`https://localhost:44338/api/v1/CaPayments/GetPageV2?searchText=${me.keywordSearch}&pageIndex=${me.pageAction}&pageSize=${me.selectTextPage}`, me.objectSearch)
+                await axios.post(`https://localhost:44338/api/v1/CaPayments/GetPageV2?searchText=${me.keywordSearch}&pageIndex=${me.pageAction}&pageSize=${me.selectTextPage}`, me.objectFilter)
                     .then(function (res) {
                         me.listCAPayment = res.data.Data; //Thực hiện gián listEmployee vào với kích thước trang, từ khóa tìm kiếm và trang đang đứng
                         me.totalPage = Number(res.data.TotalPage); //Gán vào tổng số trang
@@ -319,6 +581,7 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
+        formatDate:MyFunction.formatDate,
     },
 }
 </script>

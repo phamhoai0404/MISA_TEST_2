@@ -9,16 +9,6 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
 {
     public interface ICaPaymentService : IBaseService<CaPayment>
     {
-        /// <summary>
-        /// Thực hiện lấy dữ liệu và phân trang tìm kiếm
-        /// </summary>
-        /// <param name="searchText">Nhập vào từ tìm kiếm</param>
-        /// <param name="pageSize">Nhập vào kích thước trang</param>
-        /// <param name="pageIndex">Nhập vào thứ tự trang</param>
-        /// <param name="listText">Chuỗi tìm kiếm truyền vào</param>
-        /// <returns></returns>
-        /// CreatedBy: HoaiPT(10/03/2022)
-        object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment listText);
 
         /// <summary>
         /// Thực hiện lấy ra mã CaPaymentNo mới tự tăng
@@ -32,5 +22,15 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// </summary>
         /// <param name="code"></param>
         void ValidateCode(string code);
+
+        /// <summary>
+        /// Thực hiện phân trang dữ liệu với bộ lọc
+        /// </summary>
+        /// <param name="searchText">Từ khóa tìm kiếm</param>
+        /// <param name="pageSize">Kích thước trang</param>
+        /// <param name="pageIndex">Trang đang đứng</param>
+        /// <param name="objectFilter">Bộ lọc </param>
+        /// <returns></returns>
+        object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment objectFilter);
     }
 }

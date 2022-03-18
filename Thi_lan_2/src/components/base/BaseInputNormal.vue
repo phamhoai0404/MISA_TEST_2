@@ -34,7 +34,7 @@
                         errorInput? 'm-border-red':'',
                     ]"
                 >
-                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly" @input="changeInputDate">
+                    <input type="text" class="m-title-date" placeholder="DD/MM/YYYY" :value="inputValue" v-on="inputEvents" :readonly="readOnly"  :disabled="readOnly" @input="changeInputDate" ref="input">
                     <div class="m-icon-date">
                         <BaseButtonIcon iconClass="btn-calendar" :isSize16="true" @btnClick="togglePopover()"  :readOnly="readOnly"/>
                     </div>

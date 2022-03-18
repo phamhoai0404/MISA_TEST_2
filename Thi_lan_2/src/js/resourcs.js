@@ -41,6 +41,11 @@ var resourcs = {
         errorPostedDateLessCaPaymentDate: 'Ngày hạch toán phải lớn hơn hoặc bằng ngày phiếu chi!',
         notNullListCaPaymentDetail: 'Bạn phải nhập chứng từ chi tiết!',
 
+        notNullStartTime: 'Từ ngày không được để trống!',
+        notNullEndTime: 'Đến ngày không được để trống!',
+
+        errorEndTimeLessStartTime: 'Đến ngày >= Từ ngày ! '
+
     }
 }
 var misaEnum = {
@@ -365,6 +370,11 @@ var data = {
         text: "Tên xã phường", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
         width: "100%"
     }],
+    listFieldDateTimeFilter: [{
+        name: "DateTimeName",
+        text: "Tên thoài gian chọn", //Cái này ở trong kia không hiện lên thì phải ẩn phần thead
+        width: "100%"
+    }]
 
 }
 var dataSource = {
@@ -440,6 +450,23 @@ var dataSource = {
             CreditAccountId: '11118',
             CreditAccountName: 'Doanh thu trợ cấp trợ giá'
         }
+    ],
+    listDateTimeFilter: [{
+            DateTimeId: "0",
+            DateTimeName: "Tùy chọn",
+        },
+        {
+            DateTimeId: "1",
+            DateTimeName: "Tuần này",
+        },
+        {
+            DateTimeId: "2",
+            DateTimeName: "Tháng này",
+        },
+        {
+            DateTimeId: "3",
+            DateTimeName: "Tháng 4",
+        },
     ]
 }
 

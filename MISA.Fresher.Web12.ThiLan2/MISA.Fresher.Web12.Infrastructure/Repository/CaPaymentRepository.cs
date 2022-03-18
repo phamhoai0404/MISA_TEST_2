@@ -22,5 +22,39 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
                 return enities;
             }
         }
+
+        public object GetPagingV2(int pageIndex, int pageSize, string searchText, DateTime? startTime, DateTime? endTime)
+        {
+
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sql = $"Proc_GetCaPaymentPaging2";
+                var parameters = new DynamicParameters();
+
+                //Những thứ tìm kiếm trong bộ lọc
+                parameters.Add("@m_StartTime", startTime);
+                parameters.Add("@m_EndTime", endTime);
+
+                //Những thứ input vào thông thường
+                parameters.Add("@m_SearchText", searchText);
+                parameters.Add("@m_PageIndex", pageIndex);
+                parameters.Add("@m_PageSize", pageSize);
+
+                parameters.Add("@m_TotalRecord", direction: System.Data.ParameterDirection.Output);
+                parameters.Add("@m_TotalPage", direction: System.Data.ParameterDirection.Output);
+
+                var entites = SqlConnection.Query(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure);//Thực hiện lấy các bản ghi
+                var totalRecord = parameters.Get<int>("@m_TotalRecord");//Lấy tổng số bản ghi
+                var totalPage = parameters.Get<int>("@m_TotalPage");//Lấy tổng số trang
+
+                return new
+                {
+                    Data = entites,//Trả về bảng
+                    TotalRecord = totalRecord,//Trả về tổng số bản ghi
+                    TotalPage = totalPage//Trả về tổng số trang
+                };
+
+            }
+        }
     }
 }

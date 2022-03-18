@@ -21,11 +21,20 @@ namespace MISA.Fresher.Web12.Core.Services
             _caPaymentRepository = caPaymentRepository;
         }
 
-        public object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment listText)
+        public object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment objectFilter)
         {
-            string k = "1 = 1";//Cái này cần đi hỏi lại các anh
-            //return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, k);
-            return null;
+            DateTime startTime = DateTime.MinValue;//Mặc định nó sẽ là nhỏ nhất trong vũ trụ
+            DateTime endTime = DateTime.MaxValue;//Mặc định nó sẽ là lớn nhất trong vũ trụ
+
+            if(objectFilter.StartTime != null)//Nếu nó có giá trị thì gán bằng giá trị
+            {
+                startTime = (DateTime)objectFilter.StartTime;
+            }
+            if(objectFilter.EndTime != null)//Nếu nó có giá trị thì gán bằng giá trị
+            {
+                endTime = (DateTime)objectFilter.EndTime;
+            }
+            return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, startTime, endTime);
         }
 
 

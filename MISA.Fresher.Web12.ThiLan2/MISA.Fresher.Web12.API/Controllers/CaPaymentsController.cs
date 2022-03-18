@@ -50,7 +50,7 @@ namespace MISA.Fresher.Web12.API.Controllers
         }
 
         [HttpPost("GetPageV2")]
-        public IActionResult GetPagingV2(string? searchText, int pageIndex, int pageSize, FilterCaPayment objectSearch)
+        public IActionResult GetPagingV2(string? searchText, int pageIndex, int pageSize, FilterCaPayment? objectSearch)
         {
             try
             {
