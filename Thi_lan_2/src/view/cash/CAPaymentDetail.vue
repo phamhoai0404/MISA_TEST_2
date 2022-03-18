@@ -146,7 +146,7 @@
                     @changeInput="changeAfterInputListCaPaymentDetail"
                     @deleteItemRow="deleteItemCaPaymentDetail"
                     @addItemRow ="addItemCaPaymentDetail"
-                    @btnRemoveAll="btnRemoveAllCaPaymentDetail"
+                    @btnRemoveAll="btnRemoveAllDetail"
                  />
                 <div class="content-file">
                     <div class="content-file-title">
@@ -187,7 +187,12 @@
     :titleForm="titleMessInfo"
     @btnClose="isShowMessInfo = false"  
 />
-
+<BaseMess typeMessage="warningAndQuestion" 
+    v-if="isShowWarningAndQuestion"
+    :titleForm="titleWarningAndQuestion"
+    @btnNo="isShowWarningAndQuestion = false"
+    @btnYes="btnRemoveAllCaPaymentDetail"
+/>
 </div>
 
 
@@ -333,6 +338,10 @@ export default {
             titlePostedDate:"",//Title của PostedDate
             errorCaPaymentDate:false,//Viền đỏ hay không của CaPaymentDate,
             titleCaPaymentDate:"",//title của CaPaymentDate
+
+            isShowWarningAndQuestion:false,
+            titleWarningAndQuestion:mylib.resourcs["VI"].questionRemoveAll,
+
 
         }
     },
@@ -504,11 +513,16 @@ export default {
                 }
             }  
         },
+        btnRemoveAllDetail(){
+            var me = this;
+            me.isShowWarningAndQuestion = true;
+        },
         /**
          * Thực hiện khi click vào nút Xác nhận xóa tất cả Detail
          * CreatedBy: HoaiPT(11/03/2022)
          */
         btnRemoveAllCaPaymentDetail(){
+            this.isShowWarningAndQuestion = false;//Đóng form cảnh báo
             this.listCAPaymentDetail = [];
             let objectNew = this.objectCaPaymentDetailNew();
             this.listCAPaymentDetail.push(objectNew);
@@ -849,6 +863,7 @@ export default {
                 PostedDate:null,
                 Resion:null,
                 AccountObjectId:null,
+                AccountObjectCode:null,
                 AccountObjectName:null
             };
             me.caPayment.Resion = "Chi tiền cho";
