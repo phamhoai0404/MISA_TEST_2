@@ -447,7 +447,6 @@ export default {
             listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
 
             listAccountObjectGroup:[],
-            // listAccountObjectGroupTemp:[],
             listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
 
             listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
@@ -535,7 +534,7 @@ export default {
         await this.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
         await this.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
         //Thực hiện gán giá trị cho listAccountObjectBankAccount,listShipdress
-        this.getValueJsontoArrayAccount();
+        await this.getValueJsontoArrayAccount();
         
         this.isShowEmployee = true;//Thực hiện hiện html
         this.isShowPaymentTerm = true;//Thực hiện hiện html

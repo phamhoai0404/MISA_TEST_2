@@ -227,6 +227,7 @@ var MyFunction = {
     },
     /**
      * Trả về đối tượng có giống với id
+     * CreatedBy: HoaiPT(17/03/2022)
      */
     getObjectArray(array, propName, value) {
         for (let i = 0; i < array.length; i++) {
@@ -234,6 +235,17 @@ var MyFunction = {
                 return array[i];
         }
         return null; //Nếu không có giá trị giống thì rẽ return ra null
+    },
+    /**
+     * Thực hiện lấy giá trị bằng propName giá trị đang có
+     * CreatedBy: HoaiPT(19/03/2022)
+     */
+    sameObjectDestination(objectGetPropName, objectTarget) {
+        let objectTemp = {}; //Tạm thời
+        for (var propName in objectGetPropName) {
+            objectTemp[propName] = objectTarget[propName];
+        }
+        return objectTemp; //Trả về đối tượng muốn lấy mà không dính tới bind
     }
 }
 export default MyFunction

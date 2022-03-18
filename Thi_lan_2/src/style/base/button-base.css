@@ -13,6 +13,7 @@
 
 .m-button-base:hover {
     cursor: pointer;
+    background-color: #bbbb;
 }
 
 .m-button-base.m-button-background {

@@ -104,14 +104,33 @@
     flex-wrap: wrap;
 }
 
-.group-filter .item-filter {
+.group-filter span {
     display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.group-filter span .item-title {
+    color: #0075c0;
 }
 
 .dropdown-filter {
     position: absolute;
-    background-color: red;
-    margin-top: 100px;
+    background-color: white;
     z-index: 9;
-    width: 300px;
+    width: 533px;
+    padding: 16px 16px 20px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    border: 1px solid #babec5;
+}
+
+.dropdown-filter .row-two {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-filter .line-dropdown-filter {
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
 }

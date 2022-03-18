@@ -24,7 +24,8 @@ namespace MISA.Fresher.Web12.Core.Services
         public object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment listText)
         {
             string k = "1 = 1";//Cái này cần đi hỏi lại các anh
-            return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, k);
+            //return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, k);
+            return null;
         }
 
 

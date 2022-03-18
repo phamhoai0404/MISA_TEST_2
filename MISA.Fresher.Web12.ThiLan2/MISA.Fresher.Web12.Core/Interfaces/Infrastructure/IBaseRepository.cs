@@ -89,16 +89,6 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         object GetPaging(int pageIndex, int pageSize, string searchText);
 
 
-        /// <summary>
-        /// Thực hiện phân trang và tìm kiếm lấy dữ liệu
-        /// </summary>
-        /// <param name="pageIndex">Số thứ tự trang</param>
-        /// <param name="pageSize">Kích thước trang</param>
-        /// <param name="searchText">Từ khóa tìm kiếm</param>
-        ///  <param name="listText">Điều kiện tìm kiếm tiếp</param>
-        /// <returns></returns>
-        /// Created: HoaiPT(10/3/2022)
-        object GetPagingV2(int pageIndex, int pageSize, string searchText, string listText);
 
 
         /// <summary>

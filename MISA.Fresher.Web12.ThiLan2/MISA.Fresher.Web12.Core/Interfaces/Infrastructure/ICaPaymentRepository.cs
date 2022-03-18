@@ -16,5 +16,7 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         /// <returns></returns>
         /// Created: HoaiPT(14/02/2022)
         string getCaPaymentNoMax();
+
+
     }
 }

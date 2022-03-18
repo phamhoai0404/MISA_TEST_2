@@ -23,39 +23,134 @@
         </div>
         <div class="ac-list-bottom">
             <div class="ac-list-function">
-                <div class="function-left">
+                <div class="function-left" >
                     <div class="icon-check">
                         <BaseButtonIcon iconClass="btn-arrow-check-all" />
                     </div>
                     <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important"/>
-                    <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;'/>
+                    <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;' @btnClick="btnClickFilterList"/>
                     <div class="group-filter">
-                        <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
+                        <div v-for="(item, index) in objectFilter " :key="index" class="item-filter" >
+                            <span v-if="item != null && item !='' ">
+                                <div class="item-title" >{{item}} </div>
+                                <BaseButtonIcon iconClass="btn-close-small" :isSize16="true" styleButtonIcon="margin-left:3px;" @btnClick="btnClickRemoveInItemFilter(item,index)"/>
+                            </span>
                         </div>
-                         <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
-                        </div>
-                         <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
-                        </div>
-                         <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
-                        </div>
-                         <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
-                        </div>
-                         <div class="item-filter">
-                            <div class="item-title">sfsf sfsfsf sfsf </div>
-                            <BaseButtonIcon iconClass="btn-close-small"/>
+                        <div  v-if="exitObjectFilter()" class="item-filter" >
+                            <span>
+                                <div class="item-title" @click="btnRemoveAllFilter" >Xóa bộ lọc</div>
+                                <BaseButtonIcon iconClass="btn-close-small" :isSize16="true" styleButtonIcon="margin-left:3px;" @btnClick="btnRemoveAllFilter"/>
+                            </span>
                         </div>
                     </div>
-                    <div class="dropdown-filter">sfsf</div>
+                    <div class="dropdown-filter" style="margin-top: 333px;" v-if="isShowFilterAccountObject" >
+                        <div class="row-two">
+                            <div style="width: 49.5%">
+                                <BaseComboboxNormal v-model="objectFilterTemp.Type" label="Loại" :datas="[]" title="Loại"/>
+                            </div>
+                            <div style="width: 49.5%">
+                                <BaseComboboxNormal label="Nhóm" styleDataCombobox="width: 460px;"
+                                    :isComboboxTable="true"
+                                    v-model="objectFilterTemp.AccountObjectGroupCode"
+                                    :errorCombobox="errorAccountObjectGroup"
+                                    :title="titleAccountObjectGroup"
+
+                                    :listFields="listFieldAccountObjectGroup"
+                                    :datas="listAccountObjectGroup"
+
+                                    inputText="AccountObjectGroupCode"
+                                    :propertyCompare="objectFilterTemp.AccountObjectGroupId"
+                                    keySearch="AccountObjectGroupId"
+
+                                    @onChangeValueKeySearch ="changeIdAccountObjectGroup"
+                                    @input="changeInputAccountObjectGroup"
+
+                                    ref="AccountObjectGroup"
+                                />
+                            </div>
+                        </div>
+                        <div class="row-two" style="padding-top: 10px;">
+                            <div style="width: 49.5%">
+                                <BaseComboboxNormal v-model="objectFilterTemp.Type" label="Tình trạng công nợ" :datas="[]" title="Tình trạng công nợ" />
+                            </div>
+                            <div style="width: 49.5%">
+                                <BaseComboboxNormal v-model="objectFilterTemp.Type" label="Trạng thái" :datas="[]" title="Trạng thái"/>
+                            </div>
+                        </div>
+                        <div class="row-two" style="padding-top: 10px;">
+                            <div style="width: 32.5%">
+                                <BaseComboboxNormal label="Tỉnh/TP"
+                                    v-model="objectFilterTemp.ProvinceOrCity"
+                                    :isComboboxTable="true" :showField ="false"
+
+                                    :errorCombobox="errorProvinceOrCity"
+                                    :title="titleProvinceOrCity"
+                                    :isShowData ="isShowDataProvinceOrCity"
+
+                                    :listFields="listFieldProvinceOrCity"
+                                    :datas="listProvinceOrCitySource"
+
+                                    inputText="LocationName"
+                                    :propertyCompare="provinceOrCityIdTemp"
+                                    keySearch="LocationId"
+
+                                    @onChangeValueKeySearch ="changeIdProvinceOrCity"
+                                    @input="changeInputProvinceOrCity"
+                                    @updateIsShowData ="updateIsShowProvinceOrCity"
+                                    ref="ProvinceOrCity" 
+                                />
+                            </div>
+                            <div style="width: 32.5%">
+                                <BaseComboboxNormal label="Quận/Huyện"
+                                    v-model="objectFilterTemp.District"
+                                    :isComboboxTable="true" :showField ="false"
+                                    :errorCombobox="errorDistrict"
+                                    :title="titleDistrict"
+                                    :isShowData="isShowDataDistrict"
+
+                                    :listFields="listFieldDistrict"
+                                    :datas="listDistrictTemp"
+
+                                    inputText="LocationName"
+                                    :propertyCompare="districtIdTemp"
+                                    keySearch="LocationId"
+
+                                    @onChangeValueKeySearch ="changeIdDistrict"
+                                    @input="changeInputDistrict"
+                                    @updateIsShowData ="updateIsShowDistrict"
+
+                                    ref="District"
+                                />
+                            </div>
+                            <div style="width: 32.5%">
+                                <BaseComboboxNormal label="Xã/Phường" 
+                                    v-model="objectFilterTemp.WardOrCommune"
+                                    :isComboboxTable="true" :showField ="false"
+                                    :errorCombobox="errorWardOrCommune"
+                                    :title="titleWardOrCommune"
+                                    :isShowData ="isShowDataWardOrCommune"
+
+                                    :listFields="listFieldWardOrCommune"
+                                    :datas="listWardOrCommuneTemp"
+
+                                    inputText="LocationName"
+                                    :propertyCompare="wardOrCommuneIdTemp"
+                                    keySearch="LocationId"
+
+                                    @onChangeValueKeySearch ="changeIdWardOrCommune"
+                                    @input="changeInputWardOrCommune"
+                                    @updateIsShowData ="updateIsShowWardOrCommune"
+
+                                    ref="WardOrCommune"
+                                />
+                            </div>
+                        </div>
+                        <div class="line-dropdown-filter"></div>
+                        <div class="row-two">
+                            <BaseButton label="Đặt lại" @btnClick="btnClickResetFilter"/>
+                            <BaseButton label="Lọc" :hasBackground="true" @btnClick="btnClickFilterInDropdown"/>
+                        </div>    
+                    </div>
                 </div>
                 <div class="function-right">
                     <BaseInput typeInput="input" :hasIcon="true" placeholder="Nhập từ khóa tìm kiếm" v-model="keywordSearch"/>
@@ -119,6 +214,7 @@
 </template>
 
 <script>
+import BaseButton from '@/components/base/BaseButton.vue'
 import BaseButtonIcon from '@/components/base/BaseButtonIcon.vue'
 import BaseButtonFunction from '@/components/base/BaseButtonFunction.vue'
 import BaseOverview from '@/components/base/BaseOverview.vue'
@@ -130,13 +226,15 @@ import BaseTablePaging from '@/components/base/BaseTablePaging.vue'
 import BaseDropDownFunction from '@/components/base/BaseDropDownFunction.vue'
 
 import AccountDetail from '@/view/account_object/AccountDetail.vue'
-
+import BaseComboboxNormal from '@/components/base/BaseComboboxNormal.vue'
 import BaseLoading from '@/components/base/BaseLoading.vue'
 import BaseMessageRemove from '@/components/base/BaseMessage.vue'
 import BaseMessageInfo from '@/components/base/BaseMessage.vue'
 
+import MyFunction from '@/js/function.js'
 import * as mylib from '../../js/resourcs.js'
 import axios from 'axios'
+import * as location from '@/js/location.js'
 export default {
     components: {
         BaseLoading,
@@ -149,16 +247,19 @@ export default {
         BaseDropDownFunction,
         BaseMessageRemove,
         BaseMessageInfo,
+        BaseComboboxNormal,
+        BaseButton,
 
         AccountDetail
-    },
-    mounted() {
-
     },
     created(){
         var me = this;
         me.getData();
     },
+    async mounted() {
+        await this.getListAccountObjectGroup();//Thực hiện lấy dữ liệu của nhóm đối tượng
+    },
+   
     data() {
         return {
             isShowLoading:false,//Mặc định là đang đóng loading
@@ -187,8 +288,56 @@ export default {
             titleMessRemove:null,
             isShowMessRemove:false,
             isShowMessInfo:false,
+            
+            listAccountObjectGroup:[],
+            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
+            errorAccountObjectGroup:false,
+            titleAccountObjectGroup:"",
+
+            listFieldProvinceOrCity: mylib.data.listFieldProvinceOrCity,//Field của thành phố
+            listFieldDistrict: mylib.data.listFieldDistrict,//Field của quận huyện
+            listFieldWardOrCommune: mylib.data.listFieldWardOrCommune,//Field của xã phường
+
+            listProvinceOrCitySource:location.resourcs.cities,//Nguồn chính của thành phố
+            listDistrictSource:location.resourcs.district,//Nguồn chính của Quận huyện
+            listDistrictTemp:[],//Thực sự truyền vào mỗi khi thay đổi giá trị của cha
+            listWardOrCommuneSource:location.resourcs.wardOrCommune,//Nguồn chính của xã phường
+            listWardOrCommuneTemp:[],//Thực sự truyền vào mỗi khi thay đổi giá trị của cha
+
+            provinceOrCityIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+            districtIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+            wardOrCommuneIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
+
+            errorProvinceOrCity:false,
+            titleProvinceOrCity:"",
+            errorDistrict:false,
+            titleDistrict:"",
+            errorWardOrCommune:false,
+            titleWardOrCommune:"",
+
+            isShowDataWardOrCommune:false,
+            isShowDataDistrict:false,
+            isShowDataProvinceOrCity:false,
+
+            isShowFilterAccountObject:false,//Trạng thái của ô cửa sổ filter
+            objectFilterTemp:{
+                Type:"Tất cả",
+                AccountObjectGroupCode:null,
+                AccountObjectGroupId:null,
+                ProvinceOrCity:null,
+                District:null,
+                WardOrCommune:null,
+
+            },//Tạm thời trong filter
+            objectFilter:{
+                AccountObjectGroupCode: null,
+                ProvinceOrCity:null,
+                District:null,
+                WardOrCommune:null,
+            },//Lọc thật sự
         }
     },
+  
     watch: {
         /*Thực hiện theo dõi biến để load lại trang mong muốn đang làm
         *CreatedBy: HoaiPT(01/03/2022)
@@ -200,9 +349,254 @@ export default {
                 me.pageAction = 1;//Thực hiện chuyển về trang đầu tiên
                 me.showData();//Lấy lại dữ liệu
             }, 1000);
-        }
+        },
+        provinceOrCityIdTemp(valueNew){
+            this.listDistrictTemp = this.listDistrictSource.filter(item => item.ParentId == valueNew);
+        },
+        districtIdTemp(valueNew){
+            this.listWardOrCommuneTemp = this.listWardOrCommuneSource.filter(item => item.ParentId == valueNew);
+        },
     },
     methods: {
+        /**
+         * Thực hiện khi click vào nút đặt lại trong filter
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        btnClickResetFilter(){
+            //Set hết mấy cái sử dụng temp ấy về null hết
+            this.provinceOrCityIdTemp = null;
+            this.districtIdTemp = null;
+            this.wardOrCommuneIdTemp = null;
+
+            //Set toàn bộ objectFilterTemp về giá trị ban đầu
+            this.objectFilterTemp.Type = "Tất cả";
+            this.objectFilterTemp.AccountObjectGroupCode = null;
+            this.objectFilterTemp.AccountObjectGroupId = null;
+            this.objectFilterTemp.ProvinceOrCity = null;
+            this.objectFilterTemp.District = null;
+            this.objectFilterTemp.WardOrCommune = null;
+
+            //Nếu có lỗi ở những ô thì về trạng thái ban đầu không lỗi gì hết
+            this.errorProvinceOrCity = false;
+            this.titleProvinceOrCity ="";
+            this.errorDistrict =false;
+            this.titleDistrict = "";
+            this.errorWardOrCommune= false;
+            this.titleWardOrCommune = "";
+            this.errorAccountObjectGroup = false;
+            this.titleAccountObjectGroup = "";
+
+        },
+        /**
+         * Thực hiện khi click vào xóa bộ lọc
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        async btnRemoveAllFilter(){
+            let objectTemp ={};//Rỗng
+            this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, objectTemp);
+            await this.showData();
+        },
+        /**
+         * Thực hiện kiểm tra xem bộ lọc ấy có tồn tại giá trị hay không 
+         * Nếu có thì hiện xóa bộ lọc còn không có có giá trị nào thì không hiển thị xóa bộ lọc
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        exitObjectFilter(){
+            for(var propName in this.objectFilter){
+                if(this.objectFilter[propName] !=null){
+                    if(this.objectFilter[propName] !=""){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+        /**
+         * Thực hiện khi click vào nút xóa item ở bộ lọc
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        async btnClickRemoveInItemFilter(value,propName){
+            this.objectFilter[propName] = null;
+            await this.showData();//Load dữ liệu
+        },
+        /**
+         * Thực hiện khi click vào nút lọc ở dropdown
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        async btnClickFilterInDropdown(){
+            var me = this;
+            if(!me.validateAccountObjectGroup()){
+                return;
+            }
+            if( ! me.validateAddressFilter()){
+                return;
+            }
+            this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, this.objectFilterTemp);
+            this.isShowFilterAccountObject = false;//Thực hiện đóng filter
+
+            await this.showData();//Load dữ liệu
+
+        },
+        /**
+         * Thực hiện validate ở AccountObjectGroup
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        validateAccountObjectGroup(){
+            if(this.objectFilterTemp.AccountObjectGroupId == null && this.objectFilterTemp.AccountObjectGroupCode !=null){//Nếu id bằng null mà code lại khác null 
+                if(this.objectFilterTemp.AccountObjectGroupCode !=""){
+                    this.errorAccountObjectGroup = true;
+                    this.titleAccountObjectGroup = "Không tồn tại mã nhóm nhà cung cấp này! ";
+                    this.$refs.AccountObjectGroup.focus();//Tập trung vào ô mã nhóm nhà cung cấp
+                    return false;
+                }
+            }
+            return true;
+        },
+        /**
+         * Thực hiện Validate Address
+         * CreadBy: HoaiPT(17/03/2022)
+         * UpdateBy: HoaiPT(19/03/2022)
+         */
+        validateAddressFilter(){
+            var me = this;
+            if(me.objectFilterTemp.ProvinceOrCity != null){//Nếu mà nó có tồn tại
+                if(me.objectFilterTemp.ProvinceOrCity !="" && me.provinceOrCityIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleProvinceOrCity = mylib.resourcs["VI"].notProvinceOrCity;
+                    me.errorProvinceOrCity = true;
+                    this.$refs.ProvinceOrCity.focus();//Tập trung vào ô tỉnh/thành phố lỗi
+                    return false;
+                }
+            }
+
+            if(me.objectFilterTemp.District != null){//Nếu mà nó có tồn tại
+                if(me.objectFilterTemp.District !="" && me.districtIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleDistrict = mylib.resourcs["VI"].notDistrict;
+                    me.errorDistrict = true;
+                    this.$refs.District.focus();//Tập trung vào ô quận huyện lỗi
+                    return false;
+                }
+            }
+
+            if(me.objectFilterTemp.WardOrCommune != null){//Nếu mà nó có tồn tại
+                if(me.objectFilterTemp.WardOrCommune !="" && me.wardOrCommuneIdTemp == null){//Nếu nó có giá trị mà id vẫn bằng null
+                    me.titleWardOrCommune = mylib.resourcs["VI"].notWardOrCommune;
+                    me.errorWardOrCommune = true;
+                    this.$refs.WardOrCommune.focus();//Tập trung vào ô xã phường lỗi
+                    return false;
+                }
+            }
+            return true;
+        },
+        /**
+         * Thực hiện update lại trạng thái của data xã phường
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        updateIsShowWardOrCommune(status){
+            this.isShowDataWardOrCommune = status;
+        },
+        /**
+         * Thực hiện khi thay đổi input của xã phường
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeInputWardOrCommune(){
+            this.wardOrCommuneIdTemp = null;
+            this.errorWardOrCommune = false;//Nếu có viền đỏ thì bỏ
+            this.titleWardOrCommune = "";//Và title cũng bỏ
+        },
+        /**
+         * Thực hiện khi thay đổi giá trị Id của xã phường
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeIdWardOrCommune(object){
+            this.wardOrCommuneIdTemp = object.LocationId;
+        },
+        /**
+         * Thực hiện update lại trạng thái của data quận huyện
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        updateIsShowDistrict(status){
+            this.isShowDataDistrict = status;
+        },
+        /**
+         * Thực hiện khi thay đổi input của quận huyện
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeInputDistrict(){
+            this.districtIdTemp = null;
+            this.errorDistrict = false;//Nếu có viền đỏ thì bỏ
+            this.titleDistrict = "";//Và title cũng bỏ
+            this.listWardOrCommuneTemp =[];
+
+            this.objectFilterTemp.WardOrCommune ="";
+            this.isShowDataWardOrCommune = false;
+
+            this.wardOrCommuneIdTemp = null;
+        },
+        /**
+         * Thực hiện khi select thay đổi giá trị id của quận huyện
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeIdDistrict(object){
+            this.districtIdTemp = object.LocationId;
+        },
+        /**
+         * Thực hiện cập nhật của data tỉnh thành phố
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        updateIsShowProvinceOrCity(status){
+            this.isShowDataProvinceOrCity = status;
+        },
+        /**
+         * Thực hiện khi thay đổi giá trị input của tỉnh thành phố
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeInputProvinceOrCity(){
+            this.provinceOrCityIdTemp = null;
+            this.errorProvinceOrCity = false;//Nếu có viền đỏ thì bỏ
+            this.titleProvinceOrCity = "";//Và title cũng bỏ
+            this.listDistrictTemp =[];
+            this.listWardOrCommuneTemp =[];
+
+            this.objectFilterTemp.District="";
+            this.isShowDataDistrict = false;
+            this.objectFilterTemp.WardOrCommune ="";
+            this.isShowDataWardOrCommune = false;
+            
+            this.districtIdTemp = null;
+            this.wardOrCommuneIdTemp = null;
+        },
+        /**
+         * Thực hiện khi select giá trị của tỉnh thành phố
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeIdProvinceOrCity(object){
+            this.provinceOrCityIdTemp = object.LocationId;
+        },
+        /**
+         * Thực hiện khi thay đổi ô input của AccountObjectGroup
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeInputAccountObjectGroup(){
+            this.objectFilterTemp.AccountObjectGroupId = null;
+            this.errorAccountObjectGroup = false;//Nếu có viền đỏ thì thì thực hiện xóa
+            this.titleAccountObjectGroup ="";
+        },
+        /**
+         * Thực hiện khi select id của AccountObjectGroup
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        changeIdAccountObjectGroup(object){
+            this.objectFilterTemp.AccountObjectGroupId = object.AccountObjectGroupId;
+        },
+       
+        /**
+         * Thực hiện khi click vào nút lọc màu trắng ở trên list table
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        btnClickFilterList(){
+            this.isShowFilterAccountObject = !this.isShowFilterAccountObject;//Thực hiện hiển thị bộ lọc hoặc ẩn bộ lọc khi ấn vào nút lọc
+        },
+
         /**
          * Thực hiện xem thông tin của nhà cung cấp 
          * CreatedBy: HoaiPT(28/02/2022)
@@ -229,9 +623,8 @@ export default {
             me.isShowFunction = true;
             
         },
-      
         
-         /**
+        /**
          * Thực hiện khi click vào nút sửa trong dropdown 
          * CreatedBy: HoaiPT(28/02/2022)
          */
@@ -355,7 +748,7 @@ export default {
             try {
                 var me = this;
                 me.isShowLoading = true; //Thực hiện mở Loading
-                await axios.get(`https://localhost:44338/api/v1/AccountObjects/getPaging?searchText=${me.keywordSearch}&pageIndex=${me.pageAction}&pageSize=${me.selectTextPage}`)
+                await axios.post(`https://localhost:44338/api/v1/AccountObjects/GetPageV2?searchText=${me.keywordSearch}&pageIndex=${me.pageAction}&pageSize=${me.selectTextPage}`,this.objectFilter)
                     .then(function (res) {
                         me.listAccount = res.data.Data; //Thực hiện gián listEmployee vào với kích thước trang, từ khóa tìm kiếm và trang đang đứng
                         me.totalPage = Number(res.data.TotalPage); //Gán vào tổng số trang
@@ -413,6 +806,21 @@ export default {
                     })
                     .catch(function (res) {
                         console.error(res);
+                    })
+            } catch {
+                console.log(mylib.resourcs["VI"].errorMsg);
+            }
+        },
+        /**
+         * Thực hiện lấy listAccountObjectGroup
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+         async getListAccountObjectGroup() {
+            try {
+                var me = this;
+                await axios.get('https://localhost:44338/api/v1/AccountObjectGroups')
+                    .then(function(res) {
+                        me.listAccountObjectGroup = res.data;
                     })
             } catch {
                 console.log(mylib.resourcs["VI"].errorMsg);

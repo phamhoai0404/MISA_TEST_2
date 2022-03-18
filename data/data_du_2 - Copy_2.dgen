@@ -1701,14 +1701,14 @@
           <DataType>LONGTEXT</DataType>
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
-            <EmptyStringProportion>0</EmptyStringProportion>
+            <EmptyStringProportion>10</EmptyStringProportion>
             <AllowNulls>true</AllowNulls>
-            <NullProportion>100</NullProportion>
+            <NullProportion>10</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>5</SeedValue>
             <Unique>false</Unique>
             <IsAlwaysUnique>false</IsAlwaysUnique>
-            <Expression>()</Expression>
+            <Expression>(((((($"FirstNamesMale.txt")|($"FirstNamesFemale.txt"))[_.]?)?($"LastNames.txt"))|(($"LastNames.txt")\C?)|(((($"FirstNamesMale.txt")|($"FirstNamesFemale.txt"))[_.]?(\C[_.]?)?)?($"LastNames.txt")))(\D{,3})?|\c{4,8}(\d{1,4}|[_.]\c{4,10}))@(example$"7"|nowhere$"3").com</Expression>
           </GeneratorOptions>
           <GeneratorType>MySqlRegularExpressionGenerator</GeneratorType>
           <GeneratorName>Email</GeneratorName>
@@ -1760,7 +1760,7 @@
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
             <EmptyStringProportion>0</EmptyStringProportion>
-            <AllowNulls>false</AllowNulls>
+            <AllowNulls>true</AllowNulls>
             <NullProportion>100</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>1</SeedValue>
@@ -1780,7 +1780,7 @@
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
             <EmptyStringProportion>0</EmptyStringProportion>
-            <AllowNulls>false</AllowNulls>
+            <AllowNulls>true</AllowNulls>
             <NullProportion>100</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>3</SeedValue>
@@ -1799,7 +1799,7 @@
           <GeneratorOptions p6:type="MySqlRegularExpressionGeneratorOptions" xmlns:p6="http://www.w3.org/2001/XMLSchema-instance">
             <AllowEmptyStrings>false</AllowEmptyStrings>
             <EmptyStringProportion>0</EmptyStringProportion>
-            <AllowNulls>false</AllowNulls>
+            <AllowNulls>true</AllowNulls>
             <NullProportion>100</NullProportion>
             <ValueDistributionMode>Seed</ValueDistributionMode>
             <SeedValue>1</SeedValue>
