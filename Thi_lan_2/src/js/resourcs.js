@@ -38,6 +38,9 @@ var resourcs = {
         notNullPostedDate: "Ngày hạch toán không được để trống!",
         notNullCaPaymentDate: "Ngày phiếu chi không được để trống!",
 
+        errorPostedDateLessCaPaymentDate: 'Ngày hạch toán phải lớn hơn hoặc bằng ngày phiếu chi!',
+        notNullListCaPaymentDetail: 'Bạn phải nhập chứng từ chi tiết!',
+
     }
 }
 var misaEnum = {

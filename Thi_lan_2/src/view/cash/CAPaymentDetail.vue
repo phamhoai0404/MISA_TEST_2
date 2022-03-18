@@ -230,9 +230,69 @@ export default {
             }
             return MyFunction.formatNumber(temp);
         },
-        
+        totalMoney(){
+            let temp = 0;
+            for(let i = 0 ; i <this.listCAPaymentDetail.length; i++){
+                temp += Number(this.listCAPaymentDetail[i].Amount);
+            }
+            return temp;
+        }
     },
     watch:{
+        /**
+         * Thực hiện theo dõi Resion và gán giá trị cho list nếu giống nhau
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        'caPayment.Resion'(valueNew, valueOld){
+            if(valueOld ==""){//Nếu giá trị cũ của Resion caPayment là "" thì những giá trị của list bằng giá trị mới của Resion
+                for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                    this.listCAPaymentDetail[i].DecriptionDetail = valueNew;
+                }
+            }else{
+                for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                    if(valueOld == this.listCAPaymentDetail[i].DecriptionDetail){ //Nếu giá trị cũ của list mà bằng giá trị cũ của Resion thì giá trị mới nó cũng bằng của Resion
+                        this.listCAPaymentDetail[i].DecriptionDetail = valueNew;
+                    }
+                }
+                
+            }
+        },
+        /**
+         * Thực hiện theo dõi của AccountObjectId
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        'caPayment.AccountObjectId'(valueNew, valueOld){
+            if(valueNew){
+                for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                    if(this.listCAPaymentDetail[i].AccountObjectId == null){ //Nếu mà giá trị nó bằng null của từng list thì nó sẽ bằng giá trị mới của đối tượng trên caPayment
+                        this.listCAPaymentDetail[i].AccountObjectId = valueNew;
+                        let tempObject = MyFunction.getObjectArray(this.listAccountObject,'AccountObjectId',valueNew);
+                        this.listCAPaymentDetail[i].AccountObjectCode = tempObject.AccountObjectCode;
+                        this.listCAPaymentDetail[i].AccountObjectName = tempObject.AccountObjectName;
+                    }
+                }
+                for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                    if(this.listCAPaymentDetail[i].AccountObjectId == valueOld){ //Nếu giá trị của trong list mà bằng giá trị cũ của AccountObject trên caPayment thì giá trị mới nó cũng bằng như caPayment
+                        this.listCAPaymentDetail[i].AccountObjectId = valueNew;
+                        let tempObject = MyFunction.getObjectArray(this.listAccountObject,'AccountObjectId',valueNew);
+                        this.listCAPaymentDetail[i].AccountObjectCode = tempObject.AccountObjectCode;
+                        this.listCAPaymentDetail[i].AccountObjectName = tempObject.AccountObjectName;
+                    }
+                }
+               
+            }
+            if(valueNew == null){//Nếu giá trị mới bằng null mà giá trị cũ của nó bằng dưới cái list thì dưới cái list cũng bằng null
+                for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                    if(this.listCAPaymentDetail[i].AccountObjectId == valueOld){ //Nếu giá trị của trong list mà bằng giá trị cũ của AccountObject trên caPayment thì
+                        this.listCAPaymentDetail[i].AccountObjectId = null;
+                        this.listCAPaymentDetail[i].AccountObjectCode = '';
+                        this.listCAPaymentDetail[i].AccountObjectName = '';
+                    }
+                }
+
+            }
+            
+        }
     },
     data() {
         return {
@@ -513,7 +573,11 @@ export default {
                 if( !me.validateDate()){//Thực hiện validate Ngày tháng của ngày hạch toán và ngày phiếu chi
                     return;
                 }
+                if(! me.validateListDetail()){//Thực hiện validate List
+                    return;
+                }
 
+                this.caPayment.TotalAmount = this.totalMoney;//Lưu vào Amount tổng số tiền
 
                 let objectControl ={};
                 objectControl.CaPayment  = me.caPayment;
@@ -532,11 +596,63 @@ export default {
            
         },
         /**
+         * Thực hiện validate Detail của CaPayment detail
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
+        validateListDetail(){
+            var me = this;
+            
+            if(this.listCAPaymentDetail.length == 0){//list detail phải có ít nhất một dòng detail thì mới được
+                me.titleMessInfo = mylib.resourcs['VI'].notNullListCaPaymentDetail;
+                me.isShowMessInfo = true;
+                return false;
+            }
+            for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
+                if( this.listCAPaymentDetail[i].DebitAccountId == null || this.listCAPaymentDetail[i].DebitAccountId ==""){//Các dòng tài khoản nợ không được để trống
+                    me.titleMessInfo =`TK nợ ở hàng ${i + 1} không được để trống!`,
+                    me.isShowMessInfo = true;
+                    return false;
+                }
+                if(this.listCAPaymentDetail[i].CreditAccountId == null || this.listCAPaymentDetail[i].CreditAccountId ==""){//Các dòng tài khoản có không được để trống
+                    me.titleMessInfo =`TK có ở hàng ${i + 1} không được để trống!`,
+                    me.isShowMessInfo = true;
+                    return false;
+                }
+
+                //Kiểm tra xem có tồn tại mã TK nợ trong hệ thống hay không nếu không thì thông báo lỗi
+                if(!MyFunction.valueInArray(mylib.dataSource.listDataDebitAccount, 'DebitAccountId', this.listCAPaymentDetail[i].DebitAccountId)){
+                    me.titleMessInfo =`TK nợ ở hàng ${i + 1} không tồn tại trong hệ thống!`,
+                    me.isShowMessInfo = true;
+                    return false;
+                }
+
+                //Kiểm tra xem có tồn tại mã TK cótrong hệ thống hay không nếu không thì thông báo lỗi
+                if(!MyFunction.valueInArray(mylib.dataSource.listDataCreditAccount, 'CreditAccountId', this.listCAPaymentDetail[i].CreditAccountId)){
+                    me.titleMessInfo =`TK có ở hàng ${i + 1} không tồn tại trong hệ thống!`,
+                    me.isShowMessInfo = true;
+                    return false;
+                }
+
+                if( this.listCAPaymentDetail[i].AccountObjectId == null && this.listCAPaymentDetail[i].AccountObjectCode !=null){
+                    if(this.listCAPaymentDetail[i].AccountObjectCode.trim() != ""){
+                        me.titleMessInfo =`Hàng ${i + 1} có mã đối tượng không tồn tại trên hệ thống!`,
+                        me.isShowMessInfo = true;
+                        return false;
+                    }
+                }
+            }
+
+
+
+            return true;
+        },
+        /**
          *Thực hiện validate của ngày hạch toán và ngày phiếu chi
          * CreatedBy: HoaiPT(17/03/2022)
          */
         validateDate(){
             var me = this;
+            //Validate ngày Ngày phiếu chi và ngày hạch toán không được để trống
             if(me.caPayment.PostedDate == null || me.caPayment.CaPaymentDate == null){//
                 me.titleMessInfo ="";
                 if(me.caPayment.PostedDate == null){//
@@ -555,6 +671,18 @@ export default {
                 }
 
                 me.titleMessInfo +=" không được để trống";
+                me.isShowMessInfo = true;
+                return false;
+            }
+
+            //Ngày hạch toán phải lớn hơn ngày phiếu chi
+            let tempPostedDate = new Date(me.caPayment.PostedDate);
+            let tempCaPaymentDate = new Date(me.caPayment.CaPaymentDate);
+            if(tempPostedDate < tempCaPaymentDate){
+                me.titlePostedDate = mylib.resourcs['VI'].errorPostedDateLessCaPaymentDate;
+                me.errorPostedDate = true;//Xuất hiện viền đỏ của ngày hạch toán
+
+                me.titleMessInfo = mylib.resourcs['VI'].errorPostedDateLessCaPaymentDate;
                 me.isShowMessInfo = true;
                 return false;
             }
@@ -719,8 +847,10 @@ export default {
                 CaPaymentNo: null,
                 CaPaymentDate:null,
                 PostedDate:null,
+                Resion:null,
+                AccountObjectId:null,
+                AccountObjectName:null
             };
-            me.caPayment.CaPaymentNo = '';//Không biết sao cái này bị bind delay
             me.caPayment.Resion = "Chi tiền cho";
             me.caPayment.PostedDate = new Date();
             me.caPayment.CaPaymentDate = new Date();
@@ -736,7 +866,11 @@ export default {
          * CreatedBy: HoaiPT(11/03/2022)
          */
         objectCaPaymentDetailNew(){
-            let caPaymentDetailNew ={};
+            let caPaymentDetailNew ={
+                AccountObjectId:null,
+                AccountObjectCode:null,
+                AccountObjectName:null,
+            };
             caPaymentDetailNew.Amount = 0;
             caPaymentDetailNew.CreditAccountId = "11111";
             caPaymentDetailNew.DecriptionDetail = "Chi tiền cho";

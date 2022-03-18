@@ -224,6 +224,16 @@ var MyFunction = {
             }
         }
         return false;
+    },
+    /**
+     * Trả về đối tượng có giống với id
+     */
+    getObjectArray(array, propName, value) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i][propName] == value)
+                return array[i];
+        }
+        return null; //Nếu không có giá trị giống thì rẽ return ra null
     }
 }
 export default MyFunction
