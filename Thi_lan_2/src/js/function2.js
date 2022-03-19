@@ -14,5 +14,6 @@ var MyFunction2 = {
         }
         return false; //Nó không có đối tượng nào cả
     },
+
 }
 export default MyFunction2

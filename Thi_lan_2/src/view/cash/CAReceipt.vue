@@ -21,7 +21,10 @@
                     <div class="icon-check">
                         <BaseButtonIcon iconClass="btn-arrow-check-all" />
                     </div>
-                    <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important "/>
+                    <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important " @btnClick="isShowRemoveMany=!isShowRemoveMany"/>
+                    <div v-if="listCaPaymentRemove.length >0 && isShowRemoveMany == true" class="delete-many">
+                        <div @click="btnRemoveMany">Xóa</div> 
+                    </div>
                     <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;' @btnClick="btnClickFilterList"/>
                     <div class="group-filter">
                         <div v-if="exitObjectFilter()" class="item-filter" >
@@ -110,6 +113,8 @@
                     
                     @btnView ='btnSeeInfoCAPayment'
                     @btnDropDown ='btnDropDown'
+
+                    @btnCheckbox='btnCheckboxItem'
                     
                 /> 
                 <BaseTablePaging  
@@ -231,6 +236,11 @@ export default {
             listFieldDataTime:mylib.data.listFieldDateTimeFilter,//File data hiển thị của DataTime
             errorDateTime:false,//Có lỗi hay không của ô thời gian
             titleDateTime:"",//Title có hiển thị khi lỗi DateTime hay không
+
+             //Mảng dùng để lưu trữ toàn id xóa
+            listCaPaymentRemove:new Array(),
+            isShowRemoveMany:false,
+            actionDelete:mylib.misaEnum.actionDelete.NoAction,//Đầu tiên là không thực hiện xóa gì
         }
     },
     watch:{
@@ -251,6 +261,28 @@ export default {
         me.getData();//Trạng thái ban đầu
     },
     methods: {
+        btnRemoveMany(){
+            var me = this;
+            me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều dropdown
+
+            me.actionDelete = mylib.misaEnum.actionDelete.Multi;//Thực hiện xóa nhiều
+
+            me.titleMessRemove = 'Bạn có thực sự muốn xóa những phiếu chi này không?';//Thể hiện title mong muốn
+            me.isShowMessRemove = true;//Hiển thị xóa nhiều message
+        },
+         /**
+         * Thực hiện click vào checkbox
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        btnCheckboxItem({id}){
+            const item = document.getElementById(id);
+            if(item.checked == true){
+                this.listCaPaymentRemove.push(id);
+            }else{
+                this.listCaPaymentRemove = this.listCaPaymentRemove.filter(item => item != id)
+            }
+            console.log(this.listCaPaymentRemove);
+        },
         /**
          * Thực hiện khi thay đổi giá trị input nhập vào ấy
          * CreatedBy: HoaiPT(19/03/2022)
@@ -433,15 +465,30 @@ export default {
         btnConfirmRemove(){
              try {
                 var me = this;
-                 axios.delete(`https://localhost:44338/api/v1/ControlCaPayment/${this.idCaPaymentSelected}`)
-                .then(function () {          
-                    //Đóng form
-                    me.isShowMessRemove = false;//Đóng form xóa
-                    me.getData();//Thực hiện load lại dữ liệu
-                })
-                .catch(function () {
-                    console.log(mylib.resourcs["VI"].errorMsg);
-                })
+                let tempListCaPaymentRemove = me.listCaPaymentRemove;
+                MyFunction.removeChecked(me.listCaPaymentRemove);//Thực hiện bỏ checked
+                me.listCaPaymentRemove =[];//Làm mới rỗng
+
+                switch (me.actionDelete) {
+                    case mylib.misaEnum.actionDelete.One:
+                        axios.delete(`https://localhost:44338/api/v1/ControlCaPayment/${this.idCaPaymentSelected}`)
+                        .then(function () {          
+                            //Đóng form
+                            me.isShowMessRemove = false;//Đóng form xóa
+                            me.getData();//Thực hiện load lại dữ liệu
+                        })
+                        .catch(function () {
+                            console.log(mylib.resourcs["VI"].errorMsg);
+                        })
+                        break;
+                    case mylib.misaEnum.actionDelete.Multi:
+                        console.log(tempListCaPaymentRemove);
+                        console.log("Thực hiện xóa nhiều");
+                        break;
+                    default:
+                        break;
+                }
+                 
             } catch {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
@@ -453,6 +500,10 @@ export default {
         btnRemoveCaPayment(){
             var me = this;
             me.isShowFunction = false;//Đóng dropdown function
+            me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều nếu mở
+
+            me.actionDelete = mylib.misaEnum.actionDelete.One;//Thực hiện xóa 1;
+
             me.titleMessRemove = `Bạn có muốn xóa chứng từ <${me.objectCaPayment.CaPaymentNo}> không?`;
             me.isShowMessRemove = true;//Thực hiện mở form remove
         },

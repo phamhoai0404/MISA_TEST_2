@@ -246,6 +246,18 @@ var MyFunction = {
             objectTemp[propName] = objectTarget[propName];
         }
         return objectTemp; //Trả về đối tượng muốn lấy mà không dính tới bind
-    }
+    },
+    /**
+     * Thực hiện xóa bỏ checked
+     * CreatedBy: HoaiPT(08/02/2022)
+     * UpdatedBy: HoaiPT(14/02/2022)
+     */
+    removeChecked(array) {
+        for (let i = 0; i < array.length; i++) {
+            let id = array[i];
+            if (document.getElementById(id).checked == true)
+                document.getElementById(id).checked = false;
+        }
+    },
 }
 export default MyFunction

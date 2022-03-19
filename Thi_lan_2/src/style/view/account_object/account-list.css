@@ -134,3 +134,21 @@
     border-top: 1px solid #e0e0e0;
     margin: 20px 0;
 }
+
+.delete-many {
+    position: absolute;
+    background-color: white;
+    z-index: 10;
+    margin-top: 72px;
+    margin-left: 105px;
+    height: 34px;
+    width: 100px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    border: 1px solid #bbbb;
+    border-radius: 2px;
+}
+
+.delete-many:hover {
+    background-color: #f5f1f1;
+}

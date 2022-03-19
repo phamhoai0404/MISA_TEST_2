@@ -27,7 +27,10 @@
                     <div class="icon-check">
                         <BaseButtonIcon iconClass="btn-arrow-check-all" />
                     </div>
-                    <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important"/>
+                    <BaseButtonFunction label="Thực hiện hàng loạt" styleButton="max-width: 183px !important;min-width: 183px !important" @btnClick="isShowRemoveMany = !isShowRemoveMany"/>
+                    <div v-if="listAccountObjectRemove.length >0 && isShowRemoveMany == true" class="delete-many">
+                        <div @click="btnRemoveMany">Xóa</div> 
+                    </div>
                     <BaseButtonFunction label="Lọc" styleButton='margin-left:10px; margin-right: 10px; width: 78px !important;' @btnClick="btnClickFilterList"/>
                     <div class="group-filter">
                         <div v-for="(item, index) in objectFilter " :key="index" class="item-filter" >
@@ -168,6 +171,8 @@
                     @btnView = 'btnSeeInfoAccount'
                     @btnDropDown = 'btnDropDown'
                     :nameTable="'AccountObject'"
+
+                    @btnCheckbox='btnCheckboxItem'
                 />
                 <BaseTablePaging  
                     :isShowPage="isShowPage"
@@ -335,6 +340,11 @@ export default {
                 District:null,
                 WardOrCommune:null,
             },//Lọc thật sự
+
+            //Mảng dùng để lưu trữ toàn id xóa
+            listAccountObjectRemove:new Array(),
+            isShowRemoveMany:false,
+            actionDelete:mylib.misaEnum.actionDelete.NoAction,//Đầu tiên là không thực hiện xóa gì
         }
     },
   
@@ -358,6 +368,28 @@ export default {
         },
     },
     methods: {
+        btnRemoveMany(){
+            var me = this;
+            me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều dropdown
+
+            me.actionDelete = mylib.misaEnum.actionDelete.Multi;//Thực hiện xóa nhiều
+            me.titleMessRemove = 'Bạn có thực sự muốn xóa những nhà cung cấp này không?';//Thể hiện title mong muốn
+            me.isShowMessRemove = true;//Hiển thị xóa nhiều message
+        },
+        /**
+         * Thực hiện click vào checkbox
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
+        btnCheckboxItem({id}){
+            const item = document.getElementById(id);
+            if(item.checked == true){
+                this.listAccountObjectRemove.push(id);
+            }else{
+                this.listAccountObjectRemove = this.listAccountObjectRemove.filter(item => item != id)
+            }
+            console.log(this.listAccountObjectRemove);
+        },
+
         /**
          * Thực hiện khi click vào nút đặt lại trong filter
          * CreatedBy: HoaiPT(19/03/2022)
@@ -641,19 +673,34 @@ export default {
         btnConfirmRemove(){
             try {
                 var me = this;
-                 axios.delete(`https://localhost:44338/api/v1/AccountObjects/${this.accountSelected.AccountObjectId}`)
-                .then(function () {          
-                    //Đóng form
-                    me.isShowMessRemove = false;//Đóng form xóa
-                    me.getData();//Thực hiện load lại dữ liệu
-                })
-                .catch(function () {
-                    //Trường hợp lỗi không xóa được thông tin lỗi đã ghi ở resource ở chỗ data return rồi
-                    me.isShowMessRemove = false;//Thực hiện đóng form xóa
+                let tempListAccountObjectRemove = me.listAccountObjectRemove;
+                MyFunction.removeChecked(me.listAccountObjectRemove);//Thực hiện bỏ checked
+                me.listAccountObjectRemove =[];//Làm mới rỗng
 
-                    //Thực hiện mở form thông báo lỗi
-                    me.isShowMessInfo = true;
-                })
+                switch (me.actionDelete) {
+                    case mylib.misaEnum.actionDelete.One:
+                        axios.delete(`https://localhost:44338/api/v1/AccountObjects/${this.accountSelected.AccountObjectId}`)
+                        .then(function () {          
+                            //Đóng form
+                            me.isShowMessRemove = false;//Đóng form xóa
+                            me.getData();//Thực hiện load lại dữ liệu
+                        })
+                        .catch(function () {
+                            //Trường hợp lỗi không xóa được thông tin lỗi đã ghi ở resource ở chỗ data return rồi
+                            me.isShowMessRemove = false;//Thực hiện đóng form xóa
+
+                            //Thực hiện mở form thông báo lỗi
+                            me.isShowMessInfo = true;
+                        })
+                        break;
+                    case mylib.misaEnum.actionDelete.Multi:
+                        console.log(tempListAccountObjectRemove);//Thực hiện nếu xóa thì xóa cái này
+                        console.log("thực hiện xóa nhiều");
+                        break;
+                    default:
+                        break;
+                }
+                
             } catch {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
@@ -665,9 +712,14 @@ export default {
         btnRemoveAccount(){    
             var me = this;
             me.isShowFunction = false;//Đóng dropdown function
+            me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều nếu mở 
+            
             me.titleMessRemove = `Bạn có thực sự muốn xóa Nhà cung cấp <${me.accountSelected.AccountObjectCode}> không?`;
+            
+            me.actionDelete = mylib.misaEnum.actionDelete.One;//Thực hiện xóa 1;
             me.isShowMessRemove = true;//Thực hiện mở form remove
         },
+        
         /**
          * Thực hiện khi click vào nút nhân bản trong dropdown
          * CreatedBy: HoaiPT(01/03/2022)
