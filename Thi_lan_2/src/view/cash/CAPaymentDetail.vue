@@ -272,8 +272,11 @@ export default {
                     if(this.listCAPaymentDetail[i].AccountObjectId == null){ //Nếu mà giá trị nó bằng null của từng list thì nó sẽ bằng giá trị mới của đối tượng trên caPayment
                         this.listCAPaymentDetail[i].AccountObjectId = valueNew;
                         let tempObject = MyFunction.getObjectArray(this.listAccountObject,'AccountObjectId',valueNew);
-                        this.listCAPaymentDetail[i].AccountObjectCode = tempObject.AccountObjectCode;
-                        this.listCAPaymentDetail[i].AccountObjectName = tempObject.AccountObjectName;
+                        if(tempObject !=null){
+                            this.listCAPaymentDetail[i].AccountObjectCode = tempObject.AccountObjectCode;
+                            this.listCAPaymentDetail[i].AccountObjectName = tempObject.AccountObjectName;
+                        }
+                        
                     }
                 }
                 for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
@@ -294,7 +297,6 @@ export default {
                         this.listCAPaymentDetail[i].AccountObjectName = '';
                     }
                 }
-
             }
             
         }
@@ -496,6 +498,7 @@ export default {
          */
         changeIdAccountObject(object){
             this.caPayment.AccountObjectId = object.AccountObjectId;
+            this.caPayment.Resion = "Chi tiền cho " + object.AccountObjectName;//Thực hiện gián giá trị cho Chi tiền cho
         },
         /**
          * Thực hiện khi thay đổi giá trị của ô input CaPaymentNo
