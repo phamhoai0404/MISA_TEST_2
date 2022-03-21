@@ -46,5 +46,21 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
 
             }
         }
+
+        public int DeleteManyId(string listId)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sql = $"Proc_DeleteMultipleAccountObject2";
+                var parameters = new DynamicParameters();
+
+                //Truyền vào listId ngăn cách nhau bằng dấu (,)
+                parameters.Add("@m_ListId", listId);
+                var res = SqlConnection.Execute(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure);//Thực hiện câu lệnh
+
+                return res;
+
+            }
+        }
     }
 }

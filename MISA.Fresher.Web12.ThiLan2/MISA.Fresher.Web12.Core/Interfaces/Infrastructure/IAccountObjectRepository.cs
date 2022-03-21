@@ -23,6 +23,14 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
        /// CreatedBy: HoaiPT(18/03/2022)
         object GetPagingV2(int pageIndex, int pageSize, string searchText, 
                            string? accountObjectGroupCode, string? provinceOrCity,
-                           string? district, string? wardOrCommune);
+                             string? district, string? wardOrCommune);
+
+        /// <summary>
+        /// Thực hiện xóa nhiều bản ghi theo list id
+        /// </summary>
+        /// <param name="listId">Chuỗi id ngăn cách nhau bởi dấu (,)</param>
+        /// <returns></returns>
+        /// CreatedBy: HoaiPT(21/03/2022)
+        int DeleteManyId(string listId);
     }
 }

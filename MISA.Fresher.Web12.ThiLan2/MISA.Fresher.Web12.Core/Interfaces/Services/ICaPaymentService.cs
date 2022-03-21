@@ -32,5 +32,12 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// <param name="objectFilter">Bộ lọc </param>
         /// <returns></returns>
         object GetPagingServiceV2(string searchText, int pageSize, int pageIndex, FilterCaPayment objectFilter);
+
+        /// <summary>
+        /// Thực hiện truyền vào một list id
+        /// </summary>
+        /// <param name="listId">Một danh sách id</param>
+        /// <returns></returns>
+        int DeleteManyService(List<string> listId);
     }
 }

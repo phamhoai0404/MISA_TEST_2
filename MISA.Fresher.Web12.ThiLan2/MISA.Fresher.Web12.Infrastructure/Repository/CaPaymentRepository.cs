@@ -12,6 +12,8 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
 {
     public class CaPaymentRepository : BaseRepository<CaPayment>, ICaPaymentRepository
     {
+       
+
         public string getCaPaymentNoMax()
         {
             //Thực hiện khởi tạo kết nối và sau khi làm xong là nó tự ngắt kết nối luôn
@@ -53,6 +55,22 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
                     TotalRecord = totalRecord,//Trả về tổng số bản ghi
                     TotalPage = totalPage//Trả về tổng số trang
                 };
+
+            }
+        }
+
+        public int DeleteMany(string listId)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sql = $"Proc_DeleteMultipleCaPayment2";
+                var parameters = new DynamicParameters();
+
+                //Truyền vào listId ngăn cách nhau bằng dấu (,)
+                parameters.Add("@m_ListId", listId);
+                var res = SqlConnection.Execute(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure);//Thực hiện câu lệnh
+
+                return res;
 
             }
         }

@@ -462,7 +462,7 @@ export default {
          * Thực hiện khi click vào nút xác nhận xóa
          * CreatedBy: HoaiPT(11/03/2022)
          */
-        btnConfirmRemove(){
+        async btnConfirmRemove(){
              try {
                 var me = this;
                 let tempListCaPaymentRemove = me.listCaPaymentRemove;
@@ -471,19 +471,27 @@ export default {
 
                 switch (me.actionDelete) {
                     case mylib.misaEnum.actionDelete.One:
-                        axios.delete(`https://localhost:44338/api/v1/ControlCaPayment/${this.idCaPaymentSelected}`)
-                        .then(function () {          
-                            //Đóng form
-                            me.isShowMessRemove = false;//Đóng form xóa
-                            me.getData();//Thực hiện load lại dữ liệu
-                        })
-                        .catch(function () {
-                            console.log(mylib.resourcs["VI"].errorMsg);
-                        })
+                        await axios.delete(`https://localhost:44338/api/v1/ControlCaPayment/${this.idCaPaymentSelected}`)
+                            .then(function () {          
+                                //Đóng form
+                                me.isShowMessRemove = false;//Đóng form xóa
+                                me.getData();//Thực hiện load lại dữ liệu
+                            })
+                            .catch(function () {
+                                console.log(mylib.resourcs["VI"].errorMsg);
+                            })
                         break;
                     case mylib.misaEnum.actionDelete.Multi:
                         console.log(tempListCaPaymentRemove);
-                        console.log("Thực hiện xóa nhiều");
+                        await axios.post('https://localhost:44338/api/v1/CaPayments/DeleteMany',tempListCaPaymentRemove)
+                            .then(function () {
+                                //Đóng form
+                                me.isShowMessRemove = false;//Đóng form xóa
+                                me.getData();//Thực hiện load lại dữ liệu
+                            })
+                            .catch(function () {
+                                console.log(mylib.resourcs["VI"].errorMsg);
+                            })
                         break;
                     default:
                         break;

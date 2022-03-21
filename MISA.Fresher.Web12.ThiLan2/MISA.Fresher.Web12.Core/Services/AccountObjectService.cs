@@ -22,7 +22,6 @@ namespace MISA.Fresher.Web12.Core.Services
         {
             _accountObjectRepository = accountObjectRepository;
         }
-
         #endregion
 
         #region Methods
@@ -83,6 +82,15 @@ namespace MISA.Fresher.Web12.Core.Services
                                                         accountObjectGroupCode,provinceOrCity, 
                                                         district,wardOrCommune );
         }
+
+
+        public int DeleteManyService(List<string> listId)
+        {
+            string listAccountObjectId = string.Join<string>(",", listId);
+
+            return _accountObjectRepository.DeleteManyId(listAccountObjectId);
+        }
+
 
         protected override void ValidateInsertCustomer(AccountObject accountObject)
         {

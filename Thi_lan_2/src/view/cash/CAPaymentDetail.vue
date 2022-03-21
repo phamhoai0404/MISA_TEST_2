@@ -267,7 +267,7 @@ export default {
          * CreatedBy: HoaiPT(18/03/2022)
          */
         'caPayment.AccountObjectId'(valueNew, valueOld){
-            if(valueNew){
+            if(valueNew){//Nếu hai cùng tồn tại
                 for(let i = 0 ; i< this.listCAPaymentDetail.length; i++){
                     if(this.listCAPaymentDetail[i].AccountObjectId == null){ //Nếu mà giá trị nó bằng null của từng list thì nó sẽ bằng giá trị mới của đối tượng trên caPayment
                         this.listCAPaymentDetail[i].AccountObjectId = valueNew;

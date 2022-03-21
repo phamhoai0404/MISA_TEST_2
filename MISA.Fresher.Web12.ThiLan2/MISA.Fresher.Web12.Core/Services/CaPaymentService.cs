@@ -37,6 +37,13 @@ namespace MISA.Fresher.Web12.Core.Services
             return _caPaymentRepository.GetPagingV2(pageIndex, pageSize, searchText, startTime, endTime);
         }
 
+        public int DeleteManyService(List<string> listId)
+        {
+            string listCaPaymentId = string.Join(",", listId);
+
+            return _caPaymentRepository.DeleteMany(listCaPaymentId);
+
+        }
 
         public string getCodeNewService()
         {
@@ -78,5 +85,7 @@ namespace MISA.Fresher.Web12.Core.Services
                 );
             }
         }
+
+       
     }
 }

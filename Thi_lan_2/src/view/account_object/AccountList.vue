@@ -670,7 +670,7 @@ export default {
          * Thực hiện khi click vào nút xác nhận xóa
          * CreatedBy: HoaiPT(01/03/2022)
          */
-        btnConfirmRemove(){
+        async btnConfirmRemove(){
             try {
                 var me = this;
                 let tempListAccountObjectRemove = me.listAccountObjectRemove;
@@ -679,7 +679,7 @@ export default {
 
                 switch (me.actionDelete) {
                     case mylib.misaEnum.actionDelete.One:
-                        axios.delete(`https://localhost:44338/api/v1/AccountObjects/${this.accountSelected.AccountObjectId}`)
+                        await axios.delete(`https://localhost:44338/api/v1/AccountObjects/${this.accountSelected.AccountObjectId}`)
                         .then(function () {          
                             //Đóng form
                             me.isShowMessRemove = false;//Đóng form xóa
@@ -694,8 +694,19 @@ export default {
                         })
                         break;
                     case mylib.misaEnum.actionDelete.Multi:
-                        console.log(tempListAccountObjectRemove);//Thực hiện nếu xóa thì xóa cái này
-                        console.log("thực hiện xóa nhiều");
+                        await axios.post('https://localhost:44338/api/v1/AccountObjects/DeleteMany',tempListAccountObjectRemove)
+                            .then(function () {
+                                //Đóng form
+                                me.isShowMessRemove = false;//Đóng form xóa
+                                me.getData();//Thực hiện load lại dữ liệu
+                            })
+                            .catch(function () {
+                                //Trường hợp lỗi không xóa được thông tin lỗi đã ghi ở resource ở chỗ data return rồi
+                                me.isShowMessRemove = false;//Thực hiện đóng form xóa
+
+                                //Thực hiện mở form thông báo lỗi
+                                me.isShowMessInfo = true;
+                            })
                         break;
                     default:
                         break;

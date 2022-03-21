@@ -29,5 +29,13 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         object GetPagingV2(int pageIndex, int pageSize, string searchText,
                            DateTime? startTime, DateTime? endTime);
 
+        /// <summary>
+        /// Thực hiện xóa nhiều bản ghi của CaPayment đồng thời xóa ở CaPaymentDetail luôn
+        /// </summary>
+        /// <param name="listId">Một chuỗi listId ngăn cách với nhau bằng dấu (,)</param>
+        /// <returns></returns>
+        /// CreatedBy: HoaiPT(21/03/2022)
+        int DeleteMany(string listId);
+
     }
 }

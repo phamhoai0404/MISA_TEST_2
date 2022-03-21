@@ -49,6 +49,15 @@ namespace MISA.Fresher.Web12.API.Controllers
 
         }
 
+        /// <summary>
+        /// Thực hiện lấy dữ liệu phân trang theo bộ lọc và từ khóa tìm kiếm
+        /// </summary>
+        /// <param name="searchText">Từ khóa tìm kiếm</param>
+        /// <param name="pageIndex">Trang đang đứng</param>
+        /// <param name="pageSize">Kích thước trang</param>
+        /// <param name="objectSearch">Bộ lọc tìm kiếm của CaPayment</param>
+        /// <returns></returns>
+        /// Created: HoaiPT(19/03/2022)
         [HttpPost("GetPageV2")]
         public IActionResult GetPagingV2(string? searchText, int pageIndex, int pageSize, FilterCaPayment? objectSearch)
         {
@@ -63,7 +72,30 @@ namespace MISA.Fresher.Web12.API.Controllers
             }
 
         }
-       
+
+
+        /// <summary>
+        /// Thực hiện xóa nhiều CaPayment đồng thời xóa cả CaPaymentDetail với listId của CaPayment truyền vào
+        /// </summary>
+        /// <param name="listId">List Id của CaPayment</param>
+        /// <returns></returns>
+        /// Created: HoaiPT(21/03/2022)
+        [HttpPost("DeleteMany")]
+        public IActionResult DeleteMany(List<string> listId)
+        {
+            try
+            {
+                var res = _caPaymentService.DeleteManyService(listId);
+                return StatusCode(200, res);
+            }
+            catch (Exception ex)
+            {
+                return this.AllException(ex, null);
+            }
+
+        }
+
+
         /// <summary>
         /// Thực hiện xuất ra file excel danh sách phiếu chi
         /// </summary>
