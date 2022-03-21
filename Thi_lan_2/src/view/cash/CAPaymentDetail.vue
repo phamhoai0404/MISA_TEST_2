@@ -163,8 +163,8 @@
     <div class="popup-footer">
         <BaseButton label="Hủy" styleButton="color:white!important" @btnClick="btnCloseForm"/>
         <div class="group-button-footer" >
-            <BaseButton label="Cất và Đóng" styleButton="color:white!important; margin-right:10px;" :readOnly="readOnly" @btnClick="btnSave(1)"/>
-            <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true" :readOnly="readOnly" @btnClick="btnSave(2)"/>
+            <BaseButton label="Cất và Đóng" styleButton="color:white!important; margin-right:10px;" :readOnly="readOnly" @btnClick="btnSave(1)" shortKey="['ctrl','s']" title="Cất và Đóng(Ctrl+S)"/>
+            <BaseButton label="Cất và Thêm" styleButton="color:white!important" :hasBackground="true" :readOnly="readOnly" @btnClick="btnSave(2)" shortKey="['ctrl','shift','s']" title="Cất và Thêm(Ctrl+Shift+S)"/>
         </div>
     </div>
 <BaseMess  v-if="isShowMessQuestion"

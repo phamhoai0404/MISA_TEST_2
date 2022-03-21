@@ -9,7 +9,8 @@
         :class=" [
             hasIcon?'m-input-icon':'', readOnly?'m-input-readOnly':'', errorInput? 'm-border-red':'',
             isNumber?'m-input-number':''
-            ] " 
+        ] " 
+        
         :placeholder="[[placeholder]]"  
         :value="value" @input="onInput"
         :readonly="readOnly"
@@ -109,6 +110,7 @@ export default {
         },
     },
     methods: {
+
         /**
          * Thực hiện khi thay đổi giá trị trong ô Input
          * CreatedBy: HoaiPT(25/02/2022)
