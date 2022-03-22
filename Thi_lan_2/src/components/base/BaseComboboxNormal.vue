@@ -100,11 +100,11 @@ export default {
         },
         value: [String,Number,Object],
         placeholder:String,
-        readOnly:{
-            default:false,
+        readOnly:{//Có đang ở trạng thái là readOnly hay không
+            default:false,//mặc định là không
             type:Boolean
         },
-        isButtonAdd:{
+        isButtonAdd:{//Xem có nút Add hay không mặc định là không có
             default:false,
             type:Boolean,
         },
@@ -187,10 +187,10 @@ export default {
                 }
             } 
         },
-        datas(valueNew){
+        datas(valueNew){//Thực hiện cập nhật datas với bên ngoài
             this.listDataSource = valueNew;
         },
-        isShowData(valueNew){
+        isShowData(valueNew){//Thực hiện cập nhật trạng thái của bên ngoài
             this.isShowDataDropdown = valueNew;
         }
     },
@@ -210,7 +210,7 @@ export default {
             if(!this.readOnly){//Nếu mà không có lệnh chỉ đọc thì mới được thực hiện ở bên trong
                 this.listData = this.listDataSource;
                 this.isShowDataDropdown = !this.isShowDataDropdown;//Đóng lại hoặc mở ra
-                this.updateStatus(this.isShowDataDropdown);
+                this.updateStatus(this.isShowDataDropdown);//Thực hiện truyền update ra bên ngoài
             }  
         },
         /**
@@ -222,6 +222,10 @@ export default {
             this.isShowDataDropdown = false; //Đóng data combobox data
             this.updateStatus(false);
         },
+        /**
+         * Thực hiện khi click vào Item trong data table combobox
+         * CreatedBy: HoaiPT(22/03/2022)
+         */
         btnClickItemTable(object){
             this.onInput(object[this.inputText]);//Thực hiện gián giá trị vào ô Input
             
@@ -233,14 +237,23 @@ export default {
 
         /**
          * Thực hiện khi click bất kì ngoài ô đấy thì nó sẽ đóng lại
+         * CreatedBy: HoaiPT(22/03/2022)
          */
         hideDataDropDown(){
             this.isShowDataDropdown = false;//Thực hiện đóng dropdown
             this.updateStatus(false);
         },
+        /**
+         * Thực hiện focus vào ô input
+         * CreatedBy: HoaiPT(22/03/2022)
+         */
         focus: function () {
             this.$refs.input.focus()
         },
+        /**
+         * Thực hiện update trạng thái đóng mở isShowData ra bên ngoài
+         * CreatedBy: HoaiPT(22/03/2022)
+         */
         updateStatus(status){
             this.$emit('updateIsShowData', status);
         },

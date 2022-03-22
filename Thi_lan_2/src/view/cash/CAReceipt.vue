@@ -261,6 +261,10 @@ export default {
         me.getData();//Trạng thái ban đầu
     },
     methods: {
+        /**
+         * Thực hiện khi click vào nút xóa ở thực hiện hàng loạt
+         * CreatedBy: HoaiPT(21/03/2022)
+         */
         btnRemoveMany(){
             var me = this;
             me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều dropdown
@@ -276,12 +280,11 @@ export default {
          */
         btnCheckboxItem({id}){
             const item = document.getElementById(id);
-            if(item.checked == true){
-                this.listCaPaymentRemove.push(id);
-            }else{
+            if(item.checked == true){//Kiểm tra xem có đang check hay không
+                this.listCaPaymentRemove.push(id);//Đang check thì push vào mảng
+            }else{//Còn nếu không check thì xóa khỏi mảng
                 this.listCaPaymentRemove = this.listCaPaymentRemove.filter(item => item != id)
             }
-            console.log(this.listCaPaymentRemove);
         },
         /**
          * Thực hiện khi thay đổi giá trị input nhập vào ấy
@@ -353,6 +356,10 @@ export default {
                 return true;
             return false;
         },
+        /**
+         * Thực hiện khi click vào nút đặt lại
+         * CreatedBy: HoaiPT(20/03/2022)
+         */
         btnClickResetFilter(){
             this.objectFilterTemp.DateTimeId = "0";
             this.objectFilterTemp.DateTimeName="Tùy chọn";
@@ -374,10 +381,12 @@ export default {
             if( !me.validateStartTimeAndEndTime()){
                 return;
             }
+
+            //Thực hiện gián dữ liệu của tạm vào với filter thật với các trường tương tự fiter thật
             this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, this.objectFilterTemp);
             this.isShowFilterCaPayment = false;//Thực hiện đóng lọc
 
-            await me.showData();
+            await me.showData();//Thực hiện load lại dữ liệu
         },
          /**
          * Thực hiện valiate StartTime and EndTime

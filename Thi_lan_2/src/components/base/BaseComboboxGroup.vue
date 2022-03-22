@@ -153,7 +153,7 @@ export default {
             }
             
         },
-        listDataSelectedSource(){
+        listDataSelectedSource(){//Thực hiện cập nhật dữ liệu mới
             this.listDataSelected = this.listDataSelectedSource;
         }
     },
@@ -167,6 +167,7 @@ export default {
         },
         /**
          * Thực hiện thay đổi giá trị của listDataSelectedSource
+         * CreatedBy: HoaiPT(02/03/2022)
          */
         onChangeListSelected(value){
             this.$emit('onChangeListSelected', value)
@@ -209,6 +210,7 @@ export default {
 
         /**
          * Thực hiện khi click bất kì ngoài ô đấy thì nó sẽ đóng lại
+         * CreatedBy: HoaiPT(02/03/2022)
          */
         hideDataDropDown(){
            this.isShowDataDropdown = false;

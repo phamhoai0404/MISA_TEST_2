@@ -12,20 +12,6 @@
 
 <script>
 export default {
-    computed: {
-        /**
-         * Thực hiện định nghĩa lại cho model truyền vào
-         * CreatedBy: HoaiPT(26/02/2022)
-         */
-        radioButtonValue: {
-            get: function () {
-                return this.value; //Thiết lập như vậy thì v-model này chính bằng cái v-model ngoài thằng cha
-            },
-            set: function () {
-                this.$emit("change", this.valueReal); // Thiết lập giá trị mới bắn cho thằng cha
-            }
-        }
-    },
     /**
      * Truyền từ cha vào con
      * CreatedBy: HoaiPT(26/02/2022)
@@ -49,7 +35,21 @@ export default {
             default:'',
             type:String
         } 
-    }
+    },
+    computed: {
+        /**
+         * Thực hiện định nghĩa lại cho model truyền vào
+         * CreatedBy: HoaiPT(26/02/2022)
+         */
+        radioButtonValue: {
+            get: function () {
+                return this.value; //Thiết lập như vậy thì v-model này chính bằng cái v-model ngoài thằng cha
+            },
+            set: function () {
+                this.$emit("change", this.valueReal); // Thiết lập giá trị mới bắn cho thằng cha
+            }
+        }
+    },
 }
 </script>
 

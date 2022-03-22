@@ -368,6 +368,10 @@ export default {
         },
     },
     methods: {
+        /**
+         * Thực hiện khi click vào nút xóa trong thực hiện hàng loạt
+         * CreatedBy: HoaiPT(21/03/2022)
+         */
         btnRemoveMany(){
             var me = this;
             me.isShowRemoveMany = false;//Thực hiện đóng xóa nhiều dropdown
@@ -377,17 +381,16 @@ export default {
             me.isShowMessRemove = true;//Hiển thị xóa nhiều message
         },
         /**
-         * Thực hiện click vào checkbox
+         * Thực hiện click vào checkbox trong table list
          * CreatedBy: HoaiPT(19/03/2022)
          */
         btnCheckboxItem({id}){
             const item = document.getElementById(id);
-            if(item.checked == true){
-                this.listAccountObjectRemove.push(id);
-            }else{
-                this.listAccountObjectRemove = this.listAccountObjectRemove.filter(item => item != id)
+            if(item.checked == true){//Nếu nó được checked
+                this.listAccountObjectRemove.push(id);//Thì push vào mảng để chuẩn bị thao tác
+            }else{//Nếu nó bỏ checked
+                this.listAccountObjectRemove = this.listAccountObjectRemove.filter(item => item != id)//Thực hiện xóa cái id này ra khỏi mảng
             }
-            console.log(this.listAccountObjectRemove);
         },
 
         /**
@@ -463,6 +466,8 @@ export default {
             if( ! me.validateAddressFilter()){
                 return;
             }
+            
+            //Thực hiện gán dữ liệu lọc thật sự bằng với temp trong đó chỉ chứa các trường của lọc thật sự thôi
             this.objectFilter = MyFunction.sameObjectDestination(this.objectFilter, this.objectFilterTemp);
             this.isShowFilterAccountObject = false;//Thực hiện đóng filter
 
@@ -586,14 +591,14 @@ export default {
             this.provinceOrCityIdTemp = null;
             this.errorProvinceOrCity = false;//Nếu có viền đỏ thì bỏ
             this.titleProvinceOrCity = "";//Và title cũng bỏ
+
+            //Thực hiện gián con của nó là District, WardOrcommnune bằng  rỗng, null
             this.listDistrictTemp =[];
             this.listWardOrCommuneTemp =[];
-
             this.objectFilterTemp.District="";
             this.isShowDataDistrict = false;
             this.objectFilterTemp.WardOrCommune ="";
             this.isShowDataWardOrCommune = false;
-            
             this.districtIdTemp = null;
             this.wardOrCommuneIdTemp = null;
         },
@@ -666,7 +671,7 @@ export default {
             me.isShowFunction = false;
             me.isShowAccountDetail = true;//Mở form detail
         },  
-         /**
+        /**
          * Thực hiện khi click vào nút xác nhận xóa
          * CreatedBy: HoaiPT(01/03/2022)
          */

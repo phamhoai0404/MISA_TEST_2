@@ -349,19 +349,19 @@ export default {
     },
     async created(){
         var me = this;
-        switch (me.editMode) {
-            case  mylib.misaEnum.editMode.View:
-                me.readOnly = true;
-                await me.getDataDetailCaPayment();
+        switch (me.editMode) {//Kiểm tra xem đang ở trường hợp gì
+            case  mylib.misaEnum.editMode.View://Nếu mà đang xem thì
+                me.readOnly = true;//Chỉ được đọc
+                await me.getDataDetailCaPayment();//Lấy dữ liệu và hiển thị lên
                 break;
-            case mylib.misaEnum.editMode.Add:
+            case mylib.misaEnum.editMode.Add://Nếu là thêm
                 me.$parent.isShowLoading = true;//Thực hiện loading
                 await me.resetFormDetail();//Thực hiện thêm mới
                
                 break;
-            case mylib.misaEnum.editMode.Duplicate:
-                await me.getDataDetailCaPayment();
-                await me.getCaPaymentNoNew();
+            case mylib.misaEnum.editMode.Duplicate://Nếu là nhân bản
+                await me.getDataDetailCaPayment();//Thực hiện lấy dữ liệu
+                await me.getCaPaymentNoNew();//Thực hiện lấy mã mới
                 break;
             default:
                 break;
@@ -370,10 +370,11 @@ export default {
     },
     async mounted(){
         var me = this;
-        me.$parent.isShowLoading = true;
-        await me.getListEmployee();
-        await me.getListAccountObject();
+        me.$parent.isShowLoading = true;//Thực hiện mở Loading
+        await me.getListEmployee();//Lấy dữ liệu của nhân viên
+        await me.getListAccountObject();//Lấy dữ liệu của nhà cung cấp
 
+        //Gán các field data cho Detail 
         me.listFieldCAPaymentDetail =[
             {
                 name: "DecriptionDetail",
@@ -429,9 +430,10 @@ export default {
                 typeInsert:'none',
             },
         ]
-        me.$parent.isShowLoading = false;
-        me.isShowDetail = true;
-        if(me.editMode != mylib.misaEnum.editMode.View){
+        me.$parent.isShowLoading = false;//Thực hiện đóng loading
+        me.isShowDetail = true;//Sau khi load hết dữ liệu thì thực hiện mở html ra
+        
+        if(me.editMode != mylib.misaEnum.editMode.View){//Nếu không phải là xem thì sẽ focus vào ô đầu tiên là ô chi khác
             me.$refs.titlePopupDefault.focus();
         } 
     },
@@ -516,9 +518,12 @@ export default {
                 }
             }  
         },
+        /**
+         * Thực hiện khi click vào ô Xóa tất cả dòng detail
+         */
         btnRemoveAllDetail(){
             var me = this;
-            me.isShowWarningAndQuestion = true;
+            me.isShowWarningAndQuestion = true;//Thực hiện mở form cảnh báo và hỏi bạn có muốn xóa hết không ấy
         },
         /**
          * Thực hiện khi click vào nút Xác nhận xóa tất cả Detail
@@ -526,9 +531,9 @@ export default {
          */
         btnRemoveAllCaPaymentDetail(){
             this.isShowWarningAndQuestion = false;//Đóng form cảnh báo
-            this.listCAPaymentDetail = [];
-            let objectNew = this.objectCaPaymentDetailNew();
-            this.listCAPaymentDetail.push(objectNew);
+            this.listCAPaymentDetail = [];//Làm rỗng listDetail
+            let objectNew = this.objectCaPaymentDetailNew();//Tạo ra một đối tượng mới
+            this.listCAPaymentDetail.push(objectNew);//Gán đối tượng mới vào list
 
         },
         /**
@@ -557,7 +562,7 @@ export default {
          * CreatedBy: HoaiPT(11/03/2022)
          */
         changeAfterInputListCaPaymentDetail({fieldName,index}){
-            if(fieldName =="AccountObjectId"){
+            if(fieldName =="AccountObjectId"){//Nếu fileName  mà bằng id nhà cung cấp thì thực hiện gián id ở list bằng null, và name =""
                 this.listCAPaymentDetail[index].AccountObjectId = null;
                 this.listCAPaymentDetail[index].AccountObjectName = ''
             }
@@ -567,11 +572,17 @@ export default {
          * CreatedBy: HoaiPT(11/03/2022)
          */
         changeItemListCaPaymentDetail({object,fieldName,index}){
-            if(fieldName =="AccountObjectId"){
+            if(fieldName =="AccountObjectId"){//Khi mà select Item AccountObjectId thì thực hiện gián luôn AccountObjectName bằng giá trị tương ứng với cái AccountObjectId
                 this.listCAPaymentDetail[index].AccountObjectId = object.AccountObjectId;
                 this.listCAPaymentDetail[index].AccountObjectName = object.AccountObjectName;
             }
         },
+        /**
+         * Thực hiện khi click vào nút (Cất và đóng) hoặc (Cất và Thêm)
+         * 1: Cất và Đóng
+         * 2: Cất và Thêm
+         * CreatedBy: HoaiPT(19/03/2022)
+         */
         async btnSave(value){
             try {
                 var me = this;
@@ -596,9 +607,9 @@ export default {
 
                 this.caPayment.TotalAmount = this.totalMoney;//Lưu vào Amount tổng số tiền
 
-                let objectControl ={};
-                objectControl.CaPayment  = me.caPayment;
-                objectControl.ListCaPaymentDetail = me.listCAPaymentDetail;
+                let objectControl ={};//Thực hiện tạo đối tượng mới
+                objectControl.CaPayment  = me.caPayment;//Có master bằng CaPayment
+                objectControl.ListCaPaymentDetail = me.listCAPaymentDetail;//Có Detail là CaPaymentDetail 
                 await axios.post('https://localhost:44338/api/v1/ControlCaPayment', objectControl)
                 .then(function (res) {
                     if(!res.data.errorCode){ //Không có lỗi thì sẽ vào đây
@@ -659,9 +670,7 @@ export default {
                 }
             }
 
-
-
-            return true;
+            return true;//Nếu đúng hết sẽ cho qua
         },
         /**
          *Thực hiện validate của ngày hạch toán và ngày phiếu chi

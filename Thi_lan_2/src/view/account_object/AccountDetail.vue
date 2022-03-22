@@ -415,9 +415,7 @@ export default {
             listTabIndex: mylib.data.listTabIndex,//Danh sách list Tên của TabIndex được lưu trữ trong resource
             readOnly:false,//Thực hiện để mở khóa hay đóng lại các ô input
 
-            // isShowComboboxPrefix:false,//Mặc định ban đầu là đóng
             listDataPrefix:mylib.data.listPrefix,//Dữ liệu chính
-            // listDataPrefixTemp:[],//Tạm thời là rỗng
             
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch  
                 AccountObjectCode:null,
@@ -430,57 +428,60 @@ export default {
                 WardOrCommune:null,
             },
 
+            //Title và trạng thái đóng mở của MessQuestion
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
             isShowMessQuestion:false,
 
+            //Title và trạng thái đóng mở của MessWarning
             isShowMessWarning:false,
             titleMessWarning:"",
 
+            //Title và trạng thái đóng mở của MessInfo
             isShowMessInfo:false,
             titleMessInfo:"",
-
+            
+            //Sử dụng cho combobox Nhân viên
             isShowComboboxEmployee:false,//Trạng thái đầu tiên của combobox
             listEmployee:[],
             listFieldEmployee:mylib.data.listFieldEmployeeCombobox,
 
+            //Sử dụng cho combobox của Tài khoản công nợ
             isShowComboboxPayAccount:false,//Trạng thái đầu tiên của combobox
             listPayAccount:null,
-            listFieldPayAccount:mylib.data.listFieldPayAccountCombobox,
+            listFieldPayAccount:mylib.data.listFieldPayAccountCombobox,//Thông tin các trường hiển thị
 
+            //Sử dụng cho combobox của điều khoản thanh toán
             isShowComboboxPaymentTerm:false,//Trạng thái đầu tiên của combobox
             listPaymentTerm:null,
-            listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,
+            listFieldPaymentTerm:mylib.data.listFieldPaymentTermCombobox,//Đây là thông tin cách trường hiển thị
 
+            //Sử dụng cho combobox group Nhóm nhà cung cấp
             listAccountObjectGroup:[],
-            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,
-
+            listFieldAccountObjectGroup:mylib.data.listFieldAccountObjectGroupCombobox,//Các trường hiển thị
             listAccountGroupSelected:new Array(),//Đầu tiên là mảng rỗng
-            textSearchAccountObjectGroup:"",
+            textSearchAccountObjectGroup:"",//Từ khóa tìm kiếm trong combobox group
 
+            //Mục đích của những cái này là có thể hiện viền đỏ của ô input hay không đồng thời thể hiện title phù hợp
             errorCode:false,//Lỗi hay không lỗi của code
             titleCode:"",//Title thể hiện là chữ phù hợp
-
             errorName:false,//Lỗi hay không lỗi của Name
-            titleName:"",
-
-            errorEmployee:false,
-            titleEmployee:"",
-
-            errorPayAccount:false,
+            titleName:"",//Title thể hiện chữ phù hợp của Name
+            errorEmployee:false,//Lỗi hay không của Nhân viên
+            titleEmployee:"",//Title thể hiện chữ Nhân viên phù hợp nếu lỗi
+            errorPayAccount:false,//Tương tự đây là của tài khoản nợ
             titlePayAccount:"",
-
-            errorPaymentTerm:false,
+            errorPaymentTerm:false,//Tương tự đây là của điều khoản thanh toán
             titlePaymentTerm:"",
-            
-            errorAccountObjectGroup:false,
+            errorAccountObjectGroup:false,//Tương tự đây là của Nhóm mã khách hàng
             titleAccountObjectGroup:"",
 
-            listFieldBank:mylib.data.listFieldBank,
-            listAccountObjectBankAccount: [],
-
-            listFieldShippingAddress:mylib.data.listFieldShippingAddress,
-            listAccountObjectShippingAddress: [],
-
+            //Đây là phục vụ cho phần table insert của bank và của shipping address
+            listFieldBank:mylib.data.listFieldBank,//Trường thể hiện ra ngoài của bank
+            listAccountObjectBankAccount: [],//Nơi lưu trữ dữ liệu của listBank là một mảng 
+            listFieldShippingAddress:mylib.data.listFieldShippingAddress,//Trường thể hiện dữ liệu ra ngoài của shipping address
+            listAccountObjectShippingAddress: [],//Nơi lưu trữ dữ liệu của Shipping Address
+            
+            //Trạng thái khi load dữ liệu xong rồi thì mới load ô combobox ấy 
             isShowEmployee: false,
             isShowPaymentTerm:false,
             isShowPayAccount:false,
@@ -527,8 +528,6 @@ export default {
 
         //Cần phải viết như này để nó không bind từ detail ảnh hưởng đến table
         me.account= await MyFunction.sameObject(me.accountTable);
-
-        //Thực hiện gán giá trị cho 
         
     },
     async mounted() {
@@ -539,6 +538,7 @@ export default {
         await this.getListPaymentTerm()//Thực hiện gán dữ liệu  phục vụ cho combobox
         await this.getListEmployee()//Thực hiện gán dữ liệu cho listEmployee phục vụ cho combobox
         await this.getListAccountObjectGroup();//Thực hiện gián dữ liệu cho listAccountObjectGroup phục vụ cho combobox
+        
         //Thực hiện gán giá trị cho listAccountObjectBankAccount,listShipdress
         await this.getValueJsontoArrayAccount();
         
@@ -553,7 +553,7 @@ export default {
         //Thực hiện lấy dữ liệu cho địa chỉ phù hợp
         await this.getDataAddress();
 
-        this.$parent.isShowLoading = false;
+        this.$parent.isShowLoading = false;//Thực hiện đóng loading khi đã load hết dữ liệu lên rồi 
     },
     
     watch:{  
@@ -589,25 +589,38 @@ export default {
                 }
             }
         },
+        /**
+         * Thực hiện thay đổi giá trị của listProvinceOrCityTemp khi mà id của countryIdTemp thay đổi
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
         countryIdTemp(valueNew){
             this.listProvinceOrCityTemp = this.listProvinceOrCitySource.filter(item=> item.ParentId == valueNew);
         },
+        /**
+         * Thực hiện thay đổi giá trị của listDistrictTemp khi mà id của provinceOrCityIdTemp thay đổi
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
         provinceOrCityIdTemp(valueNew){
             this.listDistrictTemp = this.listDistrictSource.filter(item => item.ParentId == valueNew);
         },
+        /**
+         * Thực hiện thay đổi giá trị của listWardOrCommuneTemp khi mà id của districtIdTemp thay đổi
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
         districtIdTemp(valueNew){
             this.listWardOrCommuneTemp = this.listWardOrCommuneSource.filter(item => item.ParentId == valueNew);
         },
+         /**
+         * Thực hiện theo dõi address của account 
+         * CreatedBy: HoaiPT(18/03/2022)
+         */
         'account.Address'(valueNew, valueOld){
-            // console.log("vào đây 1");
             if(document.getElementById('address-same')){
                 const item = document.getElementById('address-same');
-                if(item.checked == true){
-                    // console.log("vào đây 2");
-                    if(this.listAccountObjectShippingAddress[0].AddressShipName == valueOld)
+                if(item.checked == true){//Nếu nút giống địa chỉ nhà cung cấp mà được check
+                    if(this.listAccountObjectShippingAddress[0].AddressShipName == valueOld)//Nếu mà giá trị cũ bằng giá trị đầu tiên của shippingAddress
                     {
-                        // console.log("vào đây 3");
-                        this.listAccountObjectShippingAddress[0].AddressShipName = valueNew;
+                        this.listAccountObjectShippingAddress[0].AddressShipName = valueNew;//Thì giá trị mới cũng bằng của account.address luôn
                     }
                 }
             }
@@ -660,11 +673,11 @@ export default {
             this.districtIdTemp = null;
             this.errorDistrict = false;//Nếu có viền đỏ thì bỏ
             this.titleDistrict = "";//Và title cũng bỏ
+            
+            //Khi thay đổi giá trị của input District thì những con của nó là WardOrCommune đồng thời gián bằng null.
             this.listWardOrCommuneTemp =[];
-
             this.account.WardOrCommune ="";
             this.isShowDataWardOrCommune = false;
-
             this.wardOrCommuneIdTemp = null;
         },
         /**
@@ -682,14 +695,14 @@ export default {
             this.provinceOrCityIdTemp = null;
             this.errorProvinceOrCity = false;//Nếu có viền đỏ thì bỏ
             this.titleProvinceOrCity = "";//Và title cũng bỏ
+            
+            //Khi thay đổi giá trị của ProvinceOrCity thì những con của nó là WardOrCommune, DistrictTemp đồng thời gián bằng null.
             this.listDistrictTemp =[];
             this.listWardOrCommuneTemp =[];
-
             this.account.District="";
             this.isShowDataDistrict = false;
             this.account.WardOrCommune ="";
             this.isShowDataWardOrCommune = false;
-            
             this.districtIdTemp = null;
             this.wardOrCommuneIdTemp = null;
             
@@ -710,17 +723,16 @@ export default {
             this.errorCountry = false;//Nếu có viền đỏ thì bỏ viền đỏ
             this.titleCountry = "";//Có title  thì bỏ title
 
+            //Thay đổi giá trị input thì đồng thời những con của nó cũng bằng null
             this.listProvinceOrCityTemp =[];
             this.listDistrictTemp =[];
             this.listWardOrCommuneTemp =[];
-            
             this.account.ProvinceOrCity="";
             this.isShowDataProvinceOrCity = false;
             this.account.District="";
             this.isShowDataDistrict = false;
             this.account.WardOrCommune ="";
             this.isShowDataWardOrCommune = false;
-            
             this.provinceOrCityIdTemp = null;
             this.districtIdTemp = null;
             this.wardOrCommuneIdTemp = null;
@@ -1146,7 +1158,7 @@ export default {
             me.tabSelected = 0;//Trở về đầu tiên
 
 
-            //Làm mới toàn bộ để lại mã mới tự tăng
+            //Làm mới toàn bộ 
             for (var propName in me.account) {
                 me.account[propName] = null;
             }
@@ -1189,6 +1201,10 @@ export default {
          * CreatedBy: HoaiPT(28/02/2021)
          */
         changeTypeDetail(){},
+        /**
+         * Thực hiện lấy dữ liệu của List điều khoản thanh toán
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         async getListPaymentTerm() {
             try {
                 var me = this;
@@ -1200,6 +1216,10 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
+        /**
+         * Thực hiện lấy dữ liệu của Employee
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         async getListEmployee() {
             try {
                 var me = this;
@@ -1211,6 +1231,10 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
+        /**
+         * Thực hiện lấy dữ liệu của PayAccount (tài khoản nợ)
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         async getListPayAccount() {
             try {
                 var me = this;
@@ -1222,6 +1246,10 @@ export default {
                 console.log(mylib.resourcs["VI"].errorMsg);
             }
         },
+        /**
+         * Thực hiện lấy giá trị của listAccountObjectGroup
+         * CreatedBy: HoaiPT(01/03/2022)
+         */
         async getListAccountObjectGroup() {
             try {
                 var me = this;
@@ -1291,7 +1319,6 @@ export default {
 
         },
         
-        
         /**
          * Thực hiện lấy những cái này từ file js
          * CreatedBy:HoaiPT(02/03/2022)
@@ -1303,7 +1330,6 @@ export default {
         removeValueInArray:MyFunction.removeValueInArray,
         formatJsonToArray:MyFunction.formatJsonToArray,
         formatArrayToJson: MyFunction.formatArrayToJson,
-    
     
     }
 }

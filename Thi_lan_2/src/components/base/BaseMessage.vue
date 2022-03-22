@@ -12,8 +12,8 @@
             ]"></div>
 
             <!--Thông tin hiển thị ở đây  -->
-            <div class="m-mess-title">{{titleForm}}
-            </div>
+            <div class="m-mess-title">{{titleForm}}</div>
+            
         </div>
         <div class="m-message-line"></div>
 
