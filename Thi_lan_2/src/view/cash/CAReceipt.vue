@@ -354,7 +354,6 @@ export default {
             return false;
         },
         btnClickResetFilter(){
-            console.log("vào đây");
             this.objectFilterTemp.DateTimeId = "0";
             this.objectFilterTemp.DateTimeName="Tùy chọn";
             this.objectFilterTemp.EndTime = null;

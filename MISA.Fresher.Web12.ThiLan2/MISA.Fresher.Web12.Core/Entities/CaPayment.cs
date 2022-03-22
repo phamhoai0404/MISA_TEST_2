@@ -79,7 +79,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Tổng tiền
         /// </summary>
         [PropertyName("Tổng tiền")]
-        public float TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
 
 
         /// <summary>

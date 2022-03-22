@@ -2,7 +2,7 @@
 <div>
     <div class="m-checkbox" :style="styleCheckbox">
         <input type="checkbox" :id="id" @click="clickCheckbox(id)"/>
-        <label :for="id" :style="{fontFamily: fontFamily}"><span></span>{{label}}</label>
+        <label :for="readOnly==false ? id: '' " :style="{fontFamily: fontFamily}"><span></span>{{label}}</label>
     </div>
 </div>
 </template>
@@ -27,6 +27,10 @@ export default {
         styleCheckbox:{//Trường hợp muốn thêm style cho checkbox
             default:'',
             type:String
+        },
+        readOnly:{//Có chỉ được đọc hay không
+            default:false,//Mặc định là bình thường
+            type:Boolean
         }
     },
     methods: {
@@ -36,7 +40,10 @@ export default {
          */
         clickCheckbox(id){
             var me = this;
-            me.$emit('clickCheckbox',{ id: id });
+            if( !me.readOnly ){
+                me.$emit('clickCheckbox',{ id: id });
+            }
+            
         }       
     },
 }

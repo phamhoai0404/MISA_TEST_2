@@ -10,7 +10,7 @@
                         <BaseRadio label="Tổ chức" styleRadio="margin-right:20px;" id="organization" name="typeRadioDetail" valueReal="1" @change="changeTypeDetail" :value="typeDetail" />
                         <BaseRadio label="Cá nhân" id="personal" name="typeRadioDetail" valueReal="2" @change="changeTypeDetail" :value="typeDetail" />
                     </div>
-                    <BaseCheckbox label="Là khách hàng" id="customer" styleCheckbox="margin-left:100px;" />
+                    <BaseCheckbox label="Là khách hàng" id="customer" styleCheckbox="margin-left:100px;" :readOnly="readOnly"/>
 
                 </div>
             </div>
@@ -314,7 +314,7 @@
                             <div class="tab-right">
                                 <div class="tab-group-title">
                                    <div class="tab-title-child">Địa chỉ giao hàng</div>
-                                    <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" @clickCheckbox="btnCheckboxAddressShip" />
+                                    <BaseCheckbox label="Giống địa chỉ nhà cung cấp" id="address-same" styleCheckbox="padding-left:18px" @clickCheckbox="btnCheckboxAddressShip" :readOnly="readOnly"/>
                                 </div>
                                 <div class="tab-content-table">
                                     <BaseTableInsert styleTable="max-height:120px !important;  overflow-y: auto;"
@@ -422,7 +422,12 @@ export default {
             account:{//Viết riêng rẽ từng cái ra dùng để theo dõi trong watch  
                 AccountObjectCode:null,
                 AccountObjectName:null,
-                Address:null
+                Address:null,
+
+                Country:null,
+                ProvinceOrCity:null,
+                District:null,
+                WardOrCommune:null,
             },
 
             titleMessQuestion:mylib.resourcs["VI"].confirmEdit,
@@ -498,6 +503,7 @@ export default {
             districtIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
             wardOrCommuneIdTemp:null,//Các biến id giả để css thôi vì trong csdl không có
 
+            //Các có viền đỏ hay không và title mong muốn của địa chỉ 
             errorCountry:false,
             titleCountry:"",
             errorProvinceOrCity:false,
@@ -1133,7 +1139,6 @@ export default {
             var me = this;
             me.textSearchAccountObjectGroup="";//Ô tìm kiếm trong searchgroud == rỗng,
             me.listAccountGroupSelected=[];//gán đang lựa chọn bằng []
-            me.lli
 
             me.listAccountObjectBankAccount = [{}];//Đưa về [] với mặc định là có một phần tử rỗng
             me.listAccountObjectShippingAddress =[{}];//Tương tự như trên

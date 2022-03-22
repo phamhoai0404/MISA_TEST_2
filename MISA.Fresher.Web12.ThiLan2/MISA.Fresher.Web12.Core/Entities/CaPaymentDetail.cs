@@ -48,7 +48,7 @@ namespace MISA.Fresher.Web12.Core.Entities
         /// Số tiền
         /// </summary>
         [PropertyName("Số tiền")]
-        public float? Amount { get; set; }
+        public double? Amount { get; set; }
 
         /// <summary>
         /// Id nhà cung cấp
