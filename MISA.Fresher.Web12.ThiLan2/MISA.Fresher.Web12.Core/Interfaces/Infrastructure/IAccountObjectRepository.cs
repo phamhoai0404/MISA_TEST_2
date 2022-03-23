@@ -32,5 +32,9 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Infrastructure
         /// <returns></returns>
         /// CreatedBy: HoaiPT(21/03/2022)
         int DeleteManyId(string listId);
+
+        public IEnumerable<AccountObject> GetExportData(int pageIndex, int pageSize, string searchText,
+                           string? accountObjectGroupCode, string? provinceOrCity,
+                             string? district, string? wardOrCommune);
     }
 }

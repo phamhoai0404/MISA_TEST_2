@@ -33,5 +33,7 @@ namespace MISA.Fresher.Web12.Core.Interfaces.Services
         /// <param name="listId">Danh sách các Id</param>
         /// <returns></returns>
         int DeleteManyService(List<string> listId);
+
+        IEnumerable<AccountObject> GetExportDataService(string searchText, int pageSize, int pageIndex, FilterAccountObject listText);
     }
 }

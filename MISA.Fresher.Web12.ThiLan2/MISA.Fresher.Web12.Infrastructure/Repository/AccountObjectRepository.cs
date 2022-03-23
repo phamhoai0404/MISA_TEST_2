@@ -62,5 +62,36 @@ namespace MISA.Fresher.Web12.Infrastructure.Repository
 
             }
         }
+
+        public IEnumerable<AccountObject> GetExportData(int pageIndex, int pageSize, string searchText, string? accountObjectGroupCode, string? provinceOrCity, string? district, string? wardOrCommune)
+        {
+            using (SqlConnection = new MySqlConnection(ConnectionString))
+            {
+                var sql = $"Proc_ExportDataAccountObject2";
+                var parameters = new DynamicParameters();
+
+                //Những thứ tìm kiếm trong bộ lọc
+                parameters.Add("@m_AccountObjectGroupCode", accountObjectGroupCode);
+                parameters.Add("@m_ProvinceOrCity", provinceOrCity);
+                parameters.Add("@m_District", district);
+                parameters.Add("@m_WardOrCommune", wardOrCommune);
+
+                //Những thứ input vào thông thường
+                parameters.Add("@m_SearchText", searchText);
+                parameters.Add("@m_PageIndex", pageIndex);
+                parameters.Add("@m_PageSize", pageSize);
+
+                parameters.Add("@m_TotalRecord", direction: System.Data.ParameterDirection.Output);
+                parameters.Add("@m_TotalPage", direction: System.Data.ParameterDirection.Output);
+
+                //var entites = SqlConnection.Query(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure) as List<AccountObject>;//Thực hiện lấy các bản ghi
+                var entites = SqlConnection.Query<AccountObject>(sql, param: parameters, commandType: System.Data.CommandType.StoredProcedure);//Thực hiện lấy các bản ghi
+                var totalRecord = parameters.Get<int>("@m_TotalRecord");//Lấy tổng số bản ghi
+                var totalPage = parameters.Get<int>("@m_TotalPage");//Lấy tổng số trang
+
+                return entites ;
+
+            }
+        }
     }
 }

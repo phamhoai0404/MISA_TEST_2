@@ -840,9 +840,11 @@ export default {
                 //Chắc chắn là con trỏ this đang ở đây;
                 var me = this;
                 me.isShowLoading = true; //Hiển thị đang load
-                axios.get('https://localhost:44338/api/v1/AccountObjects/Excel', {
-                    responseType: 'blob',
-                }).then((response) => {
+                axios.post(`https://localhost:44338/api/v1/AccountObjects/ExcelFilter?searchText=${me.keywordSearch}&pageIndex=${me.pageAction}&pageSize=${me.selectTextPage}`, this.objectFilter,
+                {
+                    responseType: 'blob'
+                })
+                .then((response) => {
                     const url = URL.createObjectURL(new Blob([response.data]));
                     const link = document.createElement('a'); //Tạo ra một element mới là thẻ a
                     link.href = url; //Thẻ a này có đường dẫn là file excel trả về từ database

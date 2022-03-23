@@ -145,6 +145,79 @@ namespace MISA.Fresher.Web12.API.Controllers
 
         }
 
+
+        [HttpPost("ExcelFilter")]
+        public IActionResult exportExcelFilter(string? searchText, int pageIndex, int pageSize, FilterAccountObject objectSearch)
+        {
+            //Thực hiện tạo ra file excel mới và sau khi làm xong  đóng lại luôn
+            using (var workbook = new XLWorkbook())
+            {
+                //Tạo ra sheet mới trong file excel có tên là NHÀ CUNG CẤP
+                var worksheet = workbook.Worksheets.Add(Core.Resourcs.EntitiesVN.AccountObjectVN.TitleExcelExport);
+
+                //Thực hiện style cho title
+                var title = worksheet.Range("A1:G1");
+                title.Value = Core.Resourcs.EntitiesVN.AccountObjectVN.TitleExcelExport;
+                title.Merge();
+                this.StyleTitle(title, 16, "Arial");
+
+                //Cách ra một cell và gộp các cell ấy lại
+                var distance = worksheet.Range("A2:G2");
+                distance.Merge();
+
+                //Thực hiện style cho title của table
+                var titleTable = worksheet.Range("A3:G3");
+                titleTable.Style.Fill.BackgroundColor = XLColor.Gray;//Thiết lập màu cho background
+                this.StyleBorder(titleTable);//Thiết lập các border cho cell của title
+                this.StyleTitle(titleTable, 10, "Arial");
+                this.SetValueTitle(worksheet, 3);
+
+                //Thực hiện lấy dữ liệu từ database gồm các list Emloyee
+
+
+                
+                var listAccount = _accountObjectService.GetExportDataService(searchText, pageSize, pageIndex, objectSearch);
+                int index = 4;//dòng đầu tiên của dữ liệu
+                int number = 1;//Dùng đếm số thứ tự của các dòng
+                foreach (var account in listAccount)
+                {
+                    worksheet.Cell(index, 1).Value = number++;
+                    worksheet.Cell(index, 2).Value = account.AccountObjectCode;
+                    worksheet.Cell(index, 3).Value = account.AccountObjectName;
+                    worksheet.Cell(index, 4).Value = account.Address;
+                    worksheet.Cell(index, 5).Value = account.TaxCode;
+                    worksheet.Cell(index, 6).Value = $"'{account.Phone}";
+                    worksheet.Cell(index, 7).Value = account.Website;
+
+                    index++;//Sau khi nhập dữ liệu của một Employee thì tiếp tục nhập  dòng kế tiếp
+                }
+                var rangeData = worksheet.Range($"A4:G{index - 1}");//Tất cả dữ 
+                this.StyleBorder(rangeData);//Thiết lập các border cho cell của data 
+                rangeData.Style.Font.SetFontName("Times New Roman");//Thiết lập font chữ cho từng cell của data là dạng Times New Roman
+
+                //Căn giữa cho dòng excel
+                var rangeCountry = worksheet.Range($"E4:E{index - 1}");
+                var rangePrefix = worksheet.Range($"H4:H{index - 1}");
+                rangeCountry.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                rangePrefix.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+
+                //Thiết lập độ rộng cho các cột của sheet A, B, C
+                this.SetColumnWidth(worksheet);
+
+                using (var stream = new MemoryStream())
+                {
+                    //Lưu lại file excel
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    //Trả về cho client file excel
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Core.Resourcs.EntitiesVN.EmployeeVN.FileNameExcel);
+
+                }
+            }
+
+        }
+
         /// <summary>
         /// Thực hiện xóa nhiều theo list Id của CaPaymentId truyền vào
         /// </summary>

@@ -122,6 +122,31 @@ namespace MISA.Fresher.Web12.Core.Services
                 );
             }
         }
+
+        public IEnumerable<AccountObject> GetExportDataService(string searchText, int pageSize, int pageIndex, FilterAccountObject objectFilter)
+        {
+            string accountObjectGroupCode = "";
+            string provinceOrCity = "";
+            string district = "";
+            string wardOrCommune = "";
+            if (objectFilter.AccountObjectGroupCode != null)
+            {
+                accountObjectGroupCode = objectFilter.AccountObjectGroupCode;
+            }
+            if (objectFilter.ProvinceOrCity != null)
+            {
+                provinceOrCity = objectFilter.ProvinceOrCity;
+            }
+            if (objectFilter.District != null)
+            {
+                district = objectFilter.District;
+            }
+            if (objectFilter.WardOrCommune != null)
+            {
+                wardOrCommune = objectFilter.WardOrCommune;
+            }
+            return _accountObjectRepository.GetExportData(pageIndex, pageSize, searchText, accountObjectGroupCode, provinceOrCity, district, wardOrCommune);
+        }
         #endregion
     }
 }

@@ -96,7 +96,6 @@
                                 v-model="account.FullName"
                                 :isComboboxTable="true"
                                 :readOnly="readOnly"
-                                
                                 :errorCombobox="errorEmployee"
                                 :title="titleEmployee"
                                 
